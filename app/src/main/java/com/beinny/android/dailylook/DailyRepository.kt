@@ -40,6 +40,9 @@ class DailyRepository private constructor(context: Context){
     // photoFileName를 인자로 받고, 파일의 위치를 가리킬 File 객체를 반환
     fun getPhotoFile(dailylook:Daily): File = File(filesDir, dailylook.photoFileName)
 
+    // thumbFileName를 인자로 받고, 파일의 위치를 가리킬 File 객체를 반환
+    fun getThumbFile(dailylook:Daily): File = File(filesDir, dailylook.thumbFileName)
+
     companion object {
         private var INSTANCE: DailyRepository? = null
 

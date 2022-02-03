@@ -8,4 +8,8 @@
     <string name="title_hint">메인화면에서 표시할 label을 입력해주세요</string>
     <string name="upload_button">등록</string>
     <string name="delete_button">삭제</string>
+
+    <string name="menu_home">Home</string>
+    <string name="menu_backup">데이터 백업</string>
+
 </resources>

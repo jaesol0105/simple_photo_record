@@ -25,4 +25,7 @@ class DailyDetailViewModel : ViewModel() {
     fun getPhotoFile(dailylook:Daily): File {
         return dailyRepository.getPhotoFile(dailylook)
     }
+    fun getThumbFile(dailylook:Daily): File {
+        return dailyRepository.getThumbFile(dailylook)
+    }
 }

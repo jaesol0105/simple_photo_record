@@ -24,7 +24,7 @@
             android:adjustViewBounds="true"
             android:background="@android:color/darker_gray"
             android:cropToPadding="true"
-            android:scaleType="centerInside"
+            android:scaleType="centerCrop"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
