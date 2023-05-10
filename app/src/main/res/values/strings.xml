@@ -1,15 +1,18 @@
 <resources>
-    <string name="app_name">Daily Look</string>
-    <string name="new_look">데일리룩 추가</string>
+    <string name="app_name">간단한 사진 기록</string>
+    <string name="new_look">기록하기</string>
     <string name="memo_label">메모</string>
     <string name="memo_hint">메모를 입력하세요</string>
     <string name="date_label">날짜 설정</string>
-    <string name="title_label">데일리룩 제목</string>
-    <string name="title_hint">메인화면에서 표시할 label을 입력해주세요</string>
-    <string name="upload_button">등록</string>
+    <string name="title_label">제목</string>
+    <string name="title_hint">메인화면에서 표시할 제목을 입력해주세요</string>
+    <string name="upload_button">저장</string>
     <string name="delete_button">삭제</string>
 
     <string name="menu_home">Home</string>
     <string name="menu_backup">데이터 백업</string>
+    <string name="nav_record_detail_label">상세정보</string>
+    <string name="nav_data_management_label">데이터 관리</string>
+    <string name="nav_record_list_label">간단한 사진 기록</string>
 
 </resources>

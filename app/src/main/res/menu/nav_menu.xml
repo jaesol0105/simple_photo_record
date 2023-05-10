@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
     <group android:checkableBehavior="single">
-        <item android:id="@+id/dailyListFragment"
+        <item android:id="@+id/recordListFragment"
             android:icon="@drawable/ic_baseline_home_24"
             android:title="Home"/>
         <item android:id="@+id/backUpFragment"

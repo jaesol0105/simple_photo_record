@@ -2,22 +2,26 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/dailyListFragment">
+    app:startDestination="@id/recordListFragment">
 
     <fragment
-        android:id="@+id/dailyListFragment"
-        android:name="com.beinny.android.dailylook.DailyListFragment"
-        android:label="DailyListFragment" >
+        android:id="@+id/recordListFragment"
+        android:name="com.beinny.android.photorecord.RecordListFragment"
+        android:label="@string/nav_record_list_label" >
         <action
-            android:id="@+id/action_dailyListFragment_to_dailyFragment"
-            app:destination="@id/dailyFragment" />
+            android:id="@+id/action_recordListFragment_to_recordDetailFragment"
+            app:destination="@id/recordDetailFragment" />
     </fragment>
     <fragment
         android:id="@+id/backUpFragment"
-        android:name="com.beinny.android.dailylook.ui.backup.BackUpFragment"
-        android:label="BackUpFragment" />
+        android:name="com.beinny.android.photorecord.ui.backup.BackUpFragment"
+        android:label="@string/nav_data_management_label" />
     <fragment
-        android:id="@+id/dailyFragment"
-        android:name="com.beinny.android.dailylook.DailyFragment"
-        android:label="DailyFragment" />
+        android:id="@+id/recordDetailFragment"
+        android:name="com.beinny.android.photorecord.RecordDetailFragment"
+        android:label="@string/nav_record_detail_label" >
+        <action
+            android:id="@+id/action_recordDetailFragment_to_recordListFragment"
+            app:destination="@id/recordListFragment" />
+    </fragment>
 </navigation>
