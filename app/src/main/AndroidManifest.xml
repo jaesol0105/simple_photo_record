@@ -26,7 +26,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.PhotoRecord.NoActionBar">
         <activity
-            android:name="com.beinny.android.photorecord.SplashActivity"
+            android:name="com.beinny.android.photorecord.ui.SplashActivity"
             android:exported="true"
             android:theme="@style/Theme.PhotoRecord.Splash">
             <intent-filter>
@@ -36,7 +36,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.beinny.android.photorecord.MainActivity"
+            android:name="com.beinny.android.photorecord.ui.MainActivity"
             android:exported="true"></activity>
 
         <!--provider

@@ -1,8 +1,9 @@
-package com.beinny.android.photorecord
+package com.beinny.android.photorecord.repository.recorddetail
 
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.room.Room
+import com.beinny.android.photorecord.model.Record
 import com.beinny.android.photorecord.datebase.RecordDatabase
 import java.io.File
 import java.lang.IllegalStateException
@@ -25,32 +26,32 @@ class RecordRepository private constructor(context: Context){
     fun getRecords() : LiveData<List<Record>> = recordDao.getRecords()
     fun getRecord(id: UUID) : LiveData<Record?> = recordDao.getRecord(id)
 
-    fun updateRecord(record:Record) {
+    fun updateRecord(record: Record) {
         executor.execute {
             recordDao.updateRecord(record)
         }
     }
 
-    fun addRecord(record:Record) {
+    fun addRecord(record: Record) {
         executor.execute {
             recordDao.addRecord(record)
         }
     }
 
-    fun deleteRecord(record:Record) {
+    fun deleteRecord(record: Record) {
         executor.execute {
             recordDao.deleteRecord(record)
         }
     }
 
     // photoFileName를 인자로 받고, 파일의 위치를 가리킬 File 객체를 반환
-    fun getPhotoFile(record:Record): File = File(filesDir, record.photoFileName)
+    fun getPhotoFile(record: Record): File = File(filesDir, record.photoFileName)
 
     // thumbFileName를 인자로 받고, 파일의 위치를 가리킬 File 객체를 반환
-    fun getThumbFile(record:Record): File = File(filesDir, record.thumbFileName)
+    fun getThumbFile(record: Record): File = File(filesDir, record.thumbFileName)
 
     // 이미지 업로드 임시저장용
-    fun getTempFile(record:Record): File = File(filesDir, record.tempFileName)
+    fun getTempFile(record: Record): File = File(filesDir, record.tempFileName)
 
     companion object {
         private var INSTANCE: RecordRepository? = null

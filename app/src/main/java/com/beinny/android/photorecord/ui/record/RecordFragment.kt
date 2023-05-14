@@ -1,4 +1,4 @@
-package com.beinny.android.photorecord
+package com.beinny.android.photorecord.ui.record
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -9,9 +9,15 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.*
+import com.beinny.android.photorecord.*
+import com.beinny.android.photorecord.databinding.FragmentRecordBinding
+import com.beinny.android.photorecord.databinding.ItemRecordBinding
+import com.beinny.android.photorecord.model.Record
+import com.beinny.android.photorecord.ui.common.ViewModelFactory
 import java.io.File
 import java.io.FileOutputStream
 import java.text.SimpleDateFormat
@@ -20,25 +26,30 @@ import java.util.*
 private const val GET_BIMAP_ORIGIN = 11 // 이미지 비트맵 불러오기
 private const val GET_BIMAP_RESIZE = 12 // 이미지 비트맵 (RESIZED) 불러오기
 
-class RecordListFragment : Fragment() {
+class RecordFragment : Fragment() {
+    /*
+    private lateinit var recordRecyclerView: RecyclerView
+    private var adapter : RecordAdapter? = RecordAdapter(emptyList())
 
-    /** []Host Activity 에서 구현할 callback 함수의 인터페이스] */
+    private val recordListViewModel: RecordViewModel by lazy {
+        ViewModelProvider(this).get(RecordViewModel::class.java)
+    }
+    */
+
+    /** [Host Activity 에서 구현할 callback 함수의 인터페이스] */
     interface Callbacks {
         fun onSelected(dailyid:UUID)
     }
 
+    /** [액티비티의 콜백 저장] */
     private var callbacks: Callbacks? =null
 
-    private lateinit var recordRecyclerView: RecyclerView
-    private var adapter : RecordAdapter? = RecordAdapter(emptyList())
-
-    private val recordListViewModel: RecordListViewModel by lazy {
-        ViewModelProvider(this).get(RecordListViewModel::class.java)
-    }
-
-    /** [back press 콜백] */
+    /** [back press 처리 콜백] */
     private lateinit var callbacks_bp: OnBackPressedCallback
     private var backKeyPressedTime : Long = 0
+
+    private val viewModel: RecordViewModel by viewModels { ViewModelFactory() }
+    private lateinit var binding: FragmentRecordBinding
 
     override fun onAttach(context: Context) { // fragment가 add 될때 호출
         super.onAttach(context)
@@ -71,22 +82,25 @@ class RecordListFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        //binding = FragmentDailyListBinding.inflate(inflater, container, false)
-        val view = inflater.inflate(R.layout.fragment_record_list, container, false)
+        /*
+        val view = inflater.inflate(R.layout.fragment_record, container, false)
 
-        //dailyRecyclerView = binding.dailyRecyclerView
         recordRecyclerView = view.findViewById(R.id.rv_record_list) as RecyclerView
         recordRecyclerView.layoutManager = GridLayoutManager(context,2)
 
         recordRecyclerView.adapter = adapter
 
         return view
-        //return binding.root
+        */
+        binding = FragmentRecordBinding.inflate(inflater, container, false)
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recordListViewModel.recordListLiveData.observe(
+        binding.rvRecordList.layoutManager = GridLayoutManager(context,2)
+
+        viewModel.recordListLiveData.observe(
             viewLifecycleOwner,
             Observer { records ->
                 records?.let {
@@ -114,7 +128,7 @@ class RecordListFragment : Fragment() {
                 // 새로운 Record 객체 생성
                 val record = Record()
                 // DB에 추가.
-                recordListViewModel.addRecord(record)
+                viewModel.addRecord(record)
                 // 액티비티에 구현된 onSelected 콜백함수를 호출. 새로 추가된 레코드의 상세화면이 화면에 보이도록.
                 callbacks?.onSelected(record.id)
                 true
@@ -122,17 +136,23 @@ class RecordListFragment : Fragment() {
             else -> return super.onOptionsItemSelected(item)
         }
     }
+
     private fun updateUI(records: List<Record>) {
+        /*
         adapter = RecordAdapter(records)
         recordRecyclerView.adapter = adapter
 
         // 데이터 추가/변경시 ListAdapter에게 submitList()를 통해 알려준다.
-        // 참고: https://june0122.github.io/2021/05/26/android-bnr-12/
         adapter?.submitList(records)
+        */
+
+        val recordAdapter = RecordAdapter(callbacks)
+        binding.rvRecordList.adapter = recordAdapter
+        recordAdapter.submitList(records)
     }
 
+    /*
     private inner class RecordHolder(view:View) : RecyclerView.ViewHolder(view), View.OnClickListener {
-
         private lateinit var record: Record
 
         val labelTextView: TextView = itemView.findViewById(R.id.tv_label_thumbnail)
@@ -149,8 +169,8 @@ class RecordListFragment : Fragment() {
             val df = SimpleDateFormat("yyyy/M/d", Locale.KOREA)
             dateTextView.text = df.format(this.record.date)
 
-            var thumbFile = recordListViewModel.getThumbFile(record) // 썸네일 이미지 파일의 위치를 가르키는 속성
-            var photoFile = recordListViewModel.getPhotoFile(record) // 원본 이미지 파일의 위치를 가르키는 속성
+            var thumbFile = viewModel.getThumbFile(record) // 썸네일 이미지 파일의 위치를 가르키는 속성
+            var photoFile = viewModel.getPhotoFile(record) // 원본 이미지 파일의 위치를 가르키는 속성
 
             /** [photoView (thumbnail) 업데이트] */
             // 1. 썸네일 파일이 있을 경우
@@ -188,7 +208,7 @@ class RecordListFragment : Fragment() {
 
     private inner class RecordAdapter(var records: List<Record>) : ListAdapter<Record, RecordHolder>(RecordDiffCallback()) {
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordHolder {
-            val view = layoutInflater.inflate(R.layout.list_item_record,parent,false)
+            val view = layoutInflater.inflate(R.layout.item_record,parent,false)
             return RecordHolder(view)
         }
 
@@ -208,10 +228,11 @@ class RecordListFragment : Fragment() {
             return oldItem.equals(newItem)
         }
     }
+    */
 
     companion object {
-        fun newInstance(): RecordListFragment {
-            return RecordListFragment()
+        fun newInstance(): RecordFragment {
+            return RecordFragment()
         }
     }
 }

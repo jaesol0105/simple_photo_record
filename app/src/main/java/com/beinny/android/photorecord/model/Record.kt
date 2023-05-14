@@ -1,4 +1,4 @@
-package com.beinny.android.photorecord
+package com.beinny.android.photorecord.model
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey

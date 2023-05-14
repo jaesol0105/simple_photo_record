@@ -2,7 +2,7 @@ package com.beinny.android.photorecord.datebase
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
-import com.beinny.android.photorecord.Record
+import com.beinny.android.photorecord.model.Record
 import java.util.*
 
 @Dao
@@ -14,10 +14,10 @@ interface RecordDao {
     fun getRecord(id: UUID): LiveData<Record?>
 
     @Update
-    fun updateRecord(record:Record)
+    fun updateRecord(record: Record)
 
     @Insert
-    fun addRecord(record:Record)
+    fun addRecord(record: Record)
 
     @Delete
     fun deleteRecord(record: Record)

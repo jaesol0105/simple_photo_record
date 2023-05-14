@@ -2,14 +2,14 @@
 <navigation xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/recordListFragment">
+    app:startDestination="@id/recordFragment">
 
     <fragment
-        android:id="@+id/recordListFragment"
-        android:name="com.beinny.android.photorecord.RecordListFragment"
+        android:id="@+id/recordFragment"
+        android:name="com.beinny.android.photorecord.ui.record.RecordFragment"
         android:label="@string/nav_record_list_label" >
         <action
-            android:id="@+id/action_recordListFragment_to_recordDetailFragment"
+            android:id="@+id/action_recordFragment_to_recordDetailFragment"
             app:destination="@id/recordDetailFragment" />
     </fragment>
     <fragment
@@ -18,10 +18,10 @@
         android:label="@string/nav_data_management_label" />
     <fragment
         android:id="@+id/recordDetailFragment"
-        android:name="com.beinny.android.photorecord.RecordDetailFragment"
+        android:name="com.beinny.android.photorecord.ui.recorddetail.RecordDetailFragment"
         android:label="@string/nav_record_detail_label" >
         <action
-            android:id="@+id/action_recordDetailFragment_to_recordListFragment"
-            app:destination="@id/recordListFragment" />
+            android:id="@+id/action_recordDetailFragment_to_recordFragment"
+            app:destination="@id/recordFragment" />
     </fragment>
 </navigation>

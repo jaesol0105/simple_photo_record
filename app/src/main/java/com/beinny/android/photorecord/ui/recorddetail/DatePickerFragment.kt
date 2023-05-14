@@ -1,4 +1,4 @@
-package com.beinny.android.photorecord
+package com.beinny.android.photorecord.ui.recorddetail
 
 import android.app.DatePickerDialog
 import android.app.Dialog

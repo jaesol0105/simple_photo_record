@@ -34,7 +34,10 @@
         <entry key="..\:/git/DailyLook/app/src/main/res/layout/fragment_daily_list.xml" value="0.12982456140350876" />
         <entry key="..\:/git/DailyLook/app/src/main/res/layout/fragment_daily_new.xml" value="0.264" />
         <entry key="..\:/git/DailyLook/app/src/main/res/layout/fragment_main.xml" value="0.12708333333333333" />
+        <entry key="..\:/git/DailyLook/app/src/main/res/layout/fragment_record.xml" value="0.1421875" />
+        <entry key="..\:/git/DailyLook/app/src/main/res/layout/fragment_record_detail.xml" value="0.19972826086956522" />
         <entry key="..\:/git/DailyLook/app/src/main/res/layout/fragment_record_list.xml" value="0.12708333333333333" />
+        <entry key="..\:/git/DailyLook/app/src/main/res/layout/item_record.xml" value="0.20018115942028986" />
         <entry key="..\:/git/DailyLook/app/src/main/res/layout/list_item_daily.xml" value="0.25364583333333335" />
         <entry key="..\:/git/DailyLook/app/src/main/res/layout/list_item_record.xml" value="0.19972826086956522" />
         <entry key="..\:/git/DailyLook/app/src/main/res/menu/fragment_daily_list.xml" value="0.1" />

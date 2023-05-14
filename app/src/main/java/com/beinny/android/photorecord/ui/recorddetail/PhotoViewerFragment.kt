@@ -1,9 +1,10 @@
-package com.beinny.android.photorecord
+package com.beinny.android.photorecord.ui.recorddetail
 
 import android.app.Dialog
 import android.os.Bundle
 import android.widget.ImageView
 import androidx.fragment.app.DialogFragment
+import com.beinny.android.photorecord.*
 import java.io.File
 
 private const val PHOTO_FILE ="file"

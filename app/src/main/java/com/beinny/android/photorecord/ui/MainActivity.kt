@@ -1,4 +1,4 @@
-package com.beinny.android.photorecord
+package com.beinny.android.photorecord.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -10,11 +10,14 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import com.beinny.android.photorecord.R
+import com.beinny.android.photorecord.ui.recorddetail.RecordDetailFragment
+import com.beinny.android.photorecord.ui.record.RecordFragment
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
 import java.util.*
 
-class MainActivity : AppCompatActivity(),RecordListFragment.Callbacks {
+class MainActivity : AppCompatActivity(), RecordFragment.Callbacks {
     private lateinit var toolbar : Toolbar
     private lateinit var fab : FloatingActionButton
     private lateinit var navView : NavigationView
@@ -42,7 +45,7 @@ class MainActivity : AppCompatActivity(),RecordListFragment.Callbacks {
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.recordListFragment, R.id.backUpFragment
+                R.id.recordFragment, R.id.backUpFragment
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
