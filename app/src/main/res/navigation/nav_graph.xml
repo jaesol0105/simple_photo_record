@@ -13,9 +13,13 @@
             app:destination="@id/recordDetailFragment" />
     </fragment>
     <fragment
-        android:id="@+id/backUpFragment"
-        android:name="com.beinny.android.photorecord.ui.backup.BackUpFragment"
-        android:label="@string/nav_data_management_label" />
+        android:id="@+id/dataMgntFragment"
+        android:name="com.beinny.android.photorecord.ui.datamgnt.DataMgntFragment"
+        android:label="@string/nav_data_management_label">
+        <action
+            android:id="@+id/action_dataMgntFragment_to_recordFragment"
+            app:destination="@id/recordFragment" />
+    </fragment>
     <fragment
         android:id="@+id/recordDetailFragment"
         android:name="com.beinny.android.photorecord.ui.recorddetail.RecordDetailFragment"

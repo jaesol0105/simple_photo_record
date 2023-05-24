@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="record"
             type="com.beinny.android.photorecord.model.Record" />
@@ -16,20 +17,29 @@
 
         <ImageView
             android:id="@+id/tv_photo_thumbnail"
+            thumbnailImageUrl="@{record.thumbFileName}"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            android:layout_width="0dp"
-            android:layout_height="0dp"
-            thumbnailImageUrl="@{record.thumbFileName}"
-            app:layout_constraintDimensionRatio="H,1:1"
             android:adjustViewBounds="true"
             android:background="@android:color/darker_gray"
             android:cropToPadding="true"
             android:scaleType="centerCrop"
+            app:layout_constraintDimensionRatio="H,1:1"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
+        <CheckBox
+            android:id="@+id/cb_delete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            app:layout_constraintStart_toStartOf="@id/tv_photo_thumbnail"
+            app:layout_constraintTop_toTopOf="@id/tv_photo_thumbnail"
+            />
 
         <TextView
             android:id="@+id/tv_date_thumbnail"
@@ -41,18 +51,20 @@
             android:text="@{record.label}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_photo_thumbnail" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_photo_thumbnail"
+            tools:text="제목" />
 
         <TextView
             android:id="@+id/tv_label_thumbnail"
+            thumbnailDateInKorean="@{record.date}"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
-            thumbnailDateInKorean="@{record.date}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_date_thumbnail" />
+            app:layout_constraintTop_toBottomOf="@+id/tv_date_thumbnail"
+            tools:text="2022/04/23" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

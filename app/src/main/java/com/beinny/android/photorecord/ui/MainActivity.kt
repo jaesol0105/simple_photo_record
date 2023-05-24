@@ -31,12 +31,6 @@ class MainActivity : AppCompatActivity(), RecordFragment.Callbacks {
         toolbar = findViewById(R.id.toolbar)
         setSupportActionBar(toolbar)
 
-        //fab = findViewById(R.id.fab)
-        //fab.setOnClickListener { view ->
-        //    Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-        //        .setAction("Action", null).show()
-        //}
-
         drawerLayout = findViewById(R.id.drawer_layout)
         navView = findViewById(R.id.nav_view)
 
@@ -45,7 +39,7 @@ class MainActivity : AppCompatActivity(), RecordFragment.Callbacks {
 
         appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.recordFragment, R.id.backUpFragment
+                R.id.recordFragment, R.id.dataMgntFragment
             ), drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
@@ -69,12 +63,13 @@ class MainActivity : AppCompatActivity(), RecordFragment.Callbacks {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
+    /** [RecordFragment에서 호출될 콜백 함수.] */
     override fun onSelected(recordId: UUID) {
         val fragment = RecordDetailFragment.newInstance(recordId)
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container_view,fragment)
-            .addToBackStack(null) //인자=백스택의이름
+            .addToBackStack(null) // 백스택을 추가하여 백버튼 동작시 RecordFragment로 복귀. 인자=백스택의이름
             .commit()
     }
 }

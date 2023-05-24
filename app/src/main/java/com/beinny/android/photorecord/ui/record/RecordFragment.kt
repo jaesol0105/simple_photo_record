@@ -1,8 +1,11 @@
 package com.beinny.android.photorecord.ui.record
 
+import android.app.AlertDialog
 import android.content.Context
+import android.content.DialogInterface
 import android.graphics.Bitmap
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.ImageView
 import android.widget.TextView
@@ -27,15 +30,6 @@ private const val GET_BIMAP_ORIGIN = 11 // 이미지 비트맵 불러오기
 private const val GET_BIMAP_RESIZE = 12 // 이미지 비트맵 (RESIZED) 불러오기
 
 class RecordFragment : Fragment() {
-    /*
-    private lateinit var recordRecyclerView: RecyclerView
-    private var adapter : RecordAdapter? = RecordAdapter(emptyList())
-
-    private val recordListViewModel: RecordViewModel by lazy {
-        ViewModelProvider(this).get(RecordViewModel::class.java)
-    }
-    */
-
     /** [Host Activity 에서 구현할 callback 함수의 인터페이스] */
     interface Callbacks {
         fun onSelected(dailyid:UUID)
@@ -82,16 +76,6 @@ class RecordFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        /*
-        val view = inflater.inflate(R.layout.fragment_record, container, false)
-
-        recordRecyclerView = view.findViewById(R.id.rv_record_list) as RecyclerView
-        recordRecyclerView.layoutManager = GridLayoutManager(context,2)
-
-        recordRecyclerView.adapter = adapter
-
-        return view
-        */
         binding = FragmentRecordBinding.inflate(inflater, container, false)
         return binding.root
     }
@@ -103,10 +87,23 @@ class RecordFragment : Fragment() {
         viewModel.recordListLiveData.observe(
             viewLifecycleOwner,
             Observer { records ->
-                records?.let {
-                    updateUI(records)
+                val sortedRecords = sortRecords(PhotoRecordApplication.prefs.getInt("SORT_BY",-1),records)
+                sortedRecords?.let {
+                    updateUI(sortedRecords)
                 }
             })
+    }
+
+    override fun onStart() {
+        super.onStart()
+        binding.fabAddRecord.setOnClickListener {
+            // 새로운 Record 객체 생성
+            val record = Record()
+            // DB에 추가.
+            viewModel.addRecord(record)
+            // 액티비티에 구현된 onSelected 콜백함수를 호출. 새로 추가된 레코드의 상세화면이 화면에 보이도록.
+            callbacks?.onSelected(record.id)
+        }
     }
 
     override fun onDetach() {
@@ -118,12 +115,14 @@ class RecordFragment : Fragment() {
     /** [메뉴 인플레이트] */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.fragment_record_list, menu)
+        // inflater.inflate(R.menu.fragment_record_list, menu)
+        inflater.inflate(R.menu.fragment_record_sort, menu)
     }
 
     /** [메뉴 선택] */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
+            /*
             R.id.new_record -> {
                 // 새로운 Record 객체 생성
                 val record = Record()
@@ -133,25 +132,94 @@ class RecordFragment : Fragment() {
                 callbacks?.onSelected(record.id)
                 true
             }
+            */
+            R.id.sort_record -> {
+                showSortDialog()
+                true
+            }
             else -> return super.onOptionsItemSelected(item)
         }
     }
 
     private fun updateUI(records: List<Record>) {
-        /*
+        val recordAdapter = RecordAdapter(callbacks)
+        binding.rvRecordList.adapter = recordAdapter
+        recordAdapter.submitList(records) // 데이터 추가/변경시 ListAdapter에게 submitList()를 통해 알려준다.
+    }
+
+    private fun showSortDialog() {
+        val sortBy = arrayOf("이름(오름차순)", "이름(내림차순)", "날짜(오름차순)", "날짜(내림차순)")
+        val builder = AlertDialog.Builder(activity)
+        var selected = -1
+        builder.setTitle("정렬")
+            .setSingleChoiceItems(sortBy,PhotoRecordApplication.prefs.getInt("SORT_BY",-1)){ _, i ->
+                selected = i
+            }
+            .setPositiveButton("완료",DialogInterface.OnClickListener(){ _, _ ->
+                PhotoRecordApplication.prefs.setInt("SORT_BY",selected)
+                val record = Record()
+                viewModel.addRecord(record)
+                viewModel.deleteRecord(record)
+            })
+            .setNegativeButton("취소",null)
+        builder.show()
+    }
+
+    private fun sortRecords(sortBy:Int, records: List<Record>): List<Record> {
+        if(sortBy == 0){ // 이름(오름차순)
+            return records.sortedWith(compareBy<Record> { it.label }.thenBy {it.date})
+        }
+        else if(sortBy == 1){ // 이름(내림차순)
+            return records.sortedWith(compareByDescending<Record> { it.label }.thenBy {it.date})
+        }
+        else if(sortBy == 2){ // 날짜(오름차순)
+            return records.sortedWith(compareBy<Record> { it.date }.thenBy {it.label})
+        }
+        else if(sortBy == 3){ // 날짜(내림차순)
+            return records.sortedWith(compareByDescending<Record> { it.date }.thenBy {it.label})
+        }
+        else{
+            return records
+        }
+    }
+
+    companion object {
+        fun newInstance(): RecordFragment {
+            return RecordFragment()
+        }
+    }
+
+    /*
+    private lateinit var recordRecyclerView: RecyclerView
+    private var adapter : RecordAdapter? = RecordAdapter(emptyList())
+
+    private val recordListViewModel: RecordViewModel by lazy {
+        ViewModelProvider(this).get(RecordViewModel::class.java)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_record, container, false)
+
+        recordRecyclerView = view.findViewById(R.id.rv_record_list) as RecyclerView
+        recordRecyclerView.layoutManager = GridLayoutManager(context,2)
+
+        recordRecyclerView.adapter = adapter
+
+        return view
+    }
+
+    private fun updateUI(records: List<Record>) {
         adapter = RecordAdapter(records)
         recordRecyclerView.adapter = adapter
 
         // 데이터 추가/변경시 ListAdapter에게 submitList()를 통해 알려준다.
         adapter?.submitList(records)
-        */
-
-        val recordAdapter = RecordAdapter(callbacks)
-        binding.rvRecordList.adapter = recordAdapter
-        recordAdapter.submitList(records)
     }
 
-    /*
     private inner class RecordHolder(view:View) : RecyclerView.ViewHolder(view), View.OnClickListener {
         private lateinit var record: Record
 
@@ -229,10 +297,4 @@ class RecordFragment : Fragment() {
         }
     }
     */
-
-    companion object {
-        fun newInstance(): RecordFragment {
-            return RecordFragment()
-        }
-    }
 }

@@ -44,6 +44,12 @@ class RecordRepository private constructor(context: Context){
         }
     }
 
+    fun deleteAllRecord() {
+        executor.execute {
+            recordDao.deleteAllRecord()
+        }
+    }
+
     // photoFileName를 인자로 받고, 파일의 위치를 가리킬 File 객체를 반환
     fun getPhotoFile(record: Record): File = File(filesDir, record.photoFileName)
 

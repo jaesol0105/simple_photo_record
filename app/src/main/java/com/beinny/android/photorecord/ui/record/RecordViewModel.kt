@@ -14,6 +14,11 @@ class RecordViewModel: ViewModel() {
         recordRepository.addRecord(record)
     }
 
+    /** [레코드 삭제] */
+    fun deleteRecord (record: Record) {
+        recordRepository.deleteRecord(record)
+    }
+
     // 사진 파일이 가르킬 위치(File객체)를 RecordDetailFragment에 제공.
     fun getPhotoFile(record: Record): File {
         return recordRepository.getPhotoFile(record)

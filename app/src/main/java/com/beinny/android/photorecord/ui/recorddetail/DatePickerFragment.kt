@@ -11,7 +11,7 @@ private const val ARG_DATE = "date"
 
 class DatePickerFragment : DialogFragment() {
 
-    // 콜백인터페이스, CrimeFragment에 구현.
+    // 콜백 인터페이스, RecordDetailFragment에 구현.
     interface CallBacks {
         fun onDateSelected(date: Date)
     }

@@ -14,5 +14,8 @@
     <string name="nav_record_detail_label">상세정보</string>
     <string name="nav_data_management_label">데이터 관리</string>
     <string name="nav_record_list_label">간단한 사진 기록</string>
+    <string name="sort_label">정렬</string>
+    <string name="menu_label_data_mgnt">데이터 관리</string>
+    <string name="preferences_file_key">com.beinny.android.photorecord.SORT_BY</string>
 
 </resources>

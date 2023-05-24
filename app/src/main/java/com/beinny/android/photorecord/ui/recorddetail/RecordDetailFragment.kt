@@ -36,27 +36,15 @@ import com.beinny.android.photorecord.model.Record
 import com.beinny.android.photorecord.common.*
 import com.beinny.android.photorecord.ui.common.ViewModelFactory
 import com.beinny.android.photorecord.ui.record.RecordViewModel
+import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class RecordDetailFragment : Fragment(), DatePickerFragment.CallBacks {
     private lateinit var record: Record
     private lateinit var old_record: Record
+
     private lateinit var photoFile: File
     private lateinit var thumbFile : File
     private lateinit var tempFile : File
-    /*
-    private lateinit var photoUri: Uri
-    private lateinit var photoView: ImageView
-    private lateinit var photoButton: ImageButton
-    private lateinit var memoField: EditText
-    private lateinit var labelField: EditText
-    private lateinit var dateButton: Button
-    private lateinit var uploadButton: Button
-    private lateinit var deleteButton: Button
-
-    private val recordDetailViewModel: RecordDetailViewModel by lazy {
-        ViewModelProvider(this).get(RecordDetailViewModel::class.java)
-    }
-    */
 
     private lateinit var bitmap_temp: Bitmap
     private lateinit var bitmap_temp_thumb: Bitmap
@@ -68,7 +56,8 @@ class RecordDetailFragment : Fragment(), DatePickerFragment.CallBacks {
     private lateinit var callbacks_bp: OnBackPressedCallback
     private var backKeyPressedTime : Long =0
 
-    override fun onAttach(context: Context) { // fregment가 add 될때 호출 됨
+    /** [onAttach : fragment 가 add 될때 호출 된다] */
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         /** [back press 처리 콜백] */
         callbacks_bp = object : OnBackPressedCallback(true) {
@@ -78,11 +67,10 @@ class RecordDetailFragment : Fragment(), DatePickerFragment.CallBacks {
                     Toast.makeText(context,"'뒤로' 버튼을 누르면 저장되지 않은 변경 사항은 저장되지 않습니다.", Toast.LENGTH_SHORT).show()
                 }
                 else {
-                    if (record.isNew){
+                    if (record.isNew){ // 새 레코드의 경우 detailFragment로 이동할 때 insert하기 때문에, 저장하지 않을 경우 delete 해준다.
                         viewModel.deleteRecord(record)
                     }
-                    // requireActivity().finish()
-                    parentFragmentManager.popBackStack()
+                    parentFragmentManager.popBackStack() // activity의 백스택에서 pop (뒤로가기)
                 }
             }
         }
@@ -103,19 +91,6 @@ class RecordDetailFragment : Fragment(), DatePickerFragment.CallBacks {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentRecordDetailBinding.inflate(inflater,container,false)
-        /*
-        val view = inflater.inflate(R.layout.fragment_record_detail,container,false)
-
-        photoView = view.findViewById(R.id.iv_record_detail_photo) as ImageView
-        photoButton = view.findViewById(R.id.btn_record_detail_add_photo) as ImageButton
-        memoField = view.findViewById(R.id.et_memo) as EditText
-        labelField = view.findViewById(R.id.et_label) as EditText
-        dateButton = view.findViewById(R.id.btn_date) as Button
-        uploadButton = view.findViewById(R.id.btn_upload) as Button
-        deleteButton = view.findViewById(R.id.btn_delete) as Button
-
-        return view
-        */
         return binding.root
     }
 
@@ -135,11 +110,9 @@ class RecordDetailFragment : Fragment(), DatePickerFragment.CallBacks {
                     photoFile = viewModel.getPhotoFile(record) // 사진파일의 위치를 가르키는 속성
                     thumbFile = viewModel.getThumbFile(record)
                     tempFile = viewModel.getTempFile(record)
-                    /*
-                    // fileProvider이 로컬파일 시스템의 파일경로(File)를 카메라앱에서 알 수 있는 Uri로 반환.
-                    photoUri = FileProvider.getUriForFile(requireActivity(),"com.beinny.android.record.fileprovider",photoFile)
-                    */
+
                     // updateUI()
+
                     /** [이전 데이터 저장] */
                     if (!record.isNew){
                         old_record = Record()
@@ -218,7 +191,15 @@ class RecordDetailFragment : Fragment(), DatePickerFragment.CallBacks {
         binding.etMemo.addTextChangedListener(memoWatcher)
 
         binding.btnDate.setOnClickListener {
+            /*
             DatePickerFragment.newInstance(record.date).apply {
+                // 대상 프레그먼트 설정 : Fragment로부터 결과 돌려받기위함
+                setTargetFragment(this@RecordDetailFragment, REQUEST_DATE)
+
+                show(this@RecordDetailFragment.getParentFragmentManager(), DIALOG_DATE)
+            }
+            */
+            DateTimePickerFragment.newInstance(record.date).apply {
                 // 대상 프레그먼트 설정 : Fragment로부터 결과 돌려받기위함
                 setTargetFragment(this@RecordDetailFragment, REQUEST_DATE)
 
@@ -331,31 +312,6 @@ class RecordDetailFragment : Fragment(), DatePickerFragment.CallBacks {
         binding.btnDate.text = df.format(date)
     }
 
-    /*
-    /** [UI 갱신] */
-    private fun updateUI() {
-        labelField.setText(record.label)
-        memoField.setText(record.memo)
-        var df : DateFormat = SimpleDateFormat(DATE_FORMAT) // 날짜를 문자열로 변환
-        dateButton.text = df.format(record.date)
-
-        // photoView 업데이트
-        updatePhotoView()
-    }
-
-    /** [photoView 업데이트] */
-    private fun updatePhotoView() {
-        if (::bitmap_temp.isInitialized) { // 갤러리에서 사진을 선택했을경우
-            photoView.setImageBitmap(bitmap_temp)
-        } else if (photoFile.exists()){ // 사진파일이 존재할 경우
-            val bitmap = getScaledBitmap(photoFile.path, requireActivity(), GET_BIMAP_ORIGIN)
-            photoView.setImageBitmap(bitmap)
-        } else { // 사진파일이 존재하지 않을 경우
-            photoView.setImageDrawable(null)
-        }
-    }
-    */
-
     /** [인텐트 결과 처리] */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when {
@@ -364,26 +320,6 @@ class RecordDetailFragment : Fragment(), DatePickerFragment.CallBacks {
             /** [갤러리 앱으로 부터 사진 선택] */
             requestCode == REQUEST_PHOTO && data != null -> {
                 val selectedUri : Uri = data.data?: return
-
-                /*
-                // [이미지 파일의 이름을 참조.]
-                val cursor = requireActivity().contentResolver.query(selectedUri,null,null,null,null,null)
-                var fileName : String = "not init"
-                cursor?.use {
-                    if (it.count == 0) {
-                        return
-                    }
-                    it.moveToFirst()
-                    val idx = it.getColumnIndexOrThrow(MediaStore.Images.Media.DISPLAY_NAME)
-                    fileName = it.getString(idx)
-                    it.close()
-                }
-                */
-
-                /*
-                val file = File(photoFile.path)
-                val thumb_file = File(thumbFile.path)
-                */
 
                 /** [원본 이미지파일 & 썸네일 비트맵 생성하기.] */
                 val temp_file = File(tempFile.path)
@@ -399,18 +335,6 @@ class RecordDetailFragment : Fragment(), DatePickerFragment.CallBacks {
                     // -1. 원본 이미지 bitmap 파일 생성
                     bitmap_temp = getScaledBitmap(tempFile.path,requireActivity(), GET_BIMAP_ORIGIN)
 
-                    /*
-                    // 2. 내부저장소에 썸네일 생성.
-                    // RESIZE된 비트맵 파일 얻어오기
-                    val bitmap_thumb = getScaledBitmap(photoFile.path, requireActivity(), GET_BIMAP_RESIZE)
-                    // 데이터를 저장할 경로를 File 로 지정.
-                    val out = FileOutputStream(thumb_file)
-                    // compress 함수를 사용해 스트림에 비트맵을 저장.
-                    bitmap_thumb.compress(Bitmap.CompressFormat.JPEG, 100, out)
-                    // 스트림 사용후 닫기.
-                    out.close()
-                    */
-
                     // -2. 썸네일 bitmap 생성
                     bitmap_temp_thumb = getScaledBitmap(tempFile.path,requireActivity(), GET_BIMAP_RESIZE)
 
@@ -423,11 +347,6 @@ class RecordDetailFragment : Fragment(), DatePickerFragment.CallBacks {
                     Toast.makeText(context,"error : 내부 저장소에 이미지를 저장 할 수 없음",Toast.LENGTH_SHORT).show()
                     e.printStackTrace()
                 }
-
-                /*
-                // 갤러리 앱에서 photoUri에 사진 파일을 쓴 이후, URI PERMISSION을 취소
-                requireActivity().revokeUriPermission(photoUri,Intent.FLAG_GRANT_WRITE_URI_PERMISSION)
-                */
 
                 // photoView 업데이트
                 if (::bitmap_temp.isInitialized) {
@@ -447,4 +366,60 @@ class RecordDetailFragment : Fragment(), DatePickerFragment.CallBacks {
             }
         }
     }
+
+    /*
+    private lateinit var photoUri: Uri
+    private lateinit var photoView: ImageView
+    private lateinit var photoButton: ImageButton
+    private lateinit var memoField: EditText
+    private lateinit var labelField: EditText
+    private lateinit var dateButton: Button
+    private lateinit var uploadButton: Button
+    private lateinit var deleteButton: Button
+
+    private val recordDetailViewModel: RecordDetailViewModel by lazy {
+        ViewModelProvider(this).get(RecordDetailViewModel::class.java)
+    }
+
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
+        val view = inflater.inflate(R.layout.fragment_record_detail,container,false)
+
+        photoView = view.findViewById(R.id.iv_record_detail_photo) as ImageView
+        photoButton = view.findViewById(R.id.btn_record_detail_add_photo) as ImageButton
+        memoField = view.findViewById(R.id.et_memo) as EditText
+        labelField = view.findViewById(R.id.et_label) as EditText
+        dateButton = view.findViewById(R.id.btn_date) as Button
+        uploadButton = view.findViewById(R.id.btn_upload) as Button
+        deleteButton = view.findViewById(R.id.btn_delete) as Button
+
+        return view
+    }
+
+    // [UI 갱신]
+    private fun updateUI() {
+        labelField.setText(record.label)
+        memoField.setText(record.memo)
+        var df : DateFormat = SimpleDateFormat(DATE_FORMAT) // 날짜를 문자열로 변환
+        dateButton.text = df.format(record.date)
+
+        // photoView 업데이트
+        updatePhotoView()
+    }
+
+    // [photoView 업데이트]
+    private fun updatePhotoView() {
+        if (::bitmap_temp.isInitialized) { // 갤러리에서 사진을 선택했을경우
+            photoView.setImageBitmap(bitmap_temp)
+        } else if (photoFile.exists()){ // 사진파일이 존재할 경우
+            val bitmap = getScaledBitmap(photoFile.path, requireActivity(), GET_BIMAP_ORIGIN)
+            photoView.setImageBitmap(bitmap)
+        } else { // 사진파일이 존재하지 않을 경우
+            photoView.setImageDrawable(null)
+        }
+    }
+    */
 }
