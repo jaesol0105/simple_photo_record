@@ -24,4 +24,13 @@ interface RecordDao {
 
     @Query("DELETE FROM record")
     fun deleteAllRecord()
+
+    @Query("UPDATE record SET isChecked=:state")
+    fun initCheck(state:Boolean=false)
+
+    @Query("UPDATE record SET isChecked=:state WHERE id=(:id)")
+    fun changeCheck(id: UUID, state: Boolean)
+
+    @Query("DELETE FROM record WHERE isChecked=:state")
+    fun deleteCheckedRecord(state:Boolean=true)
 }

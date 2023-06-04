@@ -32,11 +32,14 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <CheckBox
-            android:id="@+id/cb_delete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
+        <ImageView
+            android:id="@+id/iv_delete_checkbox"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_margin="16dp"
+            android:visibility="invisible"
+            android:background="@drawable/background_circle"
+            checked="@{record.isChecked}"
             app:layout_constraintStart_toStartOf="@id/tv_photo_thumbnail"
             app:layout_constraintTop_toTopOf="@id/tv_photo_thumbnail"
             />

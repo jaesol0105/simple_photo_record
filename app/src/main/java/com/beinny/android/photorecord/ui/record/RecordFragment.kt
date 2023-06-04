@@ -32,7 +32,7 @@ private const val GET_BIMAP_RESIZE = 12 // 이미지 비트맵 (RESIZED) 불러�
 class RecordFragment : Fragment() {
     /** [Host Activity 에서 구현할 callback 함수의 인터페이스] */
     interface Callbacks {
-        fun onSelected(dailyid:UUID)
+        fun onSelected(id:UUID)
     }
 
     /** [액티비티의 콜백 저장] */
@@ -45,6 +45,9 @@ class RecordFragment : Fragment() {
     private val viewModel: RecordViewModel by viewModels { ViewModelFactory() }
     private lateinit var binding: FragmentRecordBinding
 
+    private var longClick: Boolean = false
+    private var countOfCheckedRecord: Int = 0
+
     override fun onAttach(context: Context) { // fragment가 add 될때 호출
         super.onAttach(context)
         /** [액티비티의 콜백 저장] */
@@ -53,7 +56,16 @@ class RecordFragment : Fragment() {
         /** [back press 처리 콜백] */
         callbacks_bp = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if(System.currentTimeMillis() > backKeyPressedTime + 2000) {
+                /** [longClick 상태일 경우] */
+                if (longClick) {
+                    disableLongClick()
+                    // UI 갱신
+                    val record = Record()
+                    viewModel.addRecord(record)
+                    viewModel.deleteRecord(record)
+                }
+                /** [백 버튼 두번] */
+                else if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
                     backKeyPressedTime = System.currentTimeMillis()
                     Toast.makeText(context,"'뒤로' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show()
                 }
@@ -76,26 +88,35 @@ class RecordFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        /** [뷰 바인딩] */
         binding = FragmentRecordBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        /** [recyclerView 레이아웃 설정] */
         binding.rvRecordList.layoutManager = GridLayoutManager(context,2)
 
+        /** [뷰 모델의 LiveData observe] */
         viewModel.recordListLiveData.observe(
             viewLifecycleOwner,
             Observer { records ->
-                val sortedRecords = sortRecords(PhotoRecordApplication.prefs.getInt("SORT_BY",-1),records)
-                sortedRecords?.let {
-                    updateUI(sortedRecords)
+                records?.let {
+                    updateUI(records)
+                    if (longClick){
+                        countOfCheckedRecord = 0
+                        for (record in records)
+                            if (record.isChecked)
+                                countOfCheckedRecord += 1
+                    }
                 }
             })
     }
 
     override fun onStart() {
         super.onStart()
+        /** [fab - Record 생성] */
         binding.fabAddRecord.setOnClickListener {
             // 새로운 Record 객체 생성
             val record = Record()
@@ -117,36 +138,47 @@ class RecordFragment : Fragment() {
         super.onCreateOptionsMenu(menu, inflater)
         // inflater.inflate(R.menu.fragment_record_list, menu)
         inflater.inflate(R.menu.fragment_record_sort, menu)
+
+        val sortMenu = menu.findItem(R.id.sort_record)
+        val deleteMenu = menu.findItem(R.id.delete_record)
+
+        if (longClick) {
+            sortMenu.isVisible = false
+            deleteMenu.isVisible = true
+        }
+        else {
+            sortMenu.isVisible = true
+            deleteMenu.isVisible = false
+        }
+
     }
 
     /** [메뉴 선택] */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
-            /*
-            R.id.new_record -> {
-                // 새로운 Record 객체 생성
-                val record = Record()
-                // DB에 추가.
-                viewModel.addRecord(record)
-                // 액티비티에 구현된 onSelected 콜백함수를 호출. 새로 추가된 레코드의 상세화면이 화면에 보이도록.
-                callbacks?.onSelected(record.id)
-                true
-            }
-            */
             R.id.sort_record -> {
                 showSortDialog()
+                true
+            }
+            R.id.delete_record -> {
+                deleteCheckedRecords()
                 true
             }
             else -> return super.onOptionsItemSelected(item)
         }
     }
 
+    /** [UI 갱신 (recyclerView)] */
     private fun updateUI(records: List<Record>) {
-        val recordAdapter = RecordAdapter(callbacks)
+        /** [UI 반영 이전, Record 정렬 (SharedPreference)] */
+        val sortedRecords = sortRecords(PhotoRecordApplication.prefs.getInt("SORT_BY",-1),records)
+
+        val recordAdapter = RecordAdapter(callbacks,adapterCallback())
         binding.rvRecordList.adapter = recordAdapter
-        recordAdapter.submitList(records) // 데이터 추가/변경시 ListAdapter에게 submitList()를 통해 알려준다.
+        recordAdapter.submitList(sortedRecords) // 데이터 추가/변경시 ListAdapter에게 submitList()를 통해 알려준다.
     }
 
+    /** [정렬을 위한 Dialog 출력] */
     private fun showSortDialog() {
         val sortBy = arrayOf("이름(오름차순)", "이름(내림차순)", "날짜(오름차순)", "날짜(내림차순)")
         val builder = AlertDialog.Builder(activity)
@@ -155,16 +187,17 @@ class RecordFragment : Fragment() {
             .setSingleChoiceItems(sortBy,PhotoRecordApplication.prefs.getInt("SORT_BY",-1)){ _, i ->
                 selected = i
             }
-            .setPositiveButton("완료",DialogInterface.OnClickListener(){ _, _ ->
+            .setPositiveButton("완료",DialogInterface.OnClickListener { _, _ ->
                 PhotoRecordApplication.prefs.setInt("SORT_BY",selected)
                 val record = Record()
                 viewModel.addRecord(record)
-                viewModel.deleteRecord(record)
+                viewModel.deleteRecord(record) // observe(UI갱신) 동작을 위한 LiveData 변경
             })
             .setNegativeButton("취소",null)
         builder.show()
     }
 
+    /** [Record 정렬] */
     private fun sortRecords(sortBy:Int, records: List<Record>): List<Record> {
         if(sortBy == 0){ // 이름(오름차순)
             return records.sortedWith(compareBy<Record> { it.label }.thenBy {it.date})
@@ -180,6 +213,42 @@ class RecordFragment : Fragment() {
         }
         else{
             return records
+        }
+    }
+
+    private fun disableLongClick() {
+        longClick = false
+        requireActivity().invalidateOptionsMenu()
+    }
+
+    /** [체크 된 Record 모두 삭제] */
+    private fun deleteCheckedRecords() {
+        val builder = AlertDialog.Builder(activity)
+        builder.setTitle(countOfCheckedRecord.toString() + "개의 레코드 삭제")
+            .setMessage("삭제한 내용은 되돌릴 수 없습니다.")
+            .setPositiveButton("삭제",DialogInterface.OnClickListener{dialog,id->
+                disableLongClick()
+                viewModel.deleteCheckedRecord()
+            })
+            .setNegativeButton("취소",DialogInterface.OnClickListener{dialog, id->
+
+            })
+        builder.show()
+    }
+
+    /** [RecordAdapter로 넘겨줄 callback] */
+    inner class adapterCallback {
+        fun activateLongClick(id:UUID) {
+            longClick = true
+            viewModel.initCheck()
+            viewModel.changeCheck(id,true)
+            requireActivity().invalidateOptionsMenu()
+        }
+        fun isLongClick() : Boolean{
+            return longClick
+        }
+        fun changeCheck(id:UUID,state:Boolean) {
+            viewModel.changeCheck(id,state)
         }
     }
 
@@ -210,6 +279,22 @@ class RecordFragment : Fragment() {
         recordRecyclerView.adapter = adapter
 
         return view
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.new_record -> {
+                // 새로운 Record 객체 생성
+                val record = Record()
+                // DB에 추가.
+                viewModel.addRecord(record)
+                // 액티비티에 구현된 onSelected 콜백함수를 호출. 새로 추가된 레코드의 상세화면이 화면에 보이도록.
+                callbacks?.onSelected(record.id)
+                true
+            }
+
+            else -> return super.onOptionsItemSelected(item)
+        }
     }
 
     private fun updateUI(records: List<Record>) {

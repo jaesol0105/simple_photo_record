@@ -50,6 +50,24 @@ class RecordRepository private constructor(context: Context){
         }
     }
 
+    fun initCheck() {
+        executor.execute {
+            recordDao.initCheck()
+        }
+    }
+
+    fun changeCheck(id: UUID, state:Boolean) {
+        executor.execute {
+            recordDao.changeCheck(id, state)
+        }
+    }
+
+    fun deleteCheckedRecord() {
+        executor.execute {
+            recordDao.deleteCheckedRecord()
+        }
+    }
+
     // photoFileName를 인자로 받고, 파일의 위치를 가리킬 File 객체를 반환
     fun getPhotoFile(record: Record): File = File(filesDir, record.photoFileName)
 

@@ -18,11 +18,13 @@
         <entry key="..\:/Users/musou/AndroidStudioProjects/DailyLook/app/src/main/res/menu/fragment_daily_look_list.xml" value="0.1296875" />
         <entry key="..\:/Users/musou/AndroidStudioProjects/DailyLook/app/src/main/res/xml/files.xml" value="0.1296875" />
         <entry key="..\:/git/DailyLook/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2490740740740741" />
+        <entry key="..\:/git/DailyLook/app/src/main/res/drawable/background_circle.xml" value="0.264" />
         <entry key="..\:/git/DailyLook/app/src/main/res/drawable/background_splash_screen.xml" value="0.536" />
         <entry key="..\:/git/DailyLook/app/src/main/res/drawable/bottom_sheet_background.xml" value="0.1" />
         <entry key="..\:/git/DailyLook/app/src/main/res/drawable/gradient_pink_yellow.xml" value="0.265625" />
         <entry key="..\:/git/DailyLook/app/src/main/res/drawable/ic_baseline_add_photo_alternate_24.xml" value="0.265625" />
         <entry key="..\:/git/DailyLook/app/src/main/res/drawable/ic_baseline_backup_24.xml" value="0.15208333333333332" />
+        <entry key="..\:/git/DailyLook/app/src/main/res/drawable/ic_baseline_check_circle_24.xml" value="0.26153846153846155" />
         <entry key="..\:/git/DailyLook/app/src/main/res/drawable/ic_baseline_home_24.xml" value="0.15208333333333332" />
         <entry key="..\:/git/DailyLook/app/src/main/res/drawable/ic_launcher_background.xml" value="0.2490740740740741" />
         <entry key="..\:/git/DailyLook/app/src/main/res/layout/activity_main.xml" value="0.2" />
@@ -41,11 +43,12 @@
         <entry key="..\:/git/DailyLook/app/src/main/res/layout/fragment_record_detail.xml" value="0.19972826086956522" />
         <entry key="..\:/git/DailyLook/app/src/main/res/layout/fragment_record_list.xml" value="0.12708333333333333" />
         <entry key="..\:/git/DailyLook/app/src/main/res/layout/frangment_data_management.xml" value="0.17481884057971014" />
-        <entry key="..\:/git/DailyLook/app/src/main/res/layout/item_record.xml" value="0.20018115942028986" />
+        <entry key="..\:/git/DailyLook/app/src/main/res/layout/item_record.xml" value="0.4" />
         <entry key="..\:/git/DailyLook/app/src/main/res/layout/list_item_daily.xml" value="0.25364583333333335" />
         <entry key="..\:/git/DailyLook/app/src/main/res/layout/list_item_record.xml" value="0.19972826086956522" />
         <entry key="..\:/git/DailyLook/app/src/main/res/menu/fragment_daily_list.xml" value="0.1" />
         <entry key="..\:/git/DailyLook/app/src/main/res/menu/fragment_record_list.xml" value="0.24947916666666667" />
+        <entry key="..\:/git/DailyLook/app/src/main/res/menu/fragment_record_sort.xml" value="0.24947916666666667" />
         <entry key="..\:/git/DailyLook/app/src/main/res/menu/fragment_record_sort_menu.xml" value="0.24947916666666667" />
         <entry key="..\:/git/DailyLook/app/src/main/res/menu/nav_menu.xml" value="0.1" />
         <entry key="..\:/git/DailyLook/app/src/main/res/mipmap-anydpi-v26/ic_launcher.xml" value="0.15364583333333334" />

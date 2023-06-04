@@ -190,15 +190,8 @@ class RecordDetailFragment : Fragment(), DatePickerFragment.CallBacks {
 
         binding.etMemo.addTextChangedListener(memoWatcher)
 
+        /** [날짜 선택] */
         binding.btnDate.setOnClickListener {
-            /*
-            DatePickerFragment.newInstance(record.date).apply {
-                // 대상 프레그먼트 설정 : Fragment로부터 결과 돌려받기위함
-                setTargetFragment(this@RecordDetailFragment, REQUEST_DATE)
-
-                show(this@RecordDetailFragment.getParentFragmentManager(), DIALOG_DATE)
-            }
-            */
             DateTimePickerFragment.newInstance(record.date).apply {
                 // 대상 프레그먼트 설정 : Fragment로부터 결과 돌려받기위함
                 setTargetFragment(this@RecordDetailFragment, REQUEST_DATE)
@@ -267,7 +260,7 @@ class RecordDetailFragment : Fragment(), DatePickerFragment.CallBacks {
         binding.btnDelete.setOnClickListener {
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("삭제하기")
-                .setMessage("삭제한 내용을 되돌릴 수 없습니다.")
+                .setMessage("삭제한 내용은 되돌릴 수 없습니다.")
                 .setPositiveButton("삭제",DialogInterface.OnClickListener{dialog,id->
                     if(photoFile.exists()){
                         photoFile.delete()

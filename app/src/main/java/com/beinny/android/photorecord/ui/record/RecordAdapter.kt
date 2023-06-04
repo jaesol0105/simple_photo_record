@@ -6,11 +6,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.beinny.android.photorecord.*
 import com.beinny.android.photorecord.databinding.ItemRecordBinding
 import com.beinny.android.photorecord.model.Record
 
-class RecordAdapter(private val callbacks: RecordFragment.Callbacks?) : ListAdapter<Record, RecordAdapter.RecordHolder>(RecordDiffCallback()) {
+class RecordAdapter(private val a_callbacks: RecordFragment.Callbacks?, private var f_callback : RecordFragment.adapterCallback) : ListAdapter<Record, RecordAdapter.RecordHolder>(RecordDiffCallback()) {
     private lateinit var binding: ItemRecordBinding
 
     /** [뷰 객체를 담고있는 뷰 홀더들을 생성 (보통 10~15회 수행)]*/
@@ -24,18 +23,39 @@ class RecordAdapter(private val callbacks: RecordFragment.Callbacks?) : ListAdap
         holder.bind(getItem(position))
     }
 
-    inner class RecordHolder(private val binding: ItemRecordBinding): RecyclerView.ViewHolder(binding.root), View.OnClickListener {
+    inner class RecordHolder(private val binding: ItemRecordBinding): RecyclerView.ViewHolder(binding.root), View.OnClickListener, View.OnLongClickListener {
         init{
             itemView.setOnClickListener(this)
+            itemView.setOnLongClickListener(this)
         }
 
         fun bind(record: Record){
             binding.record = record
+            if (f_callback.isLongClick()) {
+                binding.ivDeleteCheckbox.visibility = View.VISIBLE
+            }
             binding.executePendingBindings() // 바인딩된 데이터가 바로 뷰에 반영됨
         }
 
         override fun onClick(v: View){
-            callbacks?.onSelected(binding.record!!.id)
+            if (f_callback.isLongClick()) {
+                if(binding.record!!.isChecked) {
+                    f_callback.changeCheck(binding.record!!.id,false)
+                }
+                else {
+                    f_callback.changeCheck(binding.record!!.id,true)
+                }
+            }
+            else {
+                a_callbacks?.onSelected(binding.record!!.id)
+            }
+        }
+
+        override fun onLongClick(v: View?): Boolean {
+            if (!f_callback.isLongClick()){
+                f_callback.activateLongClick(binding.record!!.id)
+            }
+            return true // false를 반환하면 손을 떼는 순간 onClick 리스너가 동작함
         }
     }
 }
