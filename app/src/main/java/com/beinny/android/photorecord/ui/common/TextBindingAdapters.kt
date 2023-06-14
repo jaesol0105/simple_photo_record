@@ -19,7 +19,7 @@ fun applyDateFormat(view: Button, date: Date?){
 @BindingAdapter("thumbnailDateInKorean")
 fun applyThumbnailDateFormat(view: TextView, date: Date?){
     if(date != null){
-        val df : DateFormat = SimpleDateFormat("yyyy/M/d", Locale.KOREA) // 날짜를 문자열로 변환
+        val df : DateFormat = SimpleDateFormat("yyyy/M/d hh:mm a", Locale.UK) // 날짜를 문자열로 변환
         view.text = df.format(date)
     }
 }

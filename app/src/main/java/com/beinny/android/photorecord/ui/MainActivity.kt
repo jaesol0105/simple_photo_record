@@ -2,6 +2,7 @@ package com.beinny.android.photorecord.ui
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -65,11 +66,22 @@ class MainActivity : AppCompatActivity(), RecordFragment.Callbacks {
 
     /** [RecordFragment에서 호출될 콜백 함수.] */
     override fun onSelected(recordId: UUID) {
+        Log.d("adapteronclick","2")
         val fragment = RecordDetailFragment.newInstance(recordId)
         supportFragmentManager
             .beginTransaction()
             .replace(R.id.fragment_container_view,fragment)
             .addToBackStack(null) // 백스택을 추가하여 백버튼 동작시 RecordFragment로 복귀. 인자=백스택의이름
             .commit()
+    }
+
+    override fun onLongClick(longclick :Boolean, count:Int) {
+        if (longclick) {
+            toolbar.title = count.toString() + "개 선택됨"
+            supportActionBar!!.setDisplayHomeAsUpEnabled(false)
+        } else {
+            toolbar.title = getString(R.string.app_name)
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        }
     }
 }

@@ -5,6 +5,9 @@ import androidx.lifecycle.LiveData
 import androidx.room.Room
 import com.beinny.android.photorecord.model.Record
 import com.beinny.android.photorecord.datebase.RecordDatabase
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.lang.IllegalStateException
 import java.util.*
@@ -12,8 +15,8 @@ import java.util.concurrent.Executors
 
 private const val DATABASE_NAME = "photorecord-database"
 
-class RecordRepository private constructor(context: Context){
-    private val database : RecordDatabase = Room.databaseBuilder(
+class RecordRepository private constructor(context: Context) {
+    private val database: RecordDatabase = Room.databaseBuilder(
         context.applicationContext,
         RecordDatabase::class.java,
         DATABASE_NAME
@@ -23,48 +26,57 @@ class RecordRepository private constructor(context: Context){
     private val executor = Executors.newSingleThreadExecutor()
     private val filesDir = context.applicationContext.filesDir
 
-    fun getRecords() : LiveData<List<Record>> = recordDao.getRecords()
-    fun getRecord(id: UUID) : LiveData<Record?> = recordDao.getRecord(id)
+    private val ioDispatcher: CoroutineDispatcher = Dispatchers.IO
 
-    fun updateRecord(record: Record) {
-        executor.execute {
+    fun getRecords(): LiveData<List<Record>> = recordDao.getRecords()
+    fun getRecord(id: UUID): LiveData<Record?> = recordDao.getRecord(id)
+
+    suspend fun updateRecord(record: Record) {
+        // executor.execute
+        withContext(ioDispatcher) {
             recordDao.updateRecord(record)
         }
     }
 
-    fun addRecord(record: Record) {
-        executor.execute {
+    suspend fun addRecord(record: Record) {
+        withContext(ioDispatcher) {
             recordDao.addRecord(record)
         }
     }
 
-    fun deleteRecord(record: Record) {
-        executor.execute {
+    suspend fun deleteRecord(record: Record) {
+        withContext(ioDispatcher) {
             recordDao.deleteRecord(record)
         }
     }
 
-    fun deleteAllRecord() {
-        executor.execute {
+    suspend fun deleteAllRecord() {
+        withContext(ioDispatcher) {
             recordDao.deleteAllRecord()
         }
     }
 
-    fun initCheck() {
-        executor.execute {
+    suspend fun initCheck() {
+        withContext(ioDispatcher) {
             recordDao.initCheck()
         }
     }
 
-    fun changeCheck(id: UUID, state:Boolean) {
-        executor.execute {
+    suspend fun changeCheck(id: UUID, state: Boolean) {
+        withContext(ioDispatcher) {
             recordDao.changeCheck(id, state)
         }
     }
 
-    fun deleteCheckedRecord() {
-        executor.execute {
+    suspend fun deleteCheckedRecord() {
+        withContext(ioDispatcher) {
             recordDao.deleteCheckedRecord()
+        }
+    }
+
+    suspend fun deleteSelectedRecord(recordList: List<Record>) {
+        withContext(ioDispatcher) {
+            recordDao.deleteSelectedRecord(recordList)
         }
     }
 
@@ -85,9 +97,9 @@ class RecordRepository private constructor(context: Context){
                 INSTANCE = RecordRepository(context)
             }
         }
+
         fun get(): RecordRepository {
-            return INSTANCE ?:
-            throw IllegalStateException("RecordRepository must be initialized!")
+            return INSTANCE ?: throw IllegalStateException("RecordRepository must be initialized!")
         }
     }
 }

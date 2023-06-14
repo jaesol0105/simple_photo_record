@@ -1,11 +1,9 @@
 package com.beinny.android.photorecord.ui.recorddetail
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Transformations
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 import com.beinny.android.photorecord.model.Record
 import com.beinny.android.photorecord.repository.recorddetail.RecordRepository
+import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
 
@@ -21,11 +19,15 @@ class RecordDetailViewModel : ViewModel() {
     }
 
     fun saveRecord(record: Record){
-        recordRepository.updateRecord(record)
+        viewModelScope.launch {
+            recordRepository.updateRecord(record)
+        }
     }
 
     fun deleteRecord(record: Record){
-        recordRepository.deleteRecord(record)
+        viewModelScope.launch {
+            recordRepository.deleteRecord(record)
+        }
     }
 
     // 사진 파일이 가르킬 위치(File객체)를 RecordDetailFragment에 제공.

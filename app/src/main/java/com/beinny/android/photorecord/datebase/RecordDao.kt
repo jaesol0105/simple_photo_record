@@ -10,6 +10,17 @@ interface RecordDao {
     @Query("SELECT * FROM record")
     fun getRecords(): LiveData<List<Record>>
 
+    /*
+    @Query("""
+        SELECT * FROM record ORDER BY
+            CASE WHEN :sort_by = 0 THEN label END ASC,
+            CASE WHEN :sort_by = 1 THEN label END DESC,
+            CASE WHEN :sort_by = 2 THEN date END ASC,
+            CASE WHEN :sort_by = 3 THEN date END DESC
+    """)
+    fun getRecords(sort_by:Int): LiveData<List<Record>>
+    */
+
     @Query("SELECT * FROM record WHERE id=(:id)")
     fun getRecord(id: UUID): LiveData<Record?>
 
@@ -33,4 +44,7 @@ interface RecordDao {
 
     @Query("DELETE FROM record WHERE isChecked=:state")
     fun deleteCheckedRecord(state:Boolean=true)
+
+    @Delete
+    fun deleteSelectedRecord(recordList : List<Record>)
 }

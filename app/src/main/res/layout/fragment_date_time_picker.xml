@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
@@ -9,32 +10,99 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@drawable/bottom_sheet_background">
+        android:background="@drawable/background_bottom_sheet_dialog"
+        android:orientation="vertical">
 
-        <LinearLayout
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:padding="16dp">
 
-            <TextView
-                android:id="@+id/tv_date_time_picker_date"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_weight="1"
+            <LinearLayout
+                android:id="@+id/layout_date_time_picker_date"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
                 android:gravity="center"
-                android:text="날짜"
-                android:textStyle="bold" />
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/layout_date_time_picker_time"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_weight="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
-            <TextView
-                android:id="@+id/tv_date_time_picker_time"
-                android:layout_width="wrap_content"
-                android:layout_height="100dp"
-                android:layout_weight="1"
+                <TextView
+                    android:id="@+id/tv_date_time_picker_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="날짜"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tv_date_time_picker_now_date"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/blue_700"
+                    tools:text="0월 00일"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layout_date_time_picker_time"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
                 android:gravity="center"
-                android:text="시간"
-                android:textStyle="bold" />
-        </LinearLayout>
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_weight="0.5"
+                app:layout_constraintStart_toEndOf="@+id/layout_date_time_picker_date"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/tv_date_time_picker_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="시간"
+                    android:textStyle="bold" />
+                <TextView
+                    android:id="@+id/tv_date_time_picker_now_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:textColor="@color/gray"
+                    tools:text="오전 0:00" />
+            </LinearLayout>
+
+            <View
+                android:id="@+id/bg_date_time_picker_date"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:background="@drawable/background_transparent_r40"
+                android:gravity="center"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/layout_date_time_picker_time"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_weight="0.5"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <View
+                android:id="@+id/bg_date_time_picker_time"
+                android:layout_width="0dp"
+                android:layout_height="64dp"
+                android:background="@drawable/background_transparent_r40"
+                android:gravity="center"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.5"
+                app:layout_constraintHorizontal_weight="0.5"
+                app:layout_constraintStart_toEndOf="@+id/layout_date_time_picker_date"
+                app:layout_constraintTop_toTopOf="parent" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
 
         <DatePicker
             android:id="@+id/datepicker"
@@ -58,16 +126,22 @@
             <TextView
                 android:id="@+id/tv_date_time_picker_cancel"
                 android:layout_width="wrap_content"
-                android:layout_height="100dp"
+                android:layout_height="80dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="취소"
                 android:textStyle="bold" />
 
+            <View
+                android:layout_width="1dp"
+                android:layout_height="20dp"
+                android:layout_gravity="center"
+                android:background="@color/gray" />
+
             <TextView
                 android:id="@+id/tv_date_time_picker_save"
                 android:layout_width="wrap_content"
-                android:layout_height="100dp"
+                android:layout_height="80dp"
                 android:layout_weight="1"
                 android:gravity="center"
                 android:text="완료"

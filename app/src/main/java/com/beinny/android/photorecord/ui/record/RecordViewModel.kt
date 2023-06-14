@@ -1,8 +1,13 @@
 package com.beinny.android.photorecord.ui.record
 
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.beinny.android.photorecord.PhotoRecordApplication
 import com.beinny.android.photorecord.model.Record
 import com.beinny.android.photorecord.repository.recorddetail.RecordRepository
+import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
 
@@ -12,24 +17,41 @@ class RecordViewModel: ViewModel() {
 
     /** [새로운 레코드 추가] */
     fun addRecord (record: Record) {
-        recordRepository.addRecord(record)
+        viewModelScope.launch {
+            recordRepository.addRecord(record)
+        }
     }
 
     /** [레코드 삭제] */
     fun deleteRecord (record: Record) {
-        recordRepository.deleteRecord(record)
+        viewModelScope.launch {
+            recordRepository.deleteRecord(record)
+        }
     }
 
-    fun initCheck() {
-        recordRepository.initCheck()
+    fun initCheck(id:UUID, state:Boolean) {
+        viewModelScope.launch {
+            recordRepository.initCheck()
+            recordRepository.changeCheck(id, state)
+        }
     }
 
     fun changeCheck (id:UUID, state:Boolean) {
-        recordRepository.changeCheck(id,state)
+        viewModelScope.launch {
+            recordRepository.changeCheck(id, state)
+        }
     }
 
     fun deleteCheckedRecord() {
-        recordRepository.deleteCheckedRecord()
+        viewModelScope.launch {
+            recordRepository.deleteCheckedRecord()
+        }
+    }
+
+    fun deleteSelectedRecord(recordList:List<Record>) {
+        viewModelScope.launch {
+            recordRepository.deleteSelectedRecord(recordList)
+        }
     }
 
     // 사진 파일이 가르킬 위치(File객체)를 RecordDetailFragment에 제공.

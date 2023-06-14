@@ -34,11 +34,12 @@ import com.beinny.android.photorecord.*
 import com.beinny.android.photorecord.databinding.FragmentRecordDetailBinding
 import com.beinny.android.photorecord.model.Record
 import com.beinny.android.photorecord.common.*
+import com.beinny.android.photorecord.databinding.DialogAlertBinding
 import com.beinny.android.photorecord.ui.common.ViewModelFactory
 import com.beinny.android.photorecord.ui.record.RecordViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
-class RecordDetailFragment : Fragment(), DatePickerFragment.CallBacks {
+class RecordDetailFragment : Fragment(), DateTimePickerFragment.CallBacks {
     private lateinit var record: Record
     private lateinit var old_record: Record
 
@@ -190,7 +191,7 @@ class RecordDetailFragment : Fragment(), DatePickerFragment.CallBacks {
 
         binding.etMemo.addTextChangedListener(memoWatcher)
 
-        /** [날짜 선택] */
+        /** [날짜 설정 버튼] */
         binding.btnDate.setOnClickListener {
             DateTimePickerFragment.newInstance(record.date).apply {
                 // 대상 프레그먼트 설정 : Fragment로부터 결과 돌려받기위함
@@ -258,6 +259,28 @@ class RecordDetailFragment : Fragment(), DatePickerFragment.CallBacks {
 
         /** [삭제 버튼] */
         binding.btnDelete.setOnClickListener {
+            val dlg = BottomSheetDialog(requireContext(), R.style.transparentDialog)
+            val dlg_binding = DialogAlertBinding.inflate(LayoutInflater.from(requireContext()))
+            dlg.setContentView(dlg_binding.root)
+
+            dlg_binding.tvDialogAlertMsg.text = "삭제한 레코드는 복구할 수 없어요"
+
+            dlg_binding.tvDateTimePickerSave.setOnClickListener {
+                if(photoFile.exists()){
+                    photoFile.delete()
+                }
+                if(thumbFile.exists()){
+                    thumbFile.delete()
+                }
+                viewModel.deleteRecord(record)
+                dlg.dismiss()
+                parentFragmentManager.popBackStack()
+            }
+            dlg_binding.tvDateTimePickerCancel.setOnClickListener {
+                dlg.dismiss()
+            }
+            dlg.show()
+            /*
             val builder = AlertDialog.Builder(activity)
             builder.setTitle("삭제하기")
                 .setMessage("삭제한 내용은 되돌릴 수 없습니다.")
@@ -275,6 +298,7 @@ class RecordDetailFragment : Fragment(), DatePickerFragment.CallBacks {
 
                 })
             builder.show()
+            */
         }
     }
 

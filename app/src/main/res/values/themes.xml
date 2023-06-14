@@ -2,13 +2,13 @@
     <!-- Base application theme. -->
     <style name="Theme.PhotoRecord" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
         <!-- Primary brand color. -->
-        <item name="colorPrimary">@color/light_black</item>
-        <item name="colorPrimaryVariant">@color/black</item>
-        <item name="colorOnPrimary">@color/white</item>
+        <item name="colorPrimary">@color/light_white</item>
+        <item name="colorPrimaryVariant">@color/light_white</item>
+        <item name="colorOnPrimary">@color/dark_black</item>
         <!-- Secondary brand color. -->
-        <item name="colorSecondary">@color/black</item>
-        <item name="colorSecondaryVariant">@color/black</item>
-        <item name="colorOnSecondary">@color/white</item>
+        <item name="colorSecondary">@color/gray</item>
+        <item name="colorSecondaryVariant">@color/gray</item>
+        <item name="colorOnSecondary">@color/light_white</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
@@ -18,7 +18,7 @@
 
     <style name="DrawerArrowStyle" parent="@style/Widget.AppCompat.DrawerArrowToggle">
         <item name="spinBars">true</item>
-        <item name="color">@android:color/white</item>
+        <item name="color">@color/dark_black</item>
     </style>
 
     <style name="Theme.PhotoRecord.NoActionBar">
@@ -35,12 +35,16 @@
     </style>
 
     <style name="BottomSheetStyle" parent="Widget.Design.BottomSheet.Modal">
-        <item name="background">@drawable/bottom_sheet_background</item>
+        <item name="background">@drawable/background_bottom_sheet_dialog</item>
     </style>
 
     <style name="transparentDialog" parent="Theme.AppCompat.Dialog">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <style name="photoDialog" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="android:windowFullscreen">true</item>
     </style>
 
 </resources>

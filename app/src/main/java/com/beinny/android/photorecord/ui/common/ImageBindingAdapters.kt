@@ -49,6 +49,8 @@ fun loadThumbnailImage(view: ImageView, imageUrl: String?) {
                         .diskCacheStrategy(DiskCacheStrategy.NONE)
                 )
                 .into(view)
+        } else {
+            view.setImageResource(0)
         }
     }
 }
@@ -57,5 +59,7 @@ fun loadThumbnailImage(view: ImageView, imageUrl: String?) {
 fun applyCheckSign(view: ImageView, checked: Boolean){
     if (checked) {
         view.setImageResource(R.drawable.ic_baseline_check_circle_24)
+    } else {
+        view.setImageResource(0)
     }
 }
