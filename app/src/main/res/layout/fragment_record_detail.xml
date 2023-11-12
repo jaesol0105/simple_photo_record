@@ -4,9 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="record"
             type="com.beinny.android.photorecord.model.Record" />
+
         <variable
             name="viewModel"
             type="com.beinny.android.photorecord.ui.recorddetail.RecordDetailViewModel" />
@@ -14,132 +16,200 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
         android:layout_height="match_parent"
-        android:background="@color/background">
+        android:background="@color/background"
+        android:orientation="vertical">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="70dp">
+
+            <ImageView
+                android:id="@+id/iv_record_detail_close"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="24dp"
+                android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/font" />
+
+            <TextView
+                android:id="@+id/tv_record_detail_delete"
+                style="@style/TextSubtitle2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="24dp"
+                android:text="@string/all_delete"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/tv_record_detail_edit"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_record_detail_edit"
+                style="@style/TextSubtitle2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="24dp"
+                android:text="@string/recorddetail_edit"
+                android:visibility="invisible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
 
         <ScrollView
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1">
 
-            <LinearLayout
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:padding="16dp"
-                android:gravity="center"
-                android:orientation="vertical">
+                android:layout_height="0dp">
 
-                <androidx.constraintlayout.widget.ConstraintLayout
+                <ImageView
+                    android:id="@+id/iv_record_detail_photo"
+                    imageUrl="@{record.photoFileName}"
+                    android:layout_width="0dp"
+                    android:layout_height="0dp"
+                    android:adjustViewBounds="true"
+                    android:background="@android:color/darker_gray"
+                    android:cropToPadding="true"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintDimensionRatio="H,1:1"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <ImageView
+                    android:id="@+id/iv_record_detail_add_photo"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:layout_margin="16dp"
+                    android:background="@drawable/background_black_transp_circle"
+                    android:padding="8dp"
+                    android:scaleType="center"
+                    android:src="@android:drawable/ic_menu_camera"
+                    app:layout_constraintBottom_toBottomOf="@id/iv_record_detail_photo"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <LinearLayout
+                    android:id="@+id/layout_record_detail_label"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp">
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:padding="24dp"
+                    app:layout_constraintTop_toBottomOf="@id/iv_record_detail_photo">
 
                     <ImageView
-                        android:id="@+id/iv_record_detail_photo"
-                        android:layout_width="0dp"
-                        imageUrl="@{record.photoFileName}"
-                        android:layout_height="0dp"
-                        android:layout_margin="4dp"
-                        android:adjustViewBounds="true"
-                        android:background="@android:color/darker_gray"
-                        android:cropToPadding="true"
-                        android:scaleType="centerCrop"
-                        app:layout_constraintDimensionRatio="H,1:1"
-                        app:layout_constraintEnd_toEndOf="parent"
+                        android:id="@+id/iv_record_detail_label_icon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_outline_photo_24"
+                        app:tint="@color/font" />
+
+                    <EditText
+                        android:id="@+id/et_record_detail_label"
+                        style="@style/TextSubtitle2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@android:color/transparent"
+                        android:ellipsize="end"
+                        android:hint="@string/recorddetail_title_hint"
+                        android:inputType="text"
+                        android:maxLines="1"
+                        android:scrollHorizontally="false"
+                        android:text="@{record.label}" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/layout_record_detail_date"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:orientation="horizontal"
+                    android:paddingLeft="24dp"
+                    android:paddingEnd="24dp"
+                    android:paddingBottom="24dp"
+                    app:layout_constraintTop_toBottomOf="@id/layout_record_detail_label">
+
+                    <ImageView
+                        android:id="@+id/iv_record_detail_date_icon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:layout_marginEnd="16dp"
+                        android:src="@drawable/ic_baseline_calendar_month_24"
+                        app:tint="@color/font" />
+
+                    <TextView
+                        android:id="@+id/tv_record_detail_date"
+                        style="@style/TextSubtitle2"
+                        dateInKorean="@{record.date}"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        tools:text="2000년 02월 11일" />
+                </LinearLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layout_record_detail_memo"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="24dp"
+                    android:paddingEnd="24dp"
+                    app:layout_constraintTop_toBottomOf="@id/layout_record_detail_date">
+
+                    <ImageView
+                        android:id="@+id/iv_record_detail_memo_icon"
+                        android:layout_width="24dp"
+                        android:layout_height="24dp"
+                        android:src="@drawable/ic_outline_article_24"
+                        app:layout_constraintBottom_toBottomOf="parent"
                         app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:tint="@color/font" />
+
+                    <EditText
+                        android:id="@+id/et_record_detail_memo"
+                        style="@style/TextSubtitle2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="40dp"
+                        android:background="@android:color/transparent"
+                        android:gravity="left"
+                        android:hint="@string/recorddetail_memo_hint"
+                        android:imeOptions="actionDone"
+                        android:inputType="none"
+                        android:maxLength="8000"
+                        android:scrollHorizontally="false"
+                        android:singleLine="false"
+                        android:text="@{record.memo}"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintStart_toEndOf="@id/iv_record_detail_memo_icon"
                         app:layout_constraintTop_toTopOf="parent" />
                 </androidx.constraintlayout.widget.ConstraintLayout>
 
-                <ImageButton
-                    android:id="@+id/btn_record_detail_add_photo"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:src="@android:drawable/ic_menu_camera" />
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginRight="8dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="?android:listSeparatorTextViewStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="4dp"
-                        android:text="@string/title_label" />
-
-                    <EditText
-                        android:id="@+id/et_label"
-                        android:text="@{record.label}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:hint="@string/title_hint"
-                        android:inputType="text"
-                        android:maxLines="1"
-                        android:scrollHorizontally="false" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginRight="8dp"
-                    android:orientation="vertical">
-
-                    <TextView
-                        style="?android:listSeparatorTextViewStyle"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="3dp"
-                        android:text="@string/memo_label" />
-
-                    <EditText
-                        android:id="@+id/et_memo"
-                        android:text="@{record.memo}"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:gravity="left"
-                        android:hint="@string/memo_hint"
-                        android:imeOptions="actionDone"
-                        android:inputType="none"
-                        android:maxLines="7"
-                        android:scrollHorizontally="false"
-                        android:singleLine="false" />
-                </LinearLayout>
-
-
                 <TextView
-                    style="?android:listSeparatorTextViewStyle"
-                    android:layout_width="match_parent"
+                    android:id="@+id/tv_record_detail_memo_count"
+                    style="@style/TextCaption.Grey"
+                    memoTextCount="@{record.memo}"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginTop="8dp"
-                    android:layout_marginRight="8dp"
-                    android:text="@string/date_label" />
-
-                <Button
-                    android:id="@+id/btn_date"
-                    dateInKorean="@{record.date}"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    tools:text="2000년 02월 11일" />
-
-            </LinearLayout>
+                    android:layout_marginEnd="24dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/layout_record_detail_memo"
+                    tools:text="0/80" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
         </ScrollView>
 
 
         <LinearLayout
-            android:id="@+id/layout_save_or_delete"
+            android:id="@+id/layout_record_detail_save_or_delete"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_marginLeft="8dp"
@@ -147,23 +217,28 @@
             android:gravity="center"
             android:orientation="horizontal">
 
-            <Button
-                android:id="@+id/btn_upload"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginRight="4dp"
-                android:layout_weight="1"
-                android:text="@string/upload_button" />
-
-            <Button
-                android:id="@+id/btn_delete"
+            <android.widget.Button
+                android:id="@+id/btn_record_detail_delete"
+                style="@style/TextSubtitle2.Bold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="4dp"
                 android:layout_weight="1"
-                android:text="@string/delete_button" />
-        </LinearLayout>
+                android:background="@color/background"
+                android:stateListAnimator="@null"
+                android:text="@string/all_delete" />
 
+            <android.widget.Button
+                android:id="@+id/btn_record_detail_save"
+                style="@style/TextSubtitle2.Bold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="4dp"
+                android:layout_weight="1"
+                android:background="@color/background"
+                android:stateListAnimator="@null"
+                android:text="@string/all_save" />
+        </LinearLayout>
 
     </LinearLayout>
 </layout>

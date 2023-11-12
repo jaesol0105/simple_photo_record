@@ -1,44 +1,26 @@
 package com.beinny.android.photorecord.ui.record
 
-import android.app.AlertDialog
 import android.content.Context
-import android.content.DialogInterface
-import android.graphics.Bitmap
 import android.os.Bundle
-import android.os.Parcelable
 import android.util.Log
 import android.view.*
-import android.widget.ImageView
-import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
-import androidx.fragment.app.DialogFragment
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.*
 import com.beinny.android.photorecord.*
 import com.beinny.android.photorecord.model.Record
 import com.beinny.android.photorecord.ui.common.ViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import java.io.File
-import java.io.FileOutputStream
-import java.text.SimpleDateFormat
 import java.util.*
-import androidx.recyclerview.widget.SimpleItemAnimator
-
-import androidx.recyclerview.widget.RecyclerView
-import androidx.recyclerview.widget.RecyclerView.ItemAnimator
 import com.beinny.android.photorecord.databinding.*
+import com.beinny.android.photorecord.ui.common.OrderKoreanFirst
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-
-
-private const val GET_BIMAP_ORIGIN = 11 // 이미지 비트맵 불러오기
-private const val GET_BIMAP_RESIZE = 12 // 이미지 비트맵 (RESIZED) 불러오기
 
 class RecordFragment : Fragment() {
     /** [Host Activity 에서 구현할 callback 함수의 인터페이스] */
@@ -54,14 +36,13 @@ class RecordFragment : Fragment() {
     private lateinit var callbacks_bp: OnBackPressedCallback
     private var backKeyPressedTime : Long = 0
 
-    private val viewModel: RecordViewModel by viewModels { ViewModelFactory() }
+    private val viewModel: RecordViewModel by viewModels { ViewModelFactory(requireContext()) }
     private lateinit var binding: FragmentRecordBinding
 
     private var longClick: Boolean = false
     private var countOfCheckedRecord : Int = 0
 
     private lateinit var recordAdapter : RecordAdapter
-    private var recyclerViewState: Parcelable? = null
 
     override fun onAttach(context: Context) { // fragment가 add 될때 호출
         super.onAttach(context)
@@ -82,7 +63,7 @@ class RecordFragment : Fragment() {
                 /** [백 버튼 두번] */
                 else if (System.currentTimeMillis() > backKeyPressedTime + 2000) {
                     backKeyPressedTime = System.currentTimeMillis()
-                    Toast.makeText(context,"'뒤로' 버튼을 한번 더 누르시면 종료됩니다.", Toast.LENGTH_SHORT).show()
+                    Toast.makeText(context,getString(R.string.record_app_close_warning), Toast.LENGTH_SHORT).show()
                 }
                 else {
                     requireActivity().finish()
@@ -134,7 +115,7 @@ class RecordFragment : Fragment() {
     override fun onStart() {
         super.onStart()
         /** [fab - Record 생성] */
-        binding.fabAddRecord.setOnClickListener {
+        binding.fabRecordAdd.setOnClickListener {
             // 새로운 Record 객체 생성
             val record = Record()
             // DB에 추가.
@@ -153,7 +134,7 @@ class RecordFragment : Fragment() {
     /** [메뉴 인플레이트] */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.fragment_record_sort, menu)
+        inflater.inflate(R.menu.menu_record_sort_or_delete, menu)
 
         val sortMenu = menu.findItem(R.id.sort_record)
         val deleteMenu = menu.findItem(R.id.delete_record)
@@ -190,62 +171,40 @@ class RecordFragment : Fragment() {
 
     /** [정렬을 위한 Dialog 출력] */
     private fun showSortDialog() {
-        /*
-        val sortBy = arrayOf("이름(오름차순)", "이름(내림차순)", "날짜(오름차순)", "날짜(내림차순)")
-        val builder = AlertDialog.Builder(activity)
-        var selected = 3
-        builder.setTitle("정렬")
-            .setSingleChoiceItems(sortBy,PhotoRecordApplication.prefs.getInt("SORT_BY",3)){ _, i ->
-                selected = i
-            }
-            .setPositiveButton("완료",DialogInterface.OnClickListener { _, _ ->
-                PhotoRecordApplication.prefs.setInt("SORT_BY",selected)
-                //TODO: 화면 갱신 필요. 옵저버 작동 OR 여기서 갱신.
-                val record = Record()
-                viewModel.addRecord(record)
-                viewModel.deleteRecord(record)
-            })
-            .setNegativeButton("취소",null)
-        builder.show()
-        */
-
         val dlg = BottomSheetDialog(requireContext(),R.style.transparentDialog)
         val dlg_binding = DialogSortingBinding.inflate(LayoutInflater.from(requireContext()))
         dlg.setContentView(dlg_binding.root)
 
-        //recyclerViewState = binding.rvRecordList.layoutManager!!.onSaveInstanceState()
-
         when (PhotoRecordApplication.prefs.getInt("SORT_BY",3)) {
-            0 -> dlg_binding.rbSortByNameAsc.isChecked = true
-            1 -> dlg_binding.rbSortByNameDesc.isChecked = true
-            2 -> dlg_binding.rbSortByDateAsc.isChecked = true
-            3 -> dlg_binding.rbSortByDateDesc.isChecked = true
+            0 -> dlg_binding.rbDialogSortingSortbyNameAsc.isChecked = true
+            1 -> dlg_binding.rbDialogSortingSortbyNameDesc.isChecked = true
+            2 -> dlg_binding.rbDialogSortingSortbyDateAsc.isChecked = true
+            3 -> dlg_binding.rbDialogSortingSortbyDateDesc.isChecked = true
         }
 
         var selected = 3
         dlg_binding.radioGroup.setOnCheckedChangeListener { _,checkedId:Int ->
             selected = when(checkedId) {
-                R.id.rb_sort_by_name_asc -> 0
-                R.id.rb_sort_by_name_desc -> 1
-                R.id.rb_sort_by_date_asc -> 2
-                R.id.rb_sort_by_date_desc -> 3
+                R.id.rb_dialog_sorting_sortby_name_asc -> 0
+                R.id.rb_dialog_sorting_sortby_name_desc -> 1
+                R.id.rb_dialog_sorting_sortby_date_asc -> 2
+                R.id.rb_dialog_sorting_sortby_date_desc -> 3
                 else -> -1
             }
             Log.d("sort",selected.toString())
         }
 
-        dlg_binding.tvDateTimePickerSave.setOnClickListener {
+        dlg_binding.tvDialogSortingComplete.setOnClickListener {
             PhotoRecordApplication.prefs.setInt("SORT_BY",selected)
             //TODO: 화면 갱신 필요. 옵저버 작동 OR 여기서 갱신.
             val record = Record()
             viewModel.addRecord(record)
             viewModel.deleteRecord(record)
-            //binding.rvRecordList.layoutManager!!.onRestoreInstanceState(recyclerViewState)
             dlg.dismiss()
             Log.d("sort",PhotoRecordApplication.prefs.getInt("SORT_BY",3).toString())
         }
 
-        dlg_binding.tvDateTimePickerCancel.setOnClickListener {
+        dlg_binding.tvDialogSortingCancel.setOnClickListener {
             dlg.dismiss()
         }
 
@@ -255,17 +214,18 @@ class RecordFragment : Fragment() {
 
     /** [Record 정렬] */
     private fun sortRecords(sortBy:Int, records: List<Record>): List<Record> {
+        val korEngNumSpec = Comparator<Record> { data1, data2 -> OrderKoreanFirst.compare(data1.label, data2.label) }
         if(sortBy == 0){ // 이름(오름차순)
-            return records.sortedWith(compareBy<Record> { it.label }.thenBy {it.date})
+            return records.sortedWith(korEngNumSpec)
         }
         else if(sortBy == 1){ // 이름(내림차순)
-            return records.sortedWith(compareByDescending<Record> { it.label }.thenBy {it.date})
+            return records.sortedWith(korEngNumSpec).reversed()
         }
         else if(sortBy == 2){ // 날짜(오름차순)
-            return records.sortedWith(compareBy<Record> { it.date }.thenBy {it.label})
+            return records.sortedWith(compareBy<Record> { it.date }.thenComparator{ data1, data2 -> OrderKoreanFirst.compare(data1.label, data2.label) })
         }
         else if(sortBy == 3){ // 날짜(내림차순)
-            return records.sortedWith(compareByDescending<Record> { it.date }.thenBy {it.label})
+            return records.sortedWith(compareByDescending<Record> { it.date }.thenComparator{ data1, data2 -> OrderKoreanFirst.compare(data1.label, data2.label) })
         }
         else{
             return records
@@ -274,7 +234,7 @@ class RecordFragment : Fragment() {
 
     private fun disableLongClick() {
         longClick = false
-        binding.fabAddRecord.visibility = View.VISIBLE
+        binding.fabRecordAdd.visibility = View.VISIBLE
         requireActivity().invalidateOptionsMenu()
         callbacks?.onLongClick(longClick,countOfCheckedRecord)
     }
@@ -286,37 +246,18 @@ class RecordFragment : Fragment() {
         dlg.setContentView(dlg_binding.root)
 
         dlg_binding.tvDialogAlertMsg.text =
-            "레코드 " + countOfCheckedRecord.toString() + "개를 영구적으로 삭제 할까요?"
+            getString(R.string.record_selected_delete_warning_1) + countOfCheckedRecord.toString() + getString(R.string.record_selected_delete_warning_2)
 
-        dlg_binding.tvDateTimePickerSave.setOnClickListener {
+        dlg_binding.tvDialogAlertComplete.setOnClickListener {
             disableLongClick()
             viewModel.deleteCheckedRecord()
             dlg.dismiss()
         }
-        dlg_binding.tvDateTimePickerCancel.setOnClickListener {
+        dlg_binding.tvDialogAlertCancel.setOnClickListener {
             dlg.dismiss()
         }
 
         dlg.show()
-        /*
-        val builder = AlertDialog.Builder(activity)
-        if (countOfCheckedRecord > 0) {
-            builder.setTitle(countOfCheckedRecord.toString() + "개의 레코드 삭제")
-                .setMessage("삭제한 내용은 되돌릴 수 없습니다.")
-                .setPositiveButton("삭제",DialogInterface.OnClickListener{dialog,id->
-                    disableLongClick()
-                    viewModel.deleteCheckedRecord()
-                })
-                .setNegativeButton("취소",DialogInterface.OnClickListener{dialog, id->
-
-                })
-        } else {
-            builder.setTitle("선택된 레코드 없음")
-                .setPositiveButton("확인",DialogInterface.OnClickListener{dialog,id->
-                })
-        }
-        builder.show()
-        */
     }
 
     /** [RecordAdapter로 넘겨줄 callback] */
@@ -328,7 +269,7 @@ class RecordFragment : Fragment() {
             countOfCheckedRecord = 1
 
             requireActivity().invalidateOptionsMenu()
-            binding.fabAddRecord.visibility = View.INVISIBLE
+            binding.fabRecordAdd.visibility = View.INVISIBLE
             callbacks?.onLongClick(longClick,countOfCheckedRecord)
         }
         fun isLongClick() : Boolean{

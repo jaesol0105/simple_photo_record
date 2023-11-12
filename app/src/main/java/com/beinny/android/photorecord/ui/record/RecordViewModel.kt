@@ -11,8 +11,8 @@ import kotlinx.coroutines.launch
 import java.io.File
 import java.util.*
 
-class RecordViewModel: ViewModel() {
-    private val recordRepository = RecordRepository.get()
+class RecordViewModel(private val recordRepository: RecordRepository): ViewModel() {
+    // private val recordRepository = RecordRepository.get()
     val recordListLiveData = recordRepository.getRecords()
 
     /** [새로운 레코드 추가] */
@@ -48,12 +48,7 @@ class RecordViewModel: ViewModel() {
         }
     }
 
-    fun deleteSelectedRecord(recordList:List<Record>) {
-        viewModelScope.launch {
-            recordRepository.deleteSelectedRecord(recordList)
-        }
-    }
-
+    /*
     // 사진 파일이 가르킬 위치(File객체)를 RecordDetailFragment에 제공.
     fun getPhotoFile(record: Record): File {
         return recordRepository.getPhotoFile(record)
@@ -62,4 +57,5 @@ class RecordViewModel: ViewModel() {
     fun getThumbFile(record: Record): File {
         return recordRepository.getThumbFile(record)
     }
+    */
 }

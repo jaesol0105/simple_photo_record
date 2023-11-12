@@ -3,11 +3,11 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/sort_record"
-        android:title="@string/sort_label"
+        android:title="@string/menu_sort"
         app:showAsAction="withText" />
     <item
         android:id="@+id/delete_record"
-        android:title="삭제"
+        android:title="@string/menu_delete"
         android:icon="@drawable/ic_baseline_delete_24"
         app:showAsAction="always" />
 </menu>

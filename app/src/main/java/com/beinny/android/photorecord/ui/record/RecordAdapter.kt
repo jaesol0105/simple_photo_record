@@ -44,9 +44,9 @@ class RecordAdapter(
         fun bind(record: Record) {
             binding.record = record
             if (f_callback.isLongClick()) {
-                binding.ivDeleteCheckbox.visibility = View.VISIBLE
+                binding.ivItemRecordCheckbox.visibility = View.VISIBLE
             } else {
-                binding.ivDeleteCheckbox.visibility = View.INVISIBLE
+                binding.ivItemRecordCheckbox.visibility = View.INVISIBLE
             }
             binding.executePendingBindings() // 바인딩된 데이터가 바로 뷰에 반영됨
         }
@@ -59,7 +59,6 @@ class RecordAdapter(
                     f_callback.changeCheck(binding.record!!.id,true)
                 }
             } else {
-                Log.d("adapteronclick","1")
                 a_callbacks?.onSelected(binding.record!!.id)
             }
         }

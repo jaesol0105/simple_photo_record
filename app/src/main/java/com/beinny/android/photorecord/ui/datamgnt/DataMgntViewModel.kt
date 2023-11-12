@@ -6,8 +6,8 @@ import com.beinny.android.photorecord.repository.recorddetail.RecordRepository
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
 
-class DataMgntViewModel : ViewModel() {
-    private val recordRepository = RecordRepository.get()
+class DataMgntViewModel(private val recordRepository: RecordRepository) : ViewModel() {
+    // private val recordRepository = RecordRepository.get()
 
     fun deleteAllData() {
         viewModelScope.launch {

@@ -19,17 +19,20 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <com.google.android.material.appbar.AppBarLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                app:elevation="0dp">
 
                 <androidx.appcompat.widget.Toolbar
                     android:id="@+id/toolbar"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:background="?attr/colorPrimary"
-                    app:titleTextColor="@color/font"
-                    app:subtitleTextColor="@color/font" />
+                    app:elevation="0dp"
+                    app:subtitleTextColor="@color/font"
+                    app:titleTextColor="@color/font" />
 
             </com.google.android.material.appbar.AppBarLayout>
 
@@ -49,7 +52,10 @@
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
         android:layout_gravity="start"
+        android:background="@color/dialog"
         android:fitsSystemWindows="true"
+        app:itemIconTint="@color/font"
+        app:itemTextColor="@color/font"
         app:menu="@menu/nav_menu" />
 
 </androidx.drawerlayout.widget.DrawerLayout>

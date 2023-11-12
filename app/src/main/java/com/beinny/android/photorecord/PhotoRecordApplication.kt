@@ -15,7 +15,7 @@ class PhotoRecordApplication : Application() {
     override fun onCreate() {
         prefs = PreferenceUtil(applicationContext) //onCreate 이전에 SharedPreference 초기화
         super.onCreate()
-        RecordRepository.initialize(this)
+        // RecordRepository.initialize(this)
     }
 
     companion object {

@@ -7,27 +7,31 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.beinny.android.photorecord.R
 import com.beinny.android.photorecord.databinding.DialogAlertBinding
 import com.beinny.android.photorecord.databinding.FragmentDataMgntBinding
+import com.beinny.android.photorecord.ui.common.ViewModelFactory
+import com.beinny.android.photorecord.ui.record.RecordViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class DataMgntFragment : Fragment() {
-    private lateinit var backUpViewModel: DataMgntViewModel
+    // private lateinit var backUpViewModel: DataMgntViewModel
     private lateinit var binding: FragmentDataMgntBinding
+
+    private val viewModel: DataMgntViewModel by viewModels { ViewModelFactory(requireContext()) }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        backUpViewModel =
-            ViewModelProvider(this).get(DataMgntViewModel::class.java)
+        //backUpViewModel = ViewModelProvider(this).get(DataMgntViewModel::class.java)
 
         binding = FragmentDataMgntBinding.inflate(inflater, container, false)
-        binding.btnDataReset.setOnClickListener { view ->
+        binding.btnDataMgntReset.setOnClickListener { view ->
             showWarningDialog()
         }
 
@@ -39,23 +43,20 @@ class DataMgntFragment : Fragment() {
         val dlg_binding = DialogAlertBinding.inflate(LayoutInflater.from(requireContext()))
         dlg.setContentView(dlg_binding.root)
 
-        dlg_binding.tvDialogAlertMsg.text = """
-            정말 모든 데이터를 삭제 할까요?
-            삭제한 데이터는 다시는 복구할 수 없어요
-        """.trimIndent()
+        dlg_binding.tvDialogAlertMsg.text = getString(R.string.datamgnt_delete_warning)
 
-        dlg_binding.tvDateTimePickerSave.setOnClickListener {
-            backUpViewModel.deleteAllData()
-            dlg_binding.tvDialogAlertMsg.text = "삭제가 완료되었습니다"
-            dlg_binding.tvDateTimePickerSave.text = "확인"
-            dlg_binding.tvDateTimePickerCancel.visibility = View.GONE
-            dlg_binding.viewMiddleLine.visibility = View.GONE
-            dlg_binding.tvDateTimePickerSave.setOnClickListener {
+        dlg_binding.tvDialogAlertComplete.setOnClickListener {
+            viewModel.deleteAllData()
+            dlg_binding.tvDialogAlertMsg.text = getString(R.string.datamgnt_delete_complete)
+            dlg_binding.tvDialogAlertComplete.text = getString(R.string.all_done)
+            dlg_binding.tvDialogAlertCancel.visibility = View.GONE
+            dlg_binding.viewDialogAlertMiddleLine.visibility = View.GONE
+            dlg_binding.tvDialogAlertComplete.setOnClickListener {
                 findNavController().navigate(R.id.action_dataMgntFragment_to_recordFragment)
                 dlg.dismiss()
             }
         }
-        dlg_binding.tvDateTimePickerCancel.setOnClickListener {
+        dlg_binding.tvDialogAlertCancel.setOnClickListener {
             dlg.dismiss()
         }
         dlg.show()

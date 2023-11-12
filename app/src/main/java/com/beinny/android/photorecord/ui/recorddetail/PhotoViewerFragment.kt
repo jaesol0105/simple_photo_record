@@ -33,16 +33,17 @@ class PhotoViewerFragment : DialogFragment() {
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         val photoFile = arguments?.getSerializable(PHOTO_FILE) as File
 
-        var dlg = Dialog(requireContext(), R.style.photoDialog)
+        var dlg = Dialog(requireContext(), R.style.photoDialog) // 투명 상단바 스타일 적용
         val binding = DialogPhotoBinding.inflate(LayoutInflater.from(requireContext()))
-        binding.ivCloseDialog.setOnClickListener {
+        binding.ivDialogPhotoClose.setOnClickListener {
             dlg.dismiss()
         }
         if (photoFile.exists()){
             val bitmap = getScaledBitmap(photoFile.path, requireActivity(), GET_BIMAP_ORIGIN)
             binding.ssivPhoto.setImage(ImageSource.bitmap(bitmap))
+            binding.ssivPhoto.maxScale = 8.0F
         }
-        dlg.window!!.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS)
+        dlg.window!!.addFlags(WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS) // dlg 전체화면 사용 (상/하단바 영역 포함)
         dlg.setContentView(binding.root)
         return dlg
     }

@@ -55,13 +55,13 @@ class DateTimePickerFragment() : DialogFragment() {
         setDateAndTime(initialYear, initialMonth, initialDay, initialHour, initialMinute)
 
         /** [완료 버튼] */
-        binding.tvDateTimePickerSave.setOnClickListener {
+        binding.tvDtpComplete.setOnClickListener {
             val resultDate : Date = GregorianCalendar(
-                binding.datepicker.year,
-                binding.datepicker.month,
-                binding.datepicker.dayOfMonth,
-                binding.timepicker.currentHour,
-                binding.timepicker.currentMinute
+                binding.datepickerDtp.year,
+                binding.datepickerDtp.month,
+                binding.datepickerDtp.dayOfMonth,
+                binding.timepickerDtp.currentHour,
+                binding.timepickerDtp.currentMinute
             ).time
             /** 최종 선택 날짜를 콜백함수를 통해 Fragment로 반환 */
             targetFragment?.let { fragment -> (fragment as DateTimePickerFragment.CallBacks).onDateSelected(resultDate) }
@@ -69,41 +69,41 @@ class DateTimePickerFragment() : DialogFragment() {
         }
 
         /** [취소 버튼] */
-        binding.tvDateTimePickerCancel.setOnClickListener {
+        binding.tvDtpCancel.setOnClickListener {
             dlg.dismiss()
         }
 
         /** [날짜 버튼] */
-        binding.layoutDateTimePickerDate.setOnClickListener {
-            binding.datepicker.visibility = View.VISIBLE
-            binding.timepicker.visibility = View.GONE
-            binding.bgDateTimePickerDate.visibility = View.VISIBLE
-            binding.bgDateTimePickerTime.visibility = View.GONE
-            binding.tvDateTimePickerNowDate.setTextColor(ContextCompat.getColor(PhotoRecordApplication.applicationContext(),R.color.blue_700))
-            binding.tvDateTimePickerNowTime.setTextColor(ContextCompat.getColor(PhotoRecordApplication.applicationContext(),R.color.gray))
+        binding.layoutDtpDate.setOnClickListener {
+            binding.datepickerDtp.visibility = View.VISIBLE
+            binding.timepickerDtp.visibility = View.GONE
+            binding.viewDtpDateBg.visibility = View.VISIBLE
+            binding.viewDtpTimeBg.visibility = View.GONE
+            binding.tvDtpNowDate.setTextColor(ContextCompat.getColor(PhotoRecordApplication.applicationContext(),R.color.blue_700))
+            binding.tvDtpNowTime.setTextColor(ContextCompat.getColor(PhotoRecordApplication.applicationContext(),R.color.gray))
         }
 
         /** [시간 버튼] */
-        binding.layoutDateTimePickerTime.setOnClickListener {
-            binding.datepicker.visibility = View.GONE
-            binding.timepicker.visibility = View.VISIBLE
-            binding.bgDateTimePickerDate.visibility = View.GONE
-            binding.bgDateTimePickerTime.visibility = View.VISIBLE
-            binding.tvDateTimePickerNowDate.setTextColor(ContextCompat.getColor(PhotoRecordApplication.applicationContext(),R.color.gray))
-            binding.tvDateTimePickerNowTime.setTextColor(ContextCompat.getColor(PhotoRecordApplication.applicationContext(),R.color.blue_700))
+        binding.layoutDtpTime.setOnClickListener {
+            binding.datepickerDtp.visibility = View.GONE
+            binding.timepickerDtp.visibility = View.VISIBLE
+            binding.viewDtpDateBg.visibility = View.GONE
+            binding.viewDtpTimeBg.visibility = View.VISIBLE
+            binding.tvDtpNowDate.setTextColor(ContextCompat.getColor(PhotoRecordApplication.applicationContext(),R.color.gray))
+            binding.tvDtpNowTime.setTextColor(ContextCompat.getColor(PhotoRecordApplication.applicationContext(),R.color.blue_700))
         }
 
         /** [날짜/시간 변경시 textView 갱신 (API 26 이상)] */
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            binding.datepicker.setOnDateChangedListener(DatePicker.OnDateChangedListener { _,_,month,day ->
-                binding.tvDateTimePickerNowDate.text = convertDateToString(month,day)
+            binding.datepickerDtp.setOnDateChangedListener(DatePicker.OnDateChangedListener { _,_,month,day ->
+                binding.tvDtpNowDate.text = convertDateToString(month,day)
             })
-            binding.timepicker.setOnTimeChangedListener(TimePicker.OnTimeChangedListener { _,hours,minutes ->
-                binding.tvDateTimePickerNowTime.text = convertTimeToString(hours,minutes)
+            binding.timepickerDtp.setOnTimeChangedListener(TimePicker.OnTimeChangedListener { _,hours,minutes ->
+                binding.tvDtpNowTime.text = convertTimeToString(hours,minutes)
             })
         } else {
-            binding.tvDateTimePickerNowDate.visibility = View.GONE
-            binding.tvDateTimePickerNowTime.visibility = View.GONE
+            binding.tvDtpNowDate.visibility = View.GONE
+            binding.tvDtpNowTime.visibility = View.GONE
         }
 
         return dlg
@@ -111,19 +111,19 @@ class DateTimePickerFragment() : DialogFragment() {
 
     /** [DatePicker TimePicker에 날짜 설정] */
     private fun setDateAndTime(year: Int, month: Int, day: Int, hours: Int, minutes: Int) {
-        binding.datepicker.updateDate(year,month,day)
+        binding.datepickerDtp.updateDate(year,month,day)
 
         @Suppress("DEPRECATION")
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            binding.timepicker.hour = hours
-            binding.timepicker.minute = minutes
+            binding.timepickerDtp.hour = hours
+            binding.timepickerDtp.minute = minutes
         } else {
-            binding.timepicker.currentHour = hours
-            binding.timepicker.currentMinute = minutes
+            binding.timepickerDtp.currentHour = hours
+            binding.timepickerDtp.currentMinute = minutes
         }
 
-        binding.tvDateTimePickerNowDate.text = convertDateToString(month,day)
-        binding.tvDateTimePickerNowTime.text = convertTimeToString(hours,minutes)
+        binding.tvDtpNowDate.text = convertDateToString(month,day)
+        binding.tvDtpNowTime.text = convertTimeToString(hours,minutes)
     }
 
     /** [날짜를 문자열로 변환 (0월 0일)] */

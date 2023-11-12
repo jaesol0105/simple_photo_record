@@ -77,7 +77,7 @@ class MainActivity : AppCompatActivity(), RecordFragment.Callbacks {
 
     override fun onLongClick(longclick :Boolean, count:Int) {
         if (longclick) {
-            toolbar.title = count.toString() + "개 선택됨"
+            toolbar.title = count.toString() + getString(R.string.record_selected_count)
             supportActionBar!!.setDisplayHomeAsUpEnabled(false)
         } else {
             toolbar.title = getString(R.string.app_name)
