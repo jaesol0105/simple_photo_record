@@ -32,6 +32,7 @@
                     android:background="?attr/colorPrimary"
                     app:elevation="0dp"
                     app:subtitleTextColor="@color/font"
+                    app:titleTextAppearance="@style/Headline6.Bold"
                     app:titleTextColor="@color/font" />
 
             </com.google.android.material.appbar.AppBarLayout>

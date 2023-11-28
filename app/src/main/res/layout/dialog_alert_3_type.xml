@@ -9,62 +9,74 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@drawable/background_bottom_sheet_dialog"
+        android:background="@android:color/transparent"
         android:orientation="vertical">
-
-        <TextView
-            android:id="@+id/tv_dialog_alert_msg"
-            style="@style/TextSubtitle2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:paddingLeft="24dp"
-            android:paddingTop="24dp"
-            tools:text="변경 사항을 저장할까요?" />
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            android:layout_height="match_parent"
+            android:layout_margin="8dp"
+            android:background="@drawable/background_bottom_sheet_dialog"
+            android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tv_da3t_cancel"
-                style="@style/TextSubtitle2.Bold"
+                android:id="@+id/tv_dialog_alert_msg"
+                style="@style/TextSubtitle2"
                 android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/all_cancel" />
+                android:layout_height="wrap_content"
+                android:paddingLeft="24dp"
+                android:paddingTop="24dp"
+                android:text="@string/alertdlg_save_warning"
+                tools:text="변경 사항을 저장할까요?" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center"
-                android:background="@color/gray" />
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/tv_da3t_not_save"
-                style="@style/TextSubtitle2.Bold"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/alertdlg_not_save_button" />
+                <TextView
+                    android:id="@+id/tv_da3t_cancel"
+                    style="@style/Headline6.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_marginLeft="16dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/all_cancel" />
 
-            <View
-                android:layout_width="1dp"
-                android:layout_height="20dp"
-                android:layout_gravity="center"
-                android:background="@color/gray" />
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:background="@color/gray" />
 
-            <TextView
-                android:id="@+id/tv_da3t_save"
-                style="@style/TextSubtitle2.Bold"
-                android:layout_width="wrap_content"
-                android:layout_height="80dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="@string/all_save" />
+                <TextView
+                    android:id="@+id/tv_da3t_not_save"
+                    style="@style/Headline6.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/alertdlg_not_save_button" />
 
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="20dp"
+                    android:layout_gravity="center"
+                    android:background="@color/gray" />
+
+                <TextView
+                    android:id="@+id/tv_da3t_save"
+                    style="@style/Headline6.Bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="80dp"
+                    android:layout_marginRight="16dp"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:text="@string/all_save" />
+
+            </LinearLayout>
         </LinearLayout>
+
     </LinearLayout>
 </layout>

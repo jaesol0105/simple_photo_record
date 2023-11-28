@@ -15,16 +15,29 @@ class RecordDetailViewModel(private val recordRepository: RecordRepository) : Vi
     lateinit var thumbFile : File
     lateinit var tempFile : File
 
-    /** [실시간으로 수정되는 로컬 record 객체] */
-    var record = Record()
+    lateinit var initialLabel : String
+    lateinit var initialMemo : String
 
-    /** [DB에 저장된 record 객체를 id를 통해 불러온다] */
+    /** [실시간으로 수정되는 로컬 Record 객체] */
+    lateinit var record : Record
+
+    /** [데이터 변경 여부 확인 용도 - 날짜, 사진] */
+    var isDateEdit = false
+    var isPhotoEdit = false
+
+    /** [DB에 저장된 Record 객체를 id를 통해 불러온다] */
     var recordLiveData: LiveData<Record?> =
         Transformations.switchMap(recordIdLiveData) { recordId -> recordRepository.getRecord(recordId) }
 
     /** [id를 recordIdLiveData에 할당] */
     fun loadRecordById(recordId:UUID) {
         recordIdLiveData.value = recordId
+    }
+
+    /** [초기 label, memo 값 초기화 (데이터 변경 여부 확인 용도 - 제목, 메모)] */
+    fun setInitialValues() {
+        initialLabel = record.label
+        initialMemo = record.memo
     }
 
     /** [사진 파일이 가르킬 위치(File)를 초기화] */

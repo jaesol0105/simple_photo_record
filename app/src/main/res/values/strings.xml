@@ -12,8 +12,6 @@
     <string name="all_cancel">취소</string>
     <string name="all_complete">완료</string>
     <string name="all_done">확인</string>
-    <string name="all_non_text">""</string>
-    <string name="all_memo_text_length">" / 8000"</string>
 
     <string name="record_selected_count">개 선택됨</string>
     <string name="record_app_close_warning">"'뒤로' 버튼을 한번 더 누르시면 종료됩니다"</string>
@@ -21,12 +19,14 @@
     <string name="record_selected_delete_warning_2">개를 영구적으로 삭제 할까요?</string>
 
     <string name="recorddetail_edit">편집</string>
-    <string name="recorddetail_title_hint">메인화면에서 표시할 제목을 입력해주세요</string>
-    <string name="recorddetail_memo_hint">메모를 입력하세요</string>
+    <string name="recorddetail_title_hint">제목을 입력하세요</string>
+    <string name="recorddetail_memo_hint">내용을 입력하세요</string>
     <string name="recorddetail_back_press_warning">\'뒤로\' 버튼을 누르면 저장되지 않은 변경 사항은 저장되지 않습니다</string>
     <string name="recorddetail_delete_warning">삭제한 레코드는 복구할 수 없어요</string>
     <string name="recorddetail_cannot_find_gallery_app">갤러리 앱을 찾을 수 없습니다</string>
     <string name="recorddetail_storage_error">내부 저장소에 이미지를 저장 할 수 없습니다</string>
+    <string name="recorddetail_non_text">""</string>
+    <string name="recorddetail_memo_length">" / 8000"</string>
 
     <string name="datamgnt_delete_all">모든 데이터 삭제하기</string>
     <string name="datamgnt_delete_warning">정말 모든 데이터를 삭제 할까요?\n삭제한 데이터는 다시는 복구할 수 없어요</string>
@@ -37,11 +37,16 @@
 
     <string name="alertdlg_delete_button">영구적으로 삭제</string>
     <string name="alertdlg_not_save_button">저장 안함</string>
+    <string name="alertdlg_save_warning">변경 사항을 저장할까요?</string>
 
-    <string name="sortdlg_sortby_label_1">이름(가나다순)</string>
-    <string name="sortdlg_sortby_label_2">이름(가나다 역순)</string>
-    <string name="sortdlg_sortby_label_3">날짜(오름차순)</string>
-    <string name="sortdlg_sortby_label_4">날짜(내림차순)</string>
+    <string name="sortdlg_sortby_label_1">"  이름(가나다순)"</string>
+    <string name="sortdlg_sortby_label_2">"  이름(가나다 역순)"</string>
+    <string name="sortdlg_sortby_label_3">"  날짜(오름차순)"</string>
+    <string name="sortdlg_sortby_label_4">"  날짜(내림차순)"</string>
+
+    <string name="cropphoto_title_label"> </string>
+
+    <string name="photoviewer_save_done">다운로드 완료</string>
 
     <string name="nav_record_label">간단한 사진 기록</string>
     <string name="nav_record_detail_label">상세 정보</string>

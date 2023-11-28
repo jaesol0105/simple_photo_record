@@ -20,7 +20,6 @@ import java.util.*
 
 class MainActivity : AppCompatActivity(), RecordFragment.Callbacks {
     private lateinit var toolbar : Toolbar
-    private lateinit var fab : FloatingActionButton
     private lateinit var navView : NavigationView
     private lateinit var drawerLayout : DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -64,9 +63,8 @@ class MainActivity : AppCompatActivity(), RecordFragment.Callbacks {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    /** [RecordFragment에서 호출될 콜백 함수.] */
+    /** [RecordFragment에서 호출될 콜백 함수 - 클릭] */
     override fun onSelected(recordId: UUID) {
-        Log.d("adapteronclick","2")
         val fragment = RecordDetailFragment.newInstance(recordId)
         supportFragmentManager
             .beginTransaction()
@@ -75,13 +73,14 @@ class MainActivity : AppCompatActivity(), RecordFragment.Callbacks {
             .commit()
     }
 
+    /** [RecordFragment에서 호출될 콜백 함수 - 길게 클릭] */
     override fun onLongClick(longclick :Boolean, count:Int) {
         if (longclick) {
-            toolbar.title = count.toString() + getString(R.string.record_selected_count)
-            supportActionBar!!.setDisplayHomeAsUpEnabled(false)
+            toolbar.title = count.toString() + getString(R.string.record_selected_count) // 체크한 레코드 수
+            supportActionBar!!.setDisplayHomeAsUpEnabled(false) // 네비게이션 메뉴 사용 안함
         } else {
-            toolbar.title = getString(R.string.app_name)
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+            toolbar.title = getString(R.string.app_name) // 앱 타이틀
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true) // 네비게이션 메뉴 사용
         }
     }
 }

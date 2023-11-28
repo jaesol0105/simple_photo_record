@@ -33,7 +33,7 @@ class RecordFragment : Fragment() {
     private var callbacks: Callbacks? =null
 
     /** [back press 처리 콜백] */
-    private lateinit var callbacks_bp: OnBackPressedCallback
+    private lateinit var callbacksBp: OnBackPressedCallback
     private var backKeyPressedTime : Long = 0
 
     private val viewModel: RecordViewModel by viewModels { ViewModelFactory(requireContext()) }
@@ -50,7 +50,7 @@ class RecordFragment : Fragment() {
         callbacks = context as Callbacks?
 
         /** [back press 처리 콜백] */
-        callbacks_bp = object : OnBackPressedCallback(true) {
+        callbacksBp = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
                 /** [longClick 상태일 경우] */
                 if (longClick) {
@@ -70,7 +70,7 @@ class RecordFragment : Fragment() {
                 }
             }
         }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callbacks_bp)
+        requireActivity().onBackPressedDispatcher.addCallback(this, callbacksBp)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -94,7 +94,7 @@ class RecordFragment : Fragment() {
         /** [recyclerView 레이아웃 설정] */
         binding.rvRecordList.layoutManager = GridLayoutManager(context,2)
 
-        recordAdapter = RecordAdapter(callbacks,adapterCallback())
+        recordAdapter = RecordAdapter(callbacks,AdapterCallback())
         binding.rvRecordList.adapter = recordAdapter
 
         /** [뷰 모델의 LiveData observe] */
@@ -114,7 +114,7 @@ class RecordFragment : Fragment() {
 
     override fun onStart() {
         super.onStart()
-        /** [fab - Record 생성] */
+        /** [fab 리스너 - Record 생성] */
         binding.fabRecordAdd.setOnClickListener {
             // 새로운 Record 객체 생성
             val record = Record()
@@ -128,7 +128,7 @@ class RecordFragment : Fragment() {
     override fun onDetach() {
         super.onDetach()
         callbacks = null
-        callbacks_bp.remove()
+        callbacksBp.remove()
     }
 
     /** [메뉴 인플레이트] */
@@ -172,18 +172,18 @@ class RecordFragment : Fragment() {
     /** [정렬을 위한 Dialog 출력] */
     private fun showSortDialog() {
         val dlg = BottomSheetDialog(requireContext(),R.style.transparentDialog)
-        val dlg_binding = DialogSortingBinding.inflate(LayoutInflater.from(requireContext()))
-        dlg.setContentView(dlg_binding.root)
+        val dlgBinding = DialogSortingBinding.inflate(LayoutInflater.from(requireContext()))
+        dlg.setContentView(dlgBinding.root)
 
         when (PhotoRecordApplication.prefs.getInt("SORT_BY",3)) {
-            0 -> dlg_binding.rbDialogSortingSortbyNameAsc.isChecked = true
-            1 -> dlg_binding.rbDialogSortingSortbyNameDesc.isChecked = true
-            2 -> dlg_binding.rbDialogSortingSortbyDateAsc.isChecked = true
-            3 -> dlg_binding.rbDialogSortingSortbyDateDesc.isChecked = true
+            0 -> dlgBinding.rbDialogSortingSortbyNameAsc.isChecked = true
+            1 -> dlgBinding.rbDialogSortingSortbyNameDesc.isChecked = true
+            2 -> dlgBinding.rbDialogSortingSortbyDateAsc.isChecked = true
+            3 -> dlgBinding.rbDialogSortingSortbyDateDesc.isChecked = true
         }
 
         var selected = 3
-        dlg_binding.radioGroup.setOnCheckedChangeListener { _,checkedId:Int ->
+        dlgBinding.radioGroup.setOnCheckedChangeListener { _, checkedId:Int ->
             selected = when(checkedId) {
                 R.id.rb_dialog_sorting_sortby_name_asc -> 0
                 R.id.rb_dialog_sorting_sortby_name_desc -> 1
@@ -194,7 +194,7 @@ class RecordFragment : Fragment() {
             Log.d("sort",selected.toString())
         }
 
-        dlg_binding.tvDialogSortingComplete.setOnClickListener {
+        dlgBinding.tvDialogSortingComplete.setOnClickListener {
             PhotoRecordApplication.prefs.setInt("SORT_BY",selected)
             //TODO: 화면 갱신 필요. 옵저버 작동 OR 여기서 갱신.
             val record = Record()
@@ -204,7 +204,7 @@ class RecordFragment : Fragment() {
             Log.d("sort",PhotoRecordApplication.prefs.getInt("SORT_BY",3).toString())
         }
 
-        dlg_binding.tvDialogSortingCancel.setOnClickListener {
+        dlgBinding.tvDialogSortingCancel.setOnClickListener {
             dlg.dismiss()
         }
 
@@ -242,18 +242,18 @@ class RecordFragment : Fragment() {
     /** [체크 된 Record 모두 삭제] */
     private fun deleteCheckedRecords() {
         val dlg = BottomSheetDialog(requireContext(), R.style.transparentDialog)
-        val dlg_binding = DialogAlertBinding.inflate(LayoutInflater.from(requireContext()))
-        dlg.setContentView(dlg_binding.root)
+        val dlgBinding = DialogAlertBinding.inflate(LayoutInflater.from(requireContext()))
+        dlg.setContentView(dlgBinding.root)
 
-        dlg_binding.tvDialogAlertMsg.text =
+        dlgBinding.tvDialogAlertMsg.text =
             getString(R.string.record_selected_delete_warning_1) + countOfCheckedRecord.toString() + getString(R.string.record_selected_delete_warning_2)
 
-        dlg_binding.tvDialogAlertComplete.setOnClickListener {
+        dlgBinding.tvDialogAlertComplete.setOnClickListener {
             disableLongClick()
             viewModel.deleteCheckedRecord()
             dlg.dismiss()
         }
-        dlg_binding.tvDialogAlertCancel.setOnClickListener {
+        dlgBinding.tvDialogAlertCancel.setOnClickListener {
             dlg.dismiss()
         }
 
@@ -261,7 +261,7 @@ class RecordFragment : Fragment() {
     }
 
     /** [RecordAdapter로 넘겨줄 callback] */
-    inner class adapterCallback {
+    inner class AdapterCallback {
         fun activateLongClick(record:Record) {
             longClick = true
 

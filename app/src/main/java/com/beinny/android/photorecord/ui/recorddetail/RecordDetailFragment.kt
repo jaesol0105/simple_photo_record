@@ -24,52 +24,63 @@ import java.util.*
 import androidx.appcompat.app.AppCompatActivity
 import android.graphics.Bitmap
 import android.graphics.Paint
+import android.graphics.Point
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.viewModels
 import com.beinny.android.photorecord.*
 import com.beinny.android.photorecord.databinding.FragmentRecordDetailBinding
 import com.beinny.android.photorecord.common.*
+import com.beinny.android.photorecord.databinding.DialogAlert3TypeBinding
 import com.beinny.android.photorecord.databinding.DialogAlertBinding
 import com.beinny.android.photorecord.ui.common.ViewModelFactory
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import kotlin.math.max
 
-class RecordDetailFragment : Fragment(), DateTimePickerFragment.CallBacks {
-    private lateinit var bitmap_temp: Bitmap
-    private lateinit var bitmap_temp_thumb: Bitmap
+class RecordDetailFragment : Fragment(), DateTimePickerFragment.CallBacks, CropPhotoFragment.CallBacks {
+    private lateinit var bitmapTemp: Bitmap
+    private lateinit var bitmapTempThumb: Bitmap
 
     private lateinit var binding: FragmentRecordDetailBinding
     private val viewModel: RecordDetailViewModel by viewModels { ViewModelFactory(requireContext()) }
 
-    /** [back press 처리 콜백] */
-    private lateinit var callbacks_bp: OnBackPressedCallback
-    private var backKeyPressedTime : Long =0
+    /** [디바이스의 화면 크기] */
+    val deviceXY = Point()
 
-    /** [onAttach : fragment 가 add 될때 호출 된다] */
+    /** [뒤로 가기 - 대화상자] */
+    private lateinit var dlgClose : BottomSheetDialog
+
+    /** [뒤로가기 - back press 처리 콜백] */
+    private lateinit var callbacksBp: OnBackPressedCallback
+
+    /** [뒤로 가기 - 동작] */
+    private fun backToRecordList() {
+        if(isEdit())// 수정했을 경우
+            dlgClose.show()
+
+        else // 수정안했을 경우
+            notSaveRecord() // new-삭제+나가기, old-나가기
+    }
+
+    /** [데이터 변경 여부 확인] */
+    private fun isEdit() : Boolean {
+        return (viewModel.initialLabel != viewModel.record.label)||(viewModel.initialMemo != viewModel.record.memo)||viewModel.isDateEdit||viewModel.isPhotoEdit
+    }
+
+    /** [onAttach : fragment 가 add 될때 호출된다] */
     override fun onAttach(context: Context) {
         super.onAttach(context)
         /** [back press 처리 콜백] */
-        callbacks_bp = object : OnBackPressedCallback(true) {
+        callbacksBp = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if(System.currentTimeMillis() > backKeyPressedTime + 2000)
-                {
-                    backKeyPressedTime = System.currentTimeMillis()
-                    Toast.makeText(context,getString(R.string.recorddetail_back_press_warning), Toast.LENGTH_SHORT).show()
-                }
-                else
-                {
-                    // add 버튼을 눌러서 detailFragment로 이동할 때, DB에 insert하기 때문에, new record를 저장하지 않을 경우 delete 해준다
-                    if (viewModel.record.isNew)
-                        viewModel.deleteRecord(viewModel.record)
-                    parentFragmentManager.popBackStack() // 뒤로 가기 : 액티비티의 백스택에서 pop
-                }
+                backToRecordList()
             }
         }
-        requireActivity().onBackPressedDispatcher.addCallback(this, callbacks_bp)
+        requireActivity().onBackPressedDispatcher.addCallback(this, callbacksBp)
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        /** [id로(arg)로 record 불러오기] */
+        /** [id로(arg)로 Record 불러오기] */
         val recordId: UUID = arguments?.getSerializable(ARG_RECORD_ID) as UUID
         viewModel.loadRecordById(recordId)
     }
@@ -89,7 +100,7 @@ class RecordDetailFragment : Fragment(), DateTimePickerFragment.CallBacks {
         binding.lifecycleOwner = viewLifecycleOwner
         binding.viewModel = viewModel
 
-        /** [데이터 변경시 UI 갱신] */
+        /** [UI 갱신] */
         viewModel.recordLiveData.observe(
             viewLifecycleOwner,
             Observer { record ->
@@ -97,6 +108,7 @@ class RecordDetailFragment : Fragment(), DateTimePickerFragment.CallBacks {
                     // updateUI()
                     binding.record = record // record : recordLiveData
                     viewModel.record = record // viewModel.record : 로컬 Record 객체
+                    viewModel.setInitialValues()
                     viewModel.setPhotoFiles()
                 }
             })
@@ -105,43 +117,22 @@ class RecordDetailFragment : Fragment(), DateTimePickerFragment.CallBacks {
     override fun onStart() {
         super.onStart()
 
-        /** [뒤로 가기] */
-        binding.ivRecordDetailClose.setOnClickListener {
+        /** [뒤로 가기 대화상자 초기화] */
+        initDlgClose()
 
-        }
+        /** [디바이스 화면 크기 구하기] */
+        getDeviceXYInfo()
 
-        /** [label watcher] */
-        val labelWatcher = object : TextWatcher {
-            var previousString : String = ""
-
-            override fun beforeTextChanged(
-                sequence: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {
-                previousString = sequence.toString();
-            }
-
-            override fun onTextChanged(
-                sequence: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int
-            ) {
-                viewModel.record.label = sequence.toString()
-            }
-
-            override fun afterTextChanged(sequence: Editable?) {
-                /** [제목 글자수 제한] */
-                if (binding.etRecordDetailLabel.length() > 10) {
-                    binding.etRecordDetailLabel.text = Editable.Factory.getInstance().newEditable(previousString)
-                    binding.etRecordDetailLabel.setSelection(binding.etRecordDetailLabel.length())
-                }
-            }
-        }
-        binding.etRecordDetailLabel.addTextChangedListener(labelWatcher)
+        /** [뷰 설정] */
+        binding.etRecordDetailLabel.addTextChangedListener(labelWatcher())
         binding.etRecordDetailLabel.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+        binding.tvRecordDetailDate.paintFlags = Paint.UNDERLINE_TEXT_FLAG
+        binding.etRecordDetailMemo.addTextChangedListener(memoWatcher())
+
+        /** [백 버튼 리스너] */
+        binding.ivRecordDetailClose.setOnClickListener {
+            backToRecordList()
+        }
 
         /** [날짜 선택 리스너] */
         binding.tvRecordDetailDate.setOnClickListener {
@@ -151,42 +142,10 @@ class RecordDetailFragment : Fragment(), DateTimePickerFragment.CallBacks {
                 show(this@RecordDetailFragment.parentFragmentManager, DIALOG_DATE)
             }
         }
-        binding.tvRecordDetailDate.paintFlags = Paint.UNDERLINE_TEXT_FLAG
 
-        /** [memo watcher] */
-        val memoWatcher = object : TextWatcher {
-            var previousString : String = ""
-
-            override fun beforeTextChanged(
-                sequence: CharSequence?,
-                start: Int,
-                count: Int,
-                after: Int
-            ) {
-                previousString = sequence.toString()
-            }
-
-            override fun onTextChanged(
-                sequence: CharSequence?,
-                start: Int,
-                before: Int,
-                count: Int
-            ) {
-                viewModel.record.memo = sequence.toString()
-                if (sequence.toString().isNotEmpty()) {
-                    binding.tvRecordDetailMemoCount.text = sequence.toString().length.toString() + getString(R.string.all_memo_text_length)
-                } else {
-                    binding.tvRecordDetailMemoCount.text = getString(R.string.all_non_text)
-                }
-            }
-
-            override fun afterTextChanged(sequence: Editable?) {}
-        }
-        binding.etRecordDetailMemo.addTextChangedListener(memoWatcher)
-
-        /** [원본 이미지 출력하기] */
+        /** [원본 이미지 출력 리스너] */
         binding.ivRecordDetailPhoto.setOnClickListener {
-            if (viewModel.photoFile.exists()) {
+            if (viewModel.photoFile.exists() && !viewModel.isPhotoEdit) {
                 PhotoViewerFragment.newInstance(viewModel.photoFile).apply {
                     show(this@RecordDetailFragment.parentFragmentManager, DIALOG_PHOTO)
                 }
@@ -199,7 +158,7 @@ class RecordDetailFragment : Fragment(), DateTimePickerFragment.CallBacks {
             }
         })
 
-        /** [갤러리 앱에서 사진 선택] */
+        /** [갤러리 앱에서 이미지 선택 리스너] */
         binding.ivRecordDetailAddPhoto.apply {
             val getImageFromAlbum: Intent = Intent().apply {
                 action = Intent.ACTION_PICK
@@ -215,54 +174,19 @@ class RecordDetailFragment : Fragment(), DateTimePickerFragment.CallBacks {
             }
         }
 
-        /** [삭제 버튼 - DB에 반영, 내부저장소의 사진을 삭제] */
-        binding.btnRecordDetailDelete.setOnClickListener {
-            val dlg = BottomSheetDialog(requireContext(), R.style.transparentDialog)
-            val dlg_binding = DialogAlertBinding.inflate(LayoutInflater.from(requireContext()))
-
-            dlg.setContentView(dlg_binding.root)
-
-            dlg_binding.tvDialogAlertMsg.text = getString(R.string.recorddetail_delete_warning)
-            dlg_binding.tvDialogAlertComplete.setOnClickListener {
-                if(viewModel.photoFile.exists())
-                    viewModel.photoFile.delete() // 내부저장소의 사진 파일 삭제
-
-                if(viewModel.thumbFile.exists())
-                    viewModel.thumbFile.delete() // 내부저장소의 썸네일 파일 삭제
-
-                viewModel.deleteRecord(viewModel.record) // DB 반영
-                dlg.dismiss() // 대화상자 닫기
-                parentFragmentManager.popBackStack() // 뒤로 가기
-            }
-            dlg_binding.tvDialogAlertCancel.setOnClickListener {
-                dlg.dismiss()
-            }
-
-            dlg.show()
+        /** [삭제 버튼 리스너] */
+        binding.tvRecordDetailDelete.setOnClickListener {
+            deleteRecord()
         }
 
-        /** [저장 버튼 - DB에 반영, 이미지 비트맵과 썸네일 비트맵을 내부저장소에 저장] */
+        /** [취소 버튼 리스너] */
+        binding.btnRecordDetailCancel.setOnClickListener {
+            notSaveRecord()
+        }
+
+        /** [저장 버튼 리스너] */
         binding.btnRecordDetailSave.setOnClickListener {
-            if(viewModel.record.isNew)
-                viewModel.record.isNew = false
-
-            if(::bitmap_temp.isInitialized)
-            {
-                val out = FileOutputStream(viewModel.photoFile)
-                // compress 함수를 사용해 스트림에 비트맵을 저장.
-                bitmap_temp.compress(Bitmap.CompressFormat.JPEG, 100, out)
-                // 스트림 사용후 닫기.
-                out.close()
-            }
-            if(::bitmap_temp_thumb.isInitialized)
-            {
-                val out_thumb = FileOutputStream(viewModel.thumbFile)
-                bitmap_temp_thumb.compress(Bitmap.CompressFormat.JPEG, 100, out_thumb)
-                out_thumb.close()
-            }
-
-            viewModel.saveRecord(viewModel.record) // DB에 반영
-            parentFragmentManager.popBackStack() // 뒤로 가기
+            saveRecord()
         }
     }
 
@@ -280,13 +204,177 @@ class RecordDetailFragment : Fragment(), DateTimePickerFragment.CallBacks {
 
     override fun onDetach() {
         super.onDetach()
-        callbacks_bp.remove()
+        callbacksBp.remove()
     }
 
-    /** [선택한 날짜 뷰에 반영] */
+    /** [뒤로 가기 대화상자 초기화] */
+    private fun initDlgClose() {
+        dlgClose = BottomSheetDialog(requireContext(), R.style.transparentDialog)
+        val dlgCloseBinding = DialogAlert3TypeBinding.inflate(LayoutInflater.from(requireContext()))
+        dlgClose.setContentView(dlgCloseBinding.root)
+        dlgCloseBinding.tvDa3tSave.setOnClickListener { // 저장하고 나가기
+            dlgClose.dismiss()
+            saveRecord()
+        }
+        dlgCloseBinding.tvDa3tNotSave.setOnClickListener { // 저장안하고 나가기
+            dlgClose.dismiss()
+            notSaveRecord() // new-삭제+나가기, old-나가기
+        }
+        dlgCloseBinding.tvDa3tCancel.setOnClickListener {
+            dlgClose.dismiss()
+        }
+    }
+
+    /** [디바이스 화면 크기 구하기] */
+    private fun getDeviceXYInfo() {
+        @Suppress("DEPRECATION")
+        requireActivity().windowManager.defaultDisplay.getSize(deviceXY)
+    }
+
+    /** [label watcher] */
+    private fun labelWatcher() = object : TextWatcher {
+        var previousString: String = ""
+
+        override fun beforeTextChanged(
+            sequence: CharSequence?,
+            start: Int,
+            count: Int,
+            after: Int
+        ) {
+            previousString = sequence.toString();
+        }
+
+        override fun onTextChanged(
+            sequence: CharSequence?,
+            start: Int,
+            before: Int,
+            count: Int
+        ) {
+            viewModel.record.label = sequence.toString()
+        }
+
+        override fun afterTextChanged(sequence: Editable?) {
+            /** [제목 글자수 제한] */
+            if (binding.etRecordDetailLabel.length() > 30) {
+                binding.etRecordDetailLabel.text =
+                    Editable.Factory.getInstance().newEditable(previousString)
+                binding.etRecordDetailLabel.setSelection(binding.etRecordDetailLabel.length())
+            }
+        }
+    }
+
+    /** [memo watcher] */
+    private fun memoWatcher() = object : TextWatcher {
+        var previousString: String = ""
+
+        override fun beforeTextChanged(
+            sequence: CharSequence?,
+            start: Int,
+            count: Int,
+            after: Int
+        ) {
+            previousString = sequence.toString()
+        }
+
+        override fun onTextChanged(
+            sequence: CharSequence?,
+            start: Int,
+            before: Int,
+            count: Int
+        ) {
+            viewModel.record.memo = sequence.toString()
+            if (sequence.toString().isNotEmpty()) {
+                binding.tvRecordDetailMemoCount.text =
+                    sequence.toString().length.toString() + getString(R.string.recorddetail_memo_length)
+            } else {
+                binding.tvRecordDetailMemoCount.text = getString(R.string.recorddetail_non_text)
+            }
+        }
+
+        override fun afterTextChanged(sequence: Editable?) {}
+    }
+
+    /** [저장하고 나가기 - DB에 저장, 이미지 bitmap, 썸네일 bitmap 내부저장소에 저장] */
+    private fun saveRecord() {
+        if (viewModel.record.isNew)
+            viewModel.record.isNew = false
+
+        if (::bitmapTemp.isInitialized) {
+            val out = FileOutputStream(viewModel.photoFile)
+            // compress 함수를 사용해 스트림에 bitmap을 저장.
+            bitmapTemp.compress(Bitmap.CompressFormat.JPEG, 100, out)
+            // 스트림 사용후 닫기.
+            out.close()
+        }
+        if (::bitmapTempThumb.isInitialized) {
+            val outThumb = FileOutputStream(viewModel.thumbFile)
+            bitmapTempThumb.compress(Bitmap.CompressFormat.JPEG, 100, outThumb)
+            outThumb.close()
+        }
+
+        viewModel.saveRecord(viewModel.record) // DB에 반영
+        parentFragmentManager.popBackStack() // 뒤로 가기
+    }
+
+    /** [저장하지 않고 나가기] */
+    private fun notSaveRecord() {
+        if (viewModel.record.isNew) // fab(add) -> detailFragment 이동 시, DB에 insert 하기 때문에, new Record를 저장하지 않을 경우 delete 해줘야 함
+            viewModel.deleteRecord(viewModel.record)
+        parentFragmentManager.popBackStack()
+    }
+
+    /** [삭제 대화상자 출력 - DB의 Record 삭제, 내부저장소의 이미지 삭제] */
+    private fun deleteRecord() {
+        val dlg = BottomSheetDialog(requireContext(), R.style.transparentDialog)
+        val dlgBinding = DialogAlertBinding.inflate(LayoutInflater.from(requireContext()))
+
+        dlg.setContentView(dlgBinding.root)
+
+        dlgBinding.tvDialogAlertMsg.text = getString(R.string.recorddetail_delete_warning)
+        dlgBinding.tvDialogAlertComplete.setOnClickListener {
+            if (viewModel.photoFile.exists())
+                viewModel.photoFile.delete() // 내부저장소의 이미지 파일 삭제
+
+            if (viewModel.thumbFile.exists())
+                viewModel.thumbFile.delete() // 내부저장소의 썸네일 파일 삭제
+
+            viewModel.deleteRecord(viewModel.record) // DB 반영
+            dlg.dismiss() // 대화상자 닫기
+            parentFragmentManager.popBackStack() // 뒤로 가기
+        }
+        dlgBinding.tvDialogAlertCancel.setOnClickListener {
+            dlg.dismiss()
+        }
+
+        dlg.show()
+    }
+
+    /** [DateTimePicker 콜백 함수 : 선택한 날짜를 뷰에 반영] */
     override fun onDateSelected(date: Date) {
         viewModel.record.date = date
         binding.tvRecordDetailDate.text = SimpleDateFormat(DATE_FORMAT).format(date) // 뷰 업데이트
+        checkEdit(1)
+    }
+
+    override fun onPhotoCropped(bitmap: Bitmap){
+        // [-1. bitmap 파일 생성]
+        bitmapTemp = resizeBitmapToBitmap(bitmap, max(deviceXY.x,deviceXY.y))
+
+        // [-2. 썸네일 bitmap 생성]
+        bitmapTempThumb = resizeBitmapToBitmap(bitmap, max(deviceXY.x/2,deviceXY.y/2))
+
+        if (::bitmapTemp.isInitialized)
+            binding.ivRecordDetailPhoto.setImageBitmap(bitmapTemp) // 뷰 업데이트
+
+        checkEdit(2)
+    }
+
+    /** [데이터 변경시 기록] */
+    private fun checkEdit(type: Int) {
+        if(!viewModel.isDateEdit && type == 1)
+            viewModel.isDateEdit = true
+        if(!viewModel.isPhotoEdit && type == 2)
+            viewModel.isPhotoEdit = true
     }
 
     /** [인텐트 결과 처리] */
@@ -294,38 +382,45 @@ class RecordDetailFragment : Fragment(), DateTimePickerFragment.CallBacks {
         when {
             resultCode != Activity.RESULT_OK -> return
 
-            /** [갤러리 앱 - 사진 선택] */
+            /** [갤러리 앱 - 이미지 선택] */
             requestCode == REQUEST_PHOTO && data != null -> {
                 val selectedUri : Uri = data.data?: return
-
-                /** [원본 이미지파일 & 썸네일 비트맵 생성하기.] */
-                val temp_file = File(viewModel.tempFile.path)
-                try {
-                    // [-0. 내부 저장소(temp_file)에 원본 이미지 파일을 임시 저장]
-                    val inputStream = requireActivity().contentResolver.openInputStream(selectedUri) // uri에 이미지 데이터를 가져온다
-                    val outputStream = FileOutputStream(temp_file) // 데이터를 저장할 경로를 내부 저장소(temp_file) 로 지정.
-                    IOUtils.copy(inputStream, outputStream) // input(이미지 데이터)를 output(내부 저장소)에 copy.
-
-                    // [-1. bitmap 파일 생성]
-                    bitmap_temp = getScaledBitmap(viewModel.tempFile.path,requireActivity(), GET_BIMAP_ORIGIN)
-
-                    // [-2. 썸네일 bitmap 생성]
-                    bitmap_temp_thumb = getScaledBitmap(viewModel.tempFile.path,requireActivity(), GET_BIMAP_RESIZE)
-
-                    // [-3. temp_file 삭제]
-                    if(temp_file.exists())
-                        temp_file.delete()
+                CropPhotoFragment.newInstance(selectedUri.toString()).apply {
+                    /** [대상 프레그먼트 설정 : 결과 돌려받기 위함] */
+                    setTargetFragment(this@RecordDetailFragment, REQUEST_CROP)
+                    show(this@RecordDetailFragment.parentFragmentManager, DIALOG_CROP)
                 }
-                catch(e:Exception)
-                {
-                    Toast.makeText(context,getString(R.string.recorddetail_storage_error),Toast.LENGTH_SHORT).show()
-                    e.printStackTrace()
-                }
-
-                if (::bitmap_temp.isInitialized)
-                    binding.ivRecordDetailPhoto.setImageBitmap(bitmap_temp) // 뷰 업데이트
+                // createBitmap(selectedUri) // bitmap 생성
             }
         }
+    }
+
+    /** [원본 이미지 & 썸네일 비트맵 생성하기.] */
+    private fun createBitmap(selectedUri: Uri) {
+        val tempFile = File(viewModel.tempFile.path)
+        try {
+            // [-0. 내부 저장소(tempFile)에 원본 이미지 파일을 임시 저장]
+            val inputStream = requireActivity().contentResolver.openInputStream(selectedUri) // uri의 이미지 데이터를 가져온다
+            val outputStream = FileOutputStream(tempFile) // 데이터를 저장할 경로를 내부 저장소(tempFile) 로 지정.
+            IOUtils.copy(inputStream, outputStream) // input(이미지 데이터)를 output(내부 저장소)에 copy.
+
+            // [-1. bitmap 파일 생성]
+            bitmapTemp = getScaledBitmap(viewModel.tempFile.path, requireActivity(), GET_BIMAP_ORIGIN)
+
+            // [-2. 썸네일 bitmap 생성]
+            bitmapTempThumb = getScaledBitmap(viewModel.tempFile.path, requireActivity(), GET_BIMAP_RESIZE)
+
+            // [-3. tempFile 삭제]
+            if (tempFile.exists())
+                tempFile.delete()
+
+        } catch (e: Exception) {
+            Toast.makeText(context, getString(R.string.recorddetail_storage_error), Toast.LENGTH_SHORT).show()
+            e.printStackTrace()
+        }
+
+        if (::bitmapTemp.isInitialized)
+            binding.ivRecordDetailPhoto.setImageBitmap(bitmapTemp) // 뷰 업데이트
     }
 
     companion object {

@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/layout_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="70dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/iv_crop_photo_close"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginLeft="24dp"
+                android:layout_marginRight="24dp"
+                android:src="@drawable/ic_baseline_arrow_back_ios_24"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:tint="@color/font" />
+
+            <TextView
+                style="@style/Headline6.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="24dp"
+                android:text="@string/cropphoto_title_label"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toEndOf="@id/iv_crop_photo_close"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/tv_crop_photo_complete"
+                style="@style/Headline6.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="24dp"
+                android:text="@string/all_complete"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <FrameLayout
+            android:id="@+id/layout_cropper"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="16dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent">
+
+            <com.fenchtose.nocropper.CropperView
+                android:id="@+id/cropperview_crop_photo"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="#ff282828"
+                app:nocropper__grid_color="@color/light_white"
+                app:nocropper__grid_opacity="0.8"
+                app:nocropper__grid_thickness="0.8dp"
+                app:nocropper__padding_color="@color/light_black" />
+
+            <ImageView
+                android:id="@+id/btn_crop_photo_snap_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="left|bottom"
+                android:layout_margin="16dp"
+                android:background="@drawable/background_black_transp_circle"
+                android:padding="8dp"
+                android:scaleType="center"
+                android:src="@drawable/ic_baseline_crop_free_24" />
+
+            <ImageView
+                android:id="@+id/btn_crop_photo_rotate_button"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:layout_gravity="right|bottom"
+                android:layout_margin="16dp"
+                android:background="@drawable/background_black_transp_circle"
+                android:padding="8dp"
+                android:scaleType="center"
+                android:src="@drawable/ic_baseline_rotate_right_24" />
+
+        </FrameLayout>
+
+        <Button
+            android:id="@+id/btn_test"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/layout_cropper" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

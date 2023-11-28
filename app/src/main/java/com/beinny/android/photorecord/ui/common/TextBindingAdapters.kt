@@ -1,12 +1,11 @@
 package com.beinny.android.photorecord.ui.common
 
-import android.graphics.Paint
-import android.text.Editable
-import android.widget.Button
-import android.widget.EditText
 import android.widget.TextView
 import androidx.databinding.BindingAdapter
+import com.beinny.android.photorecord.PhotoRecordApplication
+import com.beinny.android.photorecord.R
 import com.beinny.android.photorecord.common.DATE_FORMAT
+import com.beinny.android.photorecord.common.DATE_FORMAT_OF_THUMBNAIL
 import java.text.DateFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -22,7 +21,7 @@ fun applyDateFormat(view: TextView, date: Date?){
 @BindingAdapter("thumbnailDateInKorean")
 fun applyThumbnailDateFormat(view: TextView, date: Date?){
     if(date != null){
-        val df : DateFormat = SimpleDateFormat("yyyy/M/d hh:mm a", Locale.UK) // 날짜를 문자열로 변환
+        val df : DateFormat = SimpleDateFormat(DATE_FORMAT_OF_THUMBNAIL, Locale.UK) // 날짜를 문자열로 변환
         view.text = df.format(date)
     }
 }
@@ -31,9 +30,16 @@ fun applyThumbnailDateFormat(view: TextView, date: Date?){
 fun applyMemoCountFormat(view: TextView, memo:String?){
     if(memo != null){
         if (memo.isEmpty()) {
-            view.text = ""
+            view.text = PhotoRecordApplication.applicationContext().getString(R.string.recorddetail_non_text)
         } else {
-            view.text = memo.length.toString() + " / 8000"
+            view.text = memo.length.toString() + PhotoRecordApplication.applicationContext().getString(R.string.recorddetail_memo_length)
         }
     }
+}
+
+@BindingAdapter("deleteButtonName")
+fun applyDeleteButtonNameFormat(view: TextView, isNew:Boolean?){
+    if(isNew != null)
+        if (isNew)
+            view.text = PhotoRecordApplication.applicationContext().getString(R.string.all_cancel)
 }

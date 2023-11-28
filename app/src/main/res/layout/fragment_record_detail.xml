@@ -37,12 +37,11 @@
 
             <TextView
                 android:id="@+id/tv_record_detail_delete"
-                style="@style/TextSubtitle2"
+                style="@style/TextMedium.Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="24dp"
                 android:text="@string/all_delete"
-                android:visibility="invisible"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/tv_record_detail_edit"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -54,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginRight="24dp"
                 android:text="@string/recorddetail_edit"
-                android:visibility="invisible"
+                android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -116,7 +115,7 @@
 
                     <EditText
                         android:id="@+id/et_record_detail_label"
-                        style="@style/TextSubtitle2"
+                        style="@style/TextSubtitle2.Bold"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@android:color/transparent"
@@ -149,7 +148,7 @@
 
                     <TextView
                         android:id="@+id/tv_record_detail_date"
-                        style="@style/TextSubtitle2"
+                        style="@style/TextSubtitle2.Bold"
                         dateInKorean="@{record.date}"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -218,22 +217,22 @@
             android:orientation="horizontal">
 
             <android.widget.Button
-                android:id="@+id/btn_record_detail_delete"
-                style="@style/TextSubtitle2.Bold"
+                android:id="@+id/btn_record_detail_cancel"
+                style="@style/Headline6.Bold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="4dp"
+                android:layout_marginLeft="16dp"
                 android:layout_weight="1"
                 android:background="@color/background"
                 android:stateListAnimator="@null"
-                android:text="@string/all_delete" />
+                android:text="@string/all_cancel" />
 
             <android.widget.Button
                 android:id="@+id/btn_record_detail_save"
-                style="@style/TextSubtitle2.Bold"
+                style="@style/Headline6.Bold"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginRight="4dp"
+                android:layout_marginRight="16dp"
                 android:layout_weight="1"
                 android:background="@color/background"
                 android:stateListAnimator="@null"

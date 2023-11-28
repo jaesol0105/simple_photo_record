@@ -1,25 +1,18 @@
 package com.beinny.android.photorecord.ui.recorddetail
 
 import android.annotation.SuppressLint
-import android.app.DatePickerDialog
-import android.app.Dialog
 import android.os.Build
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.widget.DatePicker
-import android.widget.ImageView
 import android.widget.TimePicker
-import androidx.annotation.RequiresApi
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.DialogFragment
 import com.beinny.android.photorecord.PhotoRecordApplication
 import com.beinny.android.photorecord.R
 import com.beinny.android.photorecord.databinding.FragmentDateTimePickerBinding
-import com.beinny.android.photorecord.getScaledBitmap
-import com.beinny.android.photorecord.model.Record
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import java.io.File
 import java.util.*
 
 private const val ARG_DATE = "date"
@@ -35,7 +28,7 @@ class DateTimePickerFragment() : DialogFragment() {
     /** [BottomSheetDialog를 생성하여 반환] */
     @SuppressLint("ResourceAsColor")
     override fun onCreateDialog(savedInstanceState: Bundle?): BottomSheetDialog {
-        /** arg로 넘겨받은 date로 calendar 초기화 */
+        /** [arg로 넘겨받은 date값으로 calendar 초기화] */
         val date = arguments?.getSerializable(ARG_DATE) as Date
         val calendar = Calendar.getInstance()
         calendar.time = date
@@ -54,7 +47,7 @@ class DateTimePickerFragment() : DialogFragment() {
         /** [DatePicker TimePicker에 날짜 설정] */
         setDateAndTime(initialYear, initialMonth, initialDay, initialHour, initialMinute)
 
-        /** [완료 버튼] */
+        /** [완료 버튼 리스너] */
         binding.tvDtpComplete.setOnClickListener {
             val resultDate : Date = GregorianCalendar(
                 binding.datepickerDtp.year,
@@ -63,17 +56,17 @@ class DateTimePickerFragment() : DialogFragment() {
                 binding.timepickerDtp.currentHour,
                 binding.timepickerDtp.currentMinute
             ).time
-            /** 최종 선택 날짜를 콜백함수를 통해 Fragment로 반환 */
+            /** [최종 선택 날짜를 콜백 함수를 통해 Fragment로 반환] */
             targetFragment?.let { fragment -> (fragment as DateTimePickerFragment.CallBacks).onDateSelected(resultDate) }
             dlg.dismiss()
         }
 
-        /** [취소 버튼] */
+        /** [취소 버튼 리스너] */
         binding.tvDtpCancel.setOnClickListener {
             dlg.dismiss()
         }
 
-        /** [날짜 버튼] */
+        /** [날짜 버튼 리스너] */
         binding.layoutDtpDate.setOnClickListener {
             binding.datepickerDtp.visibility = View.VISIBLE
             binding.timepickerDtp.visibility = View.GONE
@@ -83,7 +76,7 @@ class DateTimePickerFragment() : DialogFragment() {
             binding.tvDtpNowTime.setTextColor(ContextCompat.getColor(PhotoRecordApplication.applicationContext(),R.color.gray))
         }
 
-        /** [시간 버튼] */
+        /** [시간 버튼 리스너] */
         binding.layoutDtpTime.setOnClickListener {
             binding.datepickerDtp.visibility = View.GONE
             binding.timepickerDtp.visibility = View.VISIBLE
@@ -109,7 +102,7 @@ class DateTimePickerFragment() : DialogFragment() {
         return dlg
     }
 
-    /** [DatePicker TimePicker에 날짜 설정] */
+    /** [DatePicker와 TimePicker에 날짜 설정] */
     private fun setDateAndTime(year: Int, month: Int, day: Int, hours: Int, minutes: Int) {
         binding.datepickerDtp.updateDate(year,month,day)
 

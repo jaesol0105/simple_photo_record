@@ -1,25 +1,21 @@
 package com.beinny.android.photorecord.ui.record
 
-import android.graphics.Color
-import android.graphics.PorterDuff
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.beinny.android.photorecord.R
 import com.beinny.android.photorecord.databinding.ItemRecordBinding
 import com.beinny.android.photorecord.model.Record
 
 class RecordAdapter(
     private val a_callbacks: RecordFragment.Callbacks?,
-    private var f_callback: RecordFragment.adapterCallback
+    private var f_callback: RecordFragment.AdapterCallback
 ) : ListAdapter<Record, RecordAdapter.RecordHolder>(RecordDiffCallback()) {
     private lateinit var binding: ItemRecordBinding
 
-    /** [뷰 객체를 담고있는 뷰 홀더들을 생성 (보통 10~15회 수행)]*/
+    /** [뷰 객체를 담고있는 뷰홀더들을 생성 (보통 10~15회 수행)]*/
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecordHolder {
         binding = ItemRecordBinding.inflate(LayoutInflater.from(parent.context), parent, false)
         return RecordHolder(binding)
@@ -30,6 +26,7 @@ class RecordAdapter(
         holder.bind(getItem(position))
     }
 
+    /** [아이템에 고유한 타입(포지션)을 부여 - 중복 이미지 오류 해결] */
     override fun getItemViewType(position: Int): Int {
         return position
     }
@@ -37,14 +34,14 @@ class RecordAdapter(
     inner class RecordHolder(private val binding: ItemRecordBinding) :
         RecyclerView.ViewHolder(binding.root), View.OnClickListener, View.OnLongClickListener {
         init {
-            itemView.setOnClickListener(this)
+            itemView.setOnClickListener(this) // itemView 리스너 설정
             itemView.setOnLongClickListener(this)
         }
 
         fun bind(record: Record) {
             binding.record = record
-            if (f_callback.isLongClick()) {
-                binding.ivItemRecordCheckbox.visibility = View.VISIBLE
+            if (f_callback.isLongClick()) { // 'longClick 모드' 일때
+                binding.ivItemRecordCheckbox.visibility = View.VISIBLE // 체크 박스 활성화
             } else {
                 binding.ivItemRecordCheckbox.visibility = View.INVISIBLE
             }
@@ -52,19 +49,22 @@ class RecordAdapter(
         }
 
         override fun onClick(v: View) {
-            if (f_callback.isLongClick()) {
+            if (f_callback.isLongClick()) { // 'longClick 모드' 일때
+                /** [체크 상태 변경] */
                 if (binding.record!!.isChecked) {
                     f_callback.changeCheck(binding.record!!.id,false)
                 } else {
                     f_callback.changeCheck(binding.record!!.id,true)
                 }
             } else {
+                /** [detailFragment로 이동] */
                 a_callbacks?.onSelected(binding.record!!.id)
             }
         }
 
         override fun onLongClick(v: View?): Boolean {
             if (!f_callback.isLongClick()) {
+                /** ['longClick 모드' 활성화] */
                 f_callback.activateLongClick(binding.record!!)
             }
             return true // false를 반환하면 손을 떼는 순간 onClick 리스너가 동작함

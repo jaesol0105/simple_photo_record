@@ -15,33 +15,36 @@ class RecordViewModel(private val recordRepository: RecordRepository): ViewModel
     // private val recordRepository = RecordRepository.get()
     val recordListLiveData = recordRepository.getRecords()
 
-    /** [새로운 레코드 추가] */
+    /** [새로운 Record 추가] */
     fun addRecord (record: Record) {
         viewModelScope.launch {
             recordRepository.addRecord(record)
         }
     }
 
-    /** [레코드 삭제] */
+    /** [Record 삭제] */
     fun deleteRecord (record: Record) {
         viewModelScope.launch {
             recordRepository.deleteRecord(record)
         }
     }
 
+    /** [Record 체크 상태 초기화] */
     fun initCheck(id:UUID, state:Boolean) {
         viewModelScope.launch {
             recordRepository.initCheck()
-            recordRepository.changeCheck(id, state)
+            recordRepository.changeCheck(id, state) // 처음 롱 클릭한 레코드 체크
         }
     }
 
+    /** [Record 체크 상태 변경] */
     fun changeCheck (id:UUID, state:Boolean) {
         viewModelScope.launch {
             recordRepository.changeCheck(id, state)
         }
     }
 
+    /** [체크된 Record 일괄 삭제] */
     fun deleteCheckedRecord() {
         viewModelScope.launch {
             recordRepository.deleteCheckedRecord()

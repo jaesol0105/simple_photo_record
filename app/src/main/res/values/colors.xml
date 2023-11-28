@@ -20,4 +20,6 @@
     <color name="font">#FF040404</color>
     <color name="dialog">#FFFFFFFF</color>
     <color name="background_transparent">#40000000</color>
+
+    <color name="grid_color">#FF4081</color>
 </resources>

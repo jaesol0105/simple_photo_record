@@ -19,6 +19,7 @@
         <entry key="..\:/Users/musou/AndroidStudioProjects/DailyLook/app/src/main/res/xml/files.xml" value="0.1296875" />
         <entry key="..\:/git/DailyLook/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.2490740740740741" />
         <entry key="..\:/git/DailyLook/app/src/main/res/drawable/background_black_transp_circle.xml" value="0.265625" />
+        <entry key="..\:/git/DailyLook/app/src/main/res/drawable/background_black_transp_circle_ripple.xml" value="0.24895833333333334" />
         <entry key="..\:/git/DailyLook/app/src/main/res/drawable/background_bottom_sheet_dialog.xml" value="0.265625" />
         <entry key="..\:/git/DailyLook/app/src/main/res/drawable/background_checkbox_circle.xml" value="0.265625" />
         <entry key="..\:/git/DailyLook/app/src/main/res/drawable/background_circle.xml" value="0.264" />
@@ -47,12 +48,13 @@
         <entry key="..\:/git/DailyLook/app/src/main/res/layout/activity_main.xml" value="0.2" />
         <entry key="..\:/git/DailyLook/app/src/main/res/layout/app_bar_main.xml" value="0.12708333333333333" />
         <entry key="..\:/git/DailyLook/app/src/main/res/layout/content_main.xml" value="0.10099637681159421" />
-        <entry key="..\:/git/DailyLook/app/src/main/res/layout/dialog_alert.xml" value="0.12708333333333333" />
+        <entry key="..\:/git/DailyLook/app/src/main/res/layout/dialog_alert.xml" value="0.2" />
         <entry key="..\:/git/DailyLook/app/src/main/res/layout/dialog_alert_3_type.xml" value="0.24947916666666667" />
-        <entry key="..\:/git/DailyLook/app/src/main/res/layout/dialog_photo.xml" value="0.1" />
+        <entry key="..\:/git/DailyLook/app/src/main/res/layout/dialog_photo.xml" value="0.2" />
         <entry key="..\:/git/DailyLook/app/src/main/res/layout/dialog_sorting.xml" value="0.2" />
         <entry key="..\:/git/DailyLook/app/src/main/res/layout/fragment_back_up.xml" value="0.13072916666666667" />
         <entry key="..\:/git/DailyLook/app/src/main/res/layout/fragment_backup.xml" value="0.12708333333333333" />
+        <entry key="..\:/git/DailyLook/app/src/main/res/layout/fragment_crop_photo.xml" value="0.264" />
         <entry key="..\:/git/DailyLook/app/src/main/res/layout/fragment_daily.xml" value="0.1" />
         <entry key="..\:/git/DailyLook/app/src/main/res/layout/fragment_daily_list.xml" value="0.12982456140350876" />
         <entry key="..\:/git/DailyLook/app/src/main/res/layout/fragment_daily_new.xml" value="0.264" />

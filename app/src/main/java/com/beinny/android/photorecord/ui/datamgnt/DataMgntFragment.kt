@@ -1,20 +1,16 @@
 package com.beinny.android.photorecord.ui.datamgnt
 
-import android.app.AlertDialog
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
-import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import com.beinny.android.photorecord.R
 import com.beinny.android.photorecord.databinding.DialogAlertBinding
 import com.beinny.android.photorecord.databinding.FragmentDataMgntBinding
 import com.beinny.android.photorecord.ui.common.ViewModelFactory
-import com.beinny.android.photorecord.ui.record.RecordViewModel
 import com.google.android.material.bottomsheet.BottomSheetDialog
 
 class DataMgntFragment : Fragment() {
@@ -40,23 +36,23 @@ class DataMgntFragment : Fragment() {
 
     fun showWarningDialog() {
         val dlg = BottomSheetDialog(requireContext(), R.style.transparentDialog)
-        val dlg_binding = DialogAlertBinding.inflate(LayoutInflater.from(requireContext()))
-        dlg.setContentView(dlg_binding.root)
+        val dlgBinding = DialogAlertBinding.inflate(LayoutInflater.from(requireContext()))
+        dlg.setContentView(dlgBinding.root)
 
-        dlg_binding.tvDialogAlertMsg.text = getString(R.string.datamgnt_delete_warning)
+        dlgBinding.tvDialogAlertMsg.text = getString(R.string.datamgnt_delete_warning)
 
-        dlg_binding.tvDialogAlertComplete.setOnClickListener {
+        dlgBinding.tvDialogAlertComplete.setOnClickListener {
             viewModel.deleteAllData()
-            dlg_binding.tvDialogAlertMsg.text = getString(R.string.datamgnt_delete_complete)
-            dlg_binding.tvDialogAlertComplete.text = getString(R.string.all_done)
-            dlg_binding.tvDialogAlertCancel.visibility = View.GONE
-            dlg_binding.viewDialogAlertMiddleLine.visibility = View.GONE
-            dlg_binding.tvDialogAlertComplete.setOnClickListener {
+            dlgBinding.tvDialogAlertMsg.text = getString(R.string.datamgnt_delete_complete)
+            dlgBinding.tvDialogAlertComplete.text = getString(R.string.all_done)
+            dlgBinding.tvDialogAlertCancel.visibility = View.GONE
+            dlgBinding.viewDialogAlertMiddleLine.visibility = View.GONE
+            dlgBinding.tvDialogAlertComplete.setOnClickListener {
                 findNavController().navigate(R.id.action_dataMgntFragment_to_recordFragment)
                 dlg.dismiss()
             }
         }
-        dlg_binding.tvDialogAlertCancel.setOnClickListener {
+        dlgBinding.tvDialogAlertCancel.setOnClickListener {
             dlg.dismiss()
         }
         dlg.show()
