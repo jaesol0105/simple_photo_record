@@ -11,7 +11,7 @@ import com.beinny.android.photorecord.ui.recorddetail.RecordDetailViewModel
 import java.lang.IllegalArgumentException
 
 class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory {
-    override fun <T : ViewModel?> create(modelClass: Class<T>): T {
+    override fun <T : ViewModel> create(modelClass: Class<T>): T {
         if (modelClass.isAssignableFrom(RecordViewModel::class.java))
         {
             return RecordViewModel(ServiceLocator.provideRecordRepository(context)) as T
@@ -22,7 +22,10 @@ class ViewModelFactory(private val context: Context) : ViewModelProvider.Factory
         }
         else if (modelClass.isAssignableFrom(DataMgntViewModel::class.java))
         {
-            return DataMgntViewModel(ServiceLocator.provideRecordRepository(context)) as T
+            return DataMgntViewModel(
+                ServiceLocator.provideRecordRepository(context),
+                context.applicationContext
+            ) as T
         }
         else
         {

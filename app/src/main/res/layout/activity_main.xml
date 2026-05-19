@@ -30,6 +30,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
                     android:background="?attr/colorPrimary"
+                    android:theme="@style/ToolbarTheme"
                     app:elevation="0dp"
                     app:subtitleTextColor="@color/font"
                     app:titleTextAppearance="@style/Headline6.Bold"

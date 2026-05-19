@@ -20,7 +20,6 @@ class PhotoRecordApplication : Application() {
     }
 
     companion object {
-        /** [SharedPreference 변수] */
         lateinit var prefs: PreferenceUtil
 
         private var instance: PhotoRecordApplication? = null

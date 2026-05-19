@@ -1,8 +1,8 @@
 package com.beinny.android.photorecord.ui
 
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.widget.Toolbar
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.navigation.findNavController
@@ -12,17 +12,19 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.beinny.android.photorecord.R
-import com.beinny.android.photorecord.ui.recorddetail.RecordDetailFragment
+import com.beinny.android.photorecord.databinding.LayoutToolbarSelectionBinding
+import com.beinny.android.photorecord.ui.common.applyCheckAnimation
 import com.beinny.android.photorecord.ui.record.RecordFragment
-import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.navigation.NavigationView
-import java.util.*
 
 class MainActivity : AppCompatActivity(), RecordFragment.Callbacks {
-    private lateinit var toolbar : Toolbar
-    private lateinit var navView : NavigationView
-    private lateinit var drawerLayout : DrawerLayout
+    private lateinit var toolbar: Toolbar
+    private lateinit var navView: NavigationView
+    private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
+
+    private var selectionBinding: LayoutToolbarSelectionBinding? = null
+    private var isSelectAllChecked = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,24 +40,11 @@ class MainActivity : AppCompatActivity(), RecordFragment.Callbacks {
         val navController = navHostFragment.navController
 
         appBarConfiguration = AppBarConfiguration(
-            setOf(
-                R.id.recordFragment, R.id.dataMgntFragment
-            ), drawerLayout
+            setOf(R.id.recordFragment, R.id.dataMgntFragment),
+            drawerLayout
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
-
-        /*
-        val currentFragment = supportFragmentManager.findFragmentById(R.id.fragment_container)
-
-        if (currentFragment == null) {
-            val fragment = DailyListFragment.newInstance()
-            supportFragmentManager
-                .beginTransaction()
-                .add(R.id.fragment_container,fragment)
-                .commit()
-        }
-        */
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -63,24 +52,45 @@ class MainActivity : AppCompatActivity(), RecordFragment.Callbacks {
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
     }
 
-    /** [RecordFragment에서 호출될 콜백 함수 - 클릭] */
-    override fun onSelected(recordId: UUID) {
-        val fragment = RecordDetailFragment.newInstance(recordId)
-        supportFragmentManager
-            .beginTransaction()
-            .replace(R.id.fragment_container_view,fragment)
-            .addToBackStack(null) // 백스택을 추가하여 백버튼 동작시 RecordFragment로 복귀. 인자=백스택의이름
-            .commit()
+    /** RecordFragment 롱클릭 콜백 - 툴바 선택 뷰 추가/제거 */
+    override fun onLongClick(longclick: Boolean, count: Int, total: Int) {
+        if (longclick) {
+            if (selectionBinding == null) {
+                val sb = LayoutToolbarSelectionBinding.inflate(layoutInflater, toolbar, false)
+                selectionBinding = sb
+                sb.ivSelectAllCheckmark.visibility = View.VISIBLE
+                isSelectAllChecked = false
+                sb.llSelectAll.setOnClickListener {
+                    currentRecordFragment()?.adapterCallback?.run {
+                        if (isSelectAllChecked) clearAll() else selectAll()
+                    }
+                }
+                toolbar.addView(sb.root)
+                supportActionBar!!.setDisplayHomeAsUpEnabled(false)
+            }
+            val sb = selectionBinding!!
+            val newChecked = count > 0 && count == total
+            applyCheckAnimation(
+                sb.ivSelectAllCheckmark,
+                sb.viewSelectAllFrame,
+                isSelectAllChecked,
+                newChecked,
+                R.drawable.ic_checkbox_checked_dark
+            )
+            isSelectAllChecked = newChecked
+            sb.tvToolbarSelectedCount.text = "$count${getString(R.string.record_selected_count)}"
+            toolbar.title = ""
+        } else {
+            selectionBinding?.let { toolbar.removeView(it.root) }
+            selectionBinding = null
+            isSelectAllChecked = false
+            toolbar.title = getString(R.string.app_name)
+            supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        }
     }
 
-    /** [RecordFragment에서 호출될 콜백 함수 - 길게 클릭] */
-    override fun onLongClick(longclick :Boolean, count:Int) {
-        if (longclick) {
-            toolbar.title = count.toString() + getString(R.string.record_selected_count) // 체크한 레코드 수
-            supportActionBar!!.setDisplayHomeAsUpEnabled(false) // 네비게이션 메뉴 사용 안함
-        } else {
-            toolbar.title = getString(R.string.app_name) // 앱 타이틀
-            supportActionBar!!.setDisplayHomeAsUpEnabled(true) // 네비게이션 메뉴 사용
-        }
+    private fun currentRecordFragment(): RecordFragment? {
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.fragment_container_view) as? NavHostFragment
+        return navHostFragment?.childFragmentManager?.primaryNavigationFragment as? RecordFragment
     }
 }

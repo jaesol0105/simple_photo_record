@@ -133,10 +133,8 @@ class CropPhotoFragment : DialogFragment() {
     private fun loadNewImage(filePath: String) {
         currentFilePath = filePath
 
-        mBitmap = rotate(BitmapFactory.decodeFile(filePath), getExifDegree(filePath)) // 절대경로로부터 비트맵 불러오기, 이미지 회전현상 해결
-
-        //mBitmap = BitmapFactory.decodeFile(filePath) // 절대경로로부터 비트맵 불러오기
-        originalBitmap = mBitmap // 원본 비트맵 저장
+        mBitmap = rotate(BitmapFactory.decodeFile(filePath), getExifDegree(filePath))
+        originalBitmap = mBitmap
 
         val maxP: Int = Math.max(mBitmap.width, mBitmap.height)
         val scale1280 = maxP.toFloat() / 1280

@@ -5,12 +5,13 @@ plugins {
 }
 
 android {
-    compileSdk 31
+    namespace "com.beinny.android.photorecord"
+    compileSdk 34
 
     defaultConfig {
-        applicationId "com.beinny.android.dailylook"
+        applicationId "com.beinny.android.photorecord"
         minSdk 21
-        targetSdk 31
+        targetSdk 34
         versionCode 1
         versionName "1.0"
 
@@ -24,6 +25,7 @@ android {
         }
     }
     buildFeatures {
+        dataBinding true
         viewBinding true
     }
     compileOptions {
@@ -32,15 +34,6 @@ android {
     }
     kotlinOptions {
         jvmTarget = '1.8'
-    }
-    dataBinding {
-        enabled=true
-    }
-}
-
-allprojects {
-    repositories {
-        maven {url 'https://jitpack.io'}
     }
 }
 
@@ -57,11 +50,11 @@ dependencies {
     implementation 'commons-io:commons-io:2.4'
     implementation 'androidx.navigation:navigation-fragment-ktx:2.3.5'
     implementation 'androidx.navigation:navigation-ui-ktx:2.3.5'
-    implementation 'com.theartofdev.edmodo:android-image-cropper:2.8.0'
     implementation "com.github.bumptech.glide:glide:4.12.0"
     implementation 'com.davemorrissey.labs:subsampling-scale-image-view:3.10.0'
     implementation 'com.github.jayrambhia:CropperNoCropper:0.3.2'
     kapt "com.github.bumptech.glide:compiler:4.12.0"
+    implementation 'com.google.code.gson:gson:2.10.1'
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'
 

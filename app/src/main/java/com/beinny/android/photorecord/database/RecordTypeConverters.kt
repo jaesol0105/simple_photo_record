@@ -1,4 +1,4 @@
-package com.beinny.android.photorecord.datebase
+package com.beinny.android.photorecord.database
 
 import androidx.room.TypeConverter
 import java.util.*

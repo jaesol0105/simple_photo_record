@@ -4,61 +4,54 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.beinny.android.photorecord.PhotoRecordApplication
 import com.beinny.android.photorecord.model.Record
 import com.beinny.android.photorecord.repository.recorddetail.RecordRepository
 import kotlinx.coroutines.launch
-import java.io.File
 import java.util.*
 
-class RecordViewModel(private val recordRepository: RecordRepository): ViewModel() {
-    // private val recordRepository = RecordRepository.get()
+class RecordViewModel(private val recordRepository: RecordRepository) : ViewModel() {
     val recordListLiveData = recordRepository.getRecords()
 
-    /** [새로운 Record 추가] */
-    fun addRecord (record: Record) {
+    private val _checkedIds = MutableLiveData<Set<UUID>>(emptySet())
+    val checkedIds: LiveData<Set<UUID>> = _checkedIds
+
+    fun addRecord(record: Record) {
+        viewModelScope.launch { recordRepository.addRecord(record) }
+    }
+
+    fun deleteRecord(record: Record) {
+        viewModelScope.launch { recordRepository.deleteRecord(record) }
+    }
+
+    fun initChecked(id: UUID) {
+        _checkedIds.value = setOf(id)
+    }
+
+    fun toggleCheck(id: UUID) {
+        val current = _checkedIds.value?.toMutableSet() ?: mutableSetOf()
+        if (current.contains(id)) current.remove(id) else current.add(id)
+        _checkedIds.value = current
+    }
+
+    fun clearChecked() {
+        _checkedIds.value = emptySet()
+    }
+
+    fun selectAll(ids: List<UUID>) {
+        _checkedIds.value = ids.toSet()
+    }
+
+    fun setCheckedRange(ids: List<UUID>, check: Boolean) {
+        val current = _checkedIds.value?.toMutableSet() ?: mutableSetOf()
+        if (check) current.addAll(ids) else current.removeAll(ids.toSet())
+        _checkedIds.value = current
+    }
+
+    fun deleteCheckedRecords() {
+        val ids = _checkedIds.value?.takeIf { it.isNotEmpty() } ?: return
         viewModelScope.launch {
-            recordRepository.addRecord(record)
+            recordRepository.deleteRecordsByIds(ids.map { it.toString() })
+            _checkedIds.value = emptySet()
         }
     }
-
-    /** [Record 삭제] */
-    fun deleteRecord (record: Record) {
-        viewModelScope.launch {
-            recordRepository.deleteRecord(record)
-        }
-    }
-
-    /** [Record 체크 상태 초기화] */
-    fun initCheck(id:UUID, state:Boolean) {
-        viewModelScope.launch {
-            recordRepository.initCheck()
-            recordRepository.changeCheck(id, state) // 처음 롱 클릭한 레코드 체크
-        }
-    }
-
-    /** [Record 체크 상태 변경] */
-    fun changeCheck (id:UUID, state:Boolean) {
-        viewModelScope.launch {
-            recordRepository.changeCheck(id, state)
-        }
-    }
-
-    /** [체크된 Record 일괄 삭제] */
-    fun deleteCheckedRecord() {
-        viewModelScope.launch {
-            recordRepository.deleteCheckedRecord()
-        }
-    }
-
-    /*
-    // 사진 파일이 가르킬 위치(File객체)를 RecordDetailFragment에 제공.
-    fun getPhotoFile(record: Record): File {
-        return recordRepository.getPhotoFile(record)
-    }
-
-    fun getThumbFile(record: Record): File {
-        return recordRepository.getThumbFile(record)
-    }
-    */
 }

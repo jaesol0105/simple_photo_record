@@ -2,20 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.beinny.android.photorecord">
 
-    <!--저장위치 위치 접근을 위한 권한 설정-->
-    <!--uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /-->
-
-    <!--앱을 사용하기 위한 조건
-        required 값에 따라 반드시 필요한 속성일 수도, 없어도 일단 실행은 되는 속성일 수도 있음-->
-    <!--uses-feature android:name="android.hardware.camera"
-        android:required="false" /-->
-
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.GET_ACCOUNTS" />
     <uses-permission android:name="android.permission.MANAGE_ACCOUNTS" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" android:maxSdkVersion="32" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" android:maxSdkVersion="28" />
 
     <application
         android:name="com.beinny.android.photorecord.PhotoRecordApplication"
@@ -33,25 +25,13 @@
             android:theme="@style/Theme.PhotoRecord.Splash">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
             android:name="com.beinny.android.photorecord.ui.MainActivity"
             android:exported="true"
-            android:screenOrientation="portrait"></activity>
-
-        <!--provider
-            android:name="androidx.core.content.FileProvider"
-            android:authorities="com.beinny.android.dailylook.fileprovider"
-            android:exported="false"
-            android:grantUriPermissions="true">
-            <meta-data
-                android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/files"/>
-        </provider-->
-
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

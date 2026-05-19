@@ -3,7 +3,7 @@ package com.beinny.android.photorecord
 import android.content.Context
 import androidx.room.Room
 import com.beinny.android.photorecord.common.DATABASE_NAME
-import com.beinny.android.photorecord.datebase.RecordDatabase
+import com.beinny.android.photorecord.database.RecordDatabase
 import com.beinny.android.photorecord.repository.recorddetail.RecordLocalDataSource
 import com.beinny.android.photorecord.repository.recorddetail.RecordRepository
 

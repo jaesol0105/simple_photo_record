@@ -1,7 +1,8 @@
-package com.beinny.android.photorecord.datebase
+package com.beinny.android.photorecord.database
 
 import androidx.lifecycle.LiveData
 import androidx.room.*
+import androidx.room.OnConflictStrategy
 import com.beinny.android.photorecord.model.Record
 import java.util.*
 
@@ -36,4 +37,13 @@ interface RecordDao {
 
     @Delete
     fun deleteSelectedRecord(recordList : List<Record>)
+
+    @Query("SELECT * FROM record")
+    fun getAllRecordsSync(): List<Record>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(records: List<Record>)
+
+    @Query("DELETE FROM record WHERE id IN (:ids)")
+    fun deleteRecordsByIds(ids: List<String>)
 }

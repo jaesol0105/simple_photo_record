@@ -4,7 +4,7 @@ object OrderKoreanFirst {
     private const val LEFT = -1
     private const val RIGHT = 1
 
-    /** [한글 > 영문 > 숫자 > 특수기호 순으로 비교]*/
+    /** 한글 > 영문 > 숫자 > 특수기호 순으로 비교 */
     fun compare(left: String, right: String) : Int {
         val _left = left.uppercase().filterNot(Char::isWhitespace)
         val _right = right.uppercase().filterNot(Char::isWhitespace)

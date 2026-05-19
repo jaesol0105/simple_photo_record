@@ -16,4 +16,7 @@ interface RecordDataSource {
     suspend fun initCheck()
     suspend fun changeCheck(id: UUID, state: Boolean)
     suspend fun deleteCheckedRecord()
+    suspend fun getAllRecordsSync(): List<Record>
+    suspend fun insertAll(records: List<Record>)
+    suspend fun deleteRecordsByIds(ids: List<String>)
 }

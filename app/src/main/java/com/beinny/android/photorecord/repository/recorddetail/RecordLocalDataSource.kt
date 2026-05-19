@@ -1,7 +1,7 @@
 package com.beinny.android.photorecord.repository.recorddetail
 
 import androidx.lifecycle.LiveData
-import com.beinny.android.photorecord.datebase.RecordDao
+import com.beinny.android.photorecord.database.RecordDao
 import com.beinny.android.photorecord.model.Record
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -38,4 +38,10 @@ class RecordLocalDataSource (private val dao: RecordDao) : RecordDataSource {
     override suspend fun deleteCheckedRecord() {
         dao.deleteCheckedRecord()
     }
+
+    override suspend fun getAllRecordsSync(): List<Record> = dao.getAllRecordsSync()
+
+    override suspend fun insertAll(records: List<Record>) = dao.insertAll(records)
+
+    override suspend fun deleteRecordsByIds(ids: List<String>) = dao.deleteRecordsByIds(ids)
 }
