@@ -2,12 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
-        android:id="@+id/sort_record"
-        android:title="@string/menu_sort"
-        app:showAsAction="withText" />
+        android:id="@+id/search_record"
+        android:title="@string/menu_search"
+        android:icon="@drawable/ic_baseline_search_24"
+        app:showAsAction="always" />
     <item
         android:id="@+id/delete_record"
         android:title="@string/menu_delete"
         android:icon="@drawable/ic_baseline_delete_24"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/sort_record"
+        android:title="@string/menu_sort"
+        app:showAsAction="withText" />
 </menu>

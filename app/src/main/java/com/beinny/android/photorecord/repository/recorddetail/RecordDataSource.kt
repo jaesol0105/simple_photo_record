@@ -18,5 +18,7 @@ interface RecordDataSource {
     suspend fun deleteCheckedRecord()
     suspend fun getAllRecordsSync(): List<Record>
     suspend fun insertAll(records: List<Record>)
+    suspend fun replaceAll(records: List<Record>)
+    suspend fun insertAllOrIgnore(records: List<Record>)
     suspend fun deleteRecordsByIds(ids: List<String>)
 }

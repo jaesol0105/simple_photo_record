@@ -22,4 +22,6 @@
     <color name="background_transparent">#40000000</color>
 
     <color name="grid_color">#FF4081</color>
+
+    <color name="search_background">#FFE5E5E5</color>
 </resources>

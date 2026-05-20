@@ -18,3 +18,5 @@ const val GRID_COLUMN_COUNT = 2
 const val PHOTO_MAX_ZOOM = 8.0F
 const val LABEL_MAX_LENGTH = 30
 const val SORT_BY_PREF_KEY = "SORT_BY"
+const val RECENT_SEARCHES_KEY = "recent_searches"
+const val MAX_RECENT_SEARCHES = 5

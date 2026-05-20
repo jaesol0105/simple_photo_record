@@ -44,6 +44,17 @@ interface RecordDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAll(records: List<Record>)
 
+    // 기존 전체 삭제 후 새 레코드 삽입 — 트랜잭션으로 묶어 중간 실패 시 자동 롤백
+    @Transaction
+    fun replaceAll(records: List<Record>) {
+        deleteAllRecord()
+        insertAll(records)
+    }
+
+    // 중복 UUID는 건너뜀 (추가 모드 — 기존 레코드 보존)
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertAllOrIgnore(records: List<Record>)
+
     @Query("DELETE FROM record WHERE id IN (:ids)")
     fun deleteRecordsByIds(ids: List<String>)
 }

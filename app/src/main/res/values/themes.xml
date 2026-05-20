@@ -51,6 +51,25 @@
         <item name="android:background">@android:color/transparent</item>
     </style>
 
+    <!-- SearchBar/SearchView 전용 M3 컨텍스트 — 앱 색상으로 오버라이드하여 보라색 제거 -->
+    <style name="Theme.PhotoRecord.SearchM3" parent="Theme.Material3.DayNight">
+        <item name="colorPrimary">@color/dark_black</item>
+        <item name="colorOnPrimary">@color/light_white</item>
+        <item name="colorPrimaryContainer">@color/light_white</item>
+        <item name="colorOnPrimaryContainer">@color/dark_black</item>
+        <item name="colorSurface">@color/background</item>
+        <item name="colorOnSurface">@color/font</item>
+        <item name="colorSurfaceVariant">@color/light_white</item>
+        <item name="colorOnSurfaceVariant">@color/gray</item>
+        <item name="colorSurfaceContainerHigh">@color/background</item>
+        <item name="colorSurfaceContainerHighest">@color/background</item>
+        <item name="colorSurfaceContainer">@color/background</item>
+        <item name="colorSurfaceContainerLow">@color/background</item>
+        <item name="colorSurfaceContainerLowest">@color/background</item>
+        <item name="colorOutline">@color/gray</item>
+        <item name="colorOutlineVariant">@color/gray</item>
+    </style>
+
     <style name="photoDialog" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <item name="android:windowBackground">@android:color/transparent</item>
         <item name="android:colorBackgroundCacheHint">@null</item>

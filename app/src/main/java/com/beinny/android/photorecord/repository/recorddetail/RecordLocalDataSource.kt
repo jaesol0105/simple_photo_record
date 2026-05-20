@@ -43,5 +43,9 @@ class RecordLocalDataSource (private val dao: RecordDao) : RecordDataSource {
 
     override suspend fun insertAll(records: List<Record>) = dao.insertAll(records)
 
+    override suspend fun replaceAll(records: List<Record>) = dao.replaceAll(records)
+
+    override suspend fun insertAllOrIgnore(records: List<Record>) = dao.insertAllOrIgnore(records)
+
     override suspend fun deleteRecordsByIds(ids: List<String>) = dao.deleteRecordsByIds(ids)
 }

@@ -3,7 +3,6 @@ package com.beinny.android.photorecord.ui.datamgnt
 import android.app.DownloadManager
 import android.content.Context
 import android.net.Uri
-import android.provider.DocumentsContract
 import android.provider.OpenableColumns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -11,10 +10,13 @@ import androidx.lifecycle.viewModelScope
 import com.beinny.android.photorecord.repository.recorddetail.RecordRepository
 import com.beinny.android.photorecord.ui.common.SingleLiveEvent
 import com.beinny.android.photorecord.util.BackupManager
+import com.beinny.android.photorecord.util.GalleryExporter
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import java.text.SimpleDateFormat
 import java.util.*
+
+enum class RestoreMode { REPLACE, MERGE }
+enum class ActiveOperation { NONE, BACKUP, RESTORE, EXPORT }
 
 data class LastBackupInfo(val uri: Uri, val date: Long, val fileName: String)
 
@@ -26,47 +28,122 @@ class DataMgntViewModel(
     val isLoading = MutableLiveData(false)
     val backupResult = SingleLiveEvent<Result<Unit>>()
     val restoreResult = SingleLiveEvent<Result<Int>>()
+    val exportResult = SingleLiveEvent<Result<Int>>()
     val lastBackupInfo = MutableLiveData<LastBackupInfo?>()
+
+    // 진행률 (0-100), null = indeterminate (복원 등 퍼센트 측정 불가)
+    val progress = MutableLiveData<Int?>(null)
+    val progressLabel = MutableLiveData<String>("")
+    val activeOperation = MutableLiveData(ActiveOperation.NONE)
 
     init {
         loadLastBackupInfo()
     }
 
+    // 백업 — 임시 파일에 완성 후 목적지 uri로 복사하여 손상 방지
+    // 백업 — 임시 파일에 완성 후 목적지 uri로 복사하여 손상 방지
     fun backup(uri: Uri) {
         viewModelScope.launch(Dispatchers.IO) {
             isLoading.postValue(true)
+            activeOperation.postValue(ActiveOperation.BACKUP)
+            progress.postValue(0)
             val records = recordRepository.getAllRecordsSync()
-            val success = BackupManager.backup(appContext, uri, records, appContext.filesDir)
+            val success = BackupManager.backup(appContext, uri, records, appContext.filesDir) { cur, total ->
+                val pct = if (total > 0) cur * 100 / total else 100
+                progress.postValue(pct)
+                progressLabel.postValue("백업 중  $cur / $total")
+            }
             if (success) {
                 saveLastBackupUri(uri)
                 backupResult.postValue(Result.success(Unit))
             } else {
                 backupResult.postValue(Result.failure(Exception()))
             }
+            progress.postValue(null)
+            activeOperation.postValue(ActiveOperation.NONE)
             isLoading.postValue(false)
         }
     }
 
-    fun restore(uri: Uri) {
+    // 복원 — 임시 디렉토리 → DB 트랜잭션 → 이미지 이동 순서로 원자성 보장
+    fun restore(uri: Uri, mode: RestoreMode) {
         viewModelScope.launch(Dispatchers.IO) {
             isLoading.postValue(true)
-            val records = BackupManager.restore(appContext, uri, appContext.filesDir)
-            if (records != null) {
-                recordRepository.deleteAllRecord()
-                recordRepository.insertAll(records)
-                restoreResult.postValue(Result.success(records.size))
-            } else {
+            activeOperation.postValue(ActiveOperation.RESTORE)
+            progress.postValue(null)
+            progressLabel.postValue("복원 중…")
+
+            // 1단계: zip 추출 → 임시 디렉토리
+            val records = BackupManager.extractToTemp(appContext, uri, appContext.filesDir)
+            if (records == null) {
                 restoreResult.postValue(Result.failure(Exception()))
+                isLoading.postValue(false)
+                return@launch
             }
+
+            try {
+                // 2단계: DB 작업 (트랜잭션 또는 IGNORE)
+                when (mode) {
+                    RestoreMode.REPLACE -> recordRepository.replaceAll(records)
+                    RestoreMode.MERGE   -> recordRepository.insertAllOrIgnore(records)
+                }
+                // 3단계: 이미지 이동 (성공)
+                BackupManager.commitImages(
+                    appContext.filesDir,
+                    overwrite = (mode == RestoreMode.REPLACE)
+                )
+                restoreResult.postValue(Result.success(records.size))
+            } catch (e: Exception) {
+                // DB 실패 → 임시 파일 롤백, 원본 filesDir 유지
+                BackupManager.rollbackImages(appContext.filesDir)
+                restoreResult.postValue(Result.failure(e))
+            }
+
+            progress.postValue(null)
+            activeOperation.postValue(ActiveOperation.NONE)
             isLoading.postValue(false)
         }
     }
 
-    fun restoreFromLastBackup() {
-        val uriString = appContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
-            .getString(KEY_URI, null) ?: return
-        restore(Uri.parse(uriString))
+    // 레코드 원본 사진을 기기 갤러리로 내보내기 — 성공 개수를 exportResult로 전달
+    fun exportToGallery() {
+        viewModelScope.launch(Dispatchers.IO) {
+            isLoading.postValue(true)
+            activeOperation.postValue(ActiveOperation.EXPORT)
+            progress.postValue(0)
+            try {
+                val records = recordRepository.getAllRecordsSync()
+                val count = GalleryExporter.export(appContext, appContext.filesDir, records) { cur, total ->
+                    val pct = if (total > 0) cur * 100 / total else 100
+                    progress.postValue(pct)
+                    progressLabel.postValue("내보내기 중  $cur / $total")
+                }
+                exportResult.postValue(Result.success(count))
+            } catch (e: Exception) {
+                exportResult.postValue(Result.failure(e))
+            }
+            progress.postValue(null)
+            activeOperation.postValue(ActiveOperation.NONE)
+            isLoading.postValue(false)
+        }
     }
+
+    // 현재 DB 레코드 수 반환 — 복원 다이얼로그 표시 전 사용
+    suspend fun getCurrentRecordCount(): Int =
+        recordRepository.getAllRecordsSync().size
+
+    // 마지막 백업 URI 반환 — 접근 불가 시 null
+    fun getLastBackupUri(): Uri? {
+        val uriString = appContext.getSharedPreferences(PREFS_NAME, Context.MODE_PRIVATE)
+            .getString(KEY_URI, null) ?: return null
+        val uri = Uri.parse(uriString)
+        return if (isUriAccessible(uri)) uri else null
+    }
+
+    private fun isUriAccessible(uri: Uri): Boolean = try {
+        appContext.contentResolver.openInputStream(uri)?.close()
+        true
+    } catch (e: Exception) { false }
 
     private fun saveLastBackupUri(uri: Uri) {
         try {

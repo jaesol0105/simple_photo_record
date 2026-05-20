@@ -66,6 +66,18 @@ class RecordRepository(
         }
     }
 
+    suspend fun replaceAll(records: List<Record>) {
+        withContext(ioDispatcher) {
+            localDataSource.replaceAll(records)
+        }
+    }
+
+    suspend fun insertAllOrIgnore(records: List<Record>) {
+        withContext(ioDispatcher) {
+            localDataSource.insertAllOrIgnore(records)
+        }
+    }
+
     suspend fun deleteRecordsByIds(ids: List<String>) {
         withContext(ioDispatcher) {
             localDataSource.deleteRecordsByIds(ids)

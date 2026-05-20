@@ -18,7 +18,16 @@ import com.beinny.android.photorecord.ui.record.RecordFragment
 import com.google.android.material.navigation.NavigationView
 
 class MainActivity : AppCompatActivity(), RecordFragment.Callbacks {
+    // 색검색 모드 진입/종료 시 상단 바 숨김 및 드로어 잠금 처리
+    override fun onSearchModeChanged(active: Boolean) {
+        appBarLayout.visibility = if (active) View.GONE else View.VISIBLE
+        drawerLayout.setDrawerLockMode(
+            if (active) DrawerLayout.LOCK_MODE_LOCKED_CLOSED
+            else DrawerLayout.LOCK_MODE_UNLOCKED
+        )
+    }
     private lateinit var toolbar: Toolbar
+    private lateinit var appBarLayout: com.google.android.material.appbar.AppBarLayout
     private lateinit var navView: NavigationView
     private lateinit var drawerLayout: DrawerLayout
     private lateinit var appBarConfiguration: AppBarConfiguration
@@ -31,6 +40,7 @@ class MainActivity : AppCompatActivity(), RecordFragment.Callbacks {
         setContentView(R.layout.activity_main)
 
         toolbar = findViewById(R.id.toolbar)
+        appBarLayout = findViewById(R.id.app_bar_layout)
         setSupportActionBar(toolbar)
 
         drawerLayout = findViewById(R.id.drawer_layout)
