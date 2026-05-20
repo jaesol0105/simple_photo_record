@@ -1,5 +1,9 @@
 package com.beinny.android.photorecord.ui
 
+import android.graphics.Typeface
+import android.text.SpannableString
+import android.text.Spannable
+import android.text.style.TypefaceSpan
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -55,6 +59,23 @@ class MainActivity : AppCompatActivity(), RecordFragment.Callbacks {
         )
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+
+        // Material 1.9.0부터 NavigationView가 active item에 setTypeface(BOLD) 호출 —
+        // TypefaceSpan("sans-serif")으로 텍스트 렌더링 레벨에서 오버라이드
+        applyNormalTypefaceToNavMenu()
+        navController.addOnDestinationChangedListener { _, _, _ ->
+            navView.post { applyNormalTypefaceToNavMenu() }
+        }
+    }
+
+    // NavigationView 메뉴 항목 굵은 글씨 방지 — TypefaceSpan으로 sans-serif(regular) 고정
+    private fun applyNormalTypefaceToNavMenu() {
+        for (i in 0 until navView.menu.size()) {
+            val item = navView.menu.getItem(i)
+            item.title = SpannableString(item.title?.toString() ?: "").apply {
+                setSpan(TypefaceSpan("sans-serif"), 0, length, Spannable.SPAN_INCLUSIVE_INCLUSIVE)
+            }
+        }
     }
 
     override fun onSupportNavigateUp(): Boolean {

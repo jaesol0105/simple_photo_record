@@ -155,6 +155,21 @@ class RecordFragment : Fragment() {
         }
 
         setupSearchInput()
+
+        // RecordDetailFragment 등에서 돌아올 때 검색 모드 UI 복원 (isSearchMode는 Fragment 인스턴스에 유지됨)
+        if (isSearchMode) restoreSearchModeUi()
+    }
+
+    // 검색 모드 중 뷰 재생성(Detail 진입 후 복귀) 시 검색 바 및 상태 복원
+    private fun restoreSearchModeUi() {
+        binding.layoutSearchBar.visibility = View.VISIBLE
+        binding.vSearchBarSpacer.visibility = View.VISIBLE
+        binding.fabRecordAdd.visibility = View.GONE
+        callbacks?.onSearchModeChanged(true)
+        requireActivity().invalidateOptionsMenu()
+        viewModel.searchQuery.value?.let { binding.etSearch.setText(it) }
+        // searchQuery == null이면 초기 상태, 있으면 searchResults observer가 결과를 복원
+        if (viewModel.searchQuery.value == null) showSearchInitialState()
     }
 
     override fun onStart() {
@@ -273,12 +288,17 @@ class RecordFragment : Fragment() {
 
     // 검색 초기 상태 표시 — pill + chip + 힌트 (결과 없음)
     private fun showSearchInitialState() {
-        binding.layoutSearchInitial.visibility = View.VISIBLE
+        // 1. 리스너 먼저 분리 — 전환 중 GlobalLayoutListener 발화 시 추가 레이아웃 패스로 깜빡임 발생 방지
+        detachKeyboardHeightListener()
+        // 2. chips 먼저 채움 — GONE 상태에서 populate 후 VISIBLE 처리해야 단일 레이아웃 패스
+        updateRecentSearchChips()
+        // 3. 기존 뷰 숨기고 초기 상태 표시 (같은 레이아웃 패스에서 처리)
         binding.tvSearchResultCount.visibility = View.GONE
         binding.layoutSearchEmpty.visibility = View.GONE
         binding.rvRecordList.visibility = View.GONE
-        updateRecentSearchChips()
-        attachKeyboardHeightListener()
+        binding.layoutSearchInitial.visibility = View.VISIBLE
+        // 4. 레이아웃 안정 후 다음 프레임에 리스너 재연결
+        binding.layoutSearchInitial.post { attachKeyboardHeightListener() }
     }
 
     // 키보드 높이만큼 bottom padding 조정 — 힌트가 항상 키보드 위에 표시되도록
@@ -321,11 +341,11 @@ class RecordFragment : Fragment() {
         val query = viewModel.searchQuery.value ?: ""
         binding.layoutSearchInitial.visibility = View.GONE
         binding.tvSearchResultCount.visibility = View.VISIBLE
-        binding.tvSearchResultCount.text = getString(R.string.search_result_count, query, results.size)
+        binding.tvSearchResultCount.text = getString(R.string.search_result_count, results.size)
         if (results.isEmpty()) {
             binding.rvRecordList.visibility = View.GONE
             binding.layoutSearchEmpty.visibility = View.VISIBLE
-            binding.tvSearchEmptySubtitle.text = getString(R.string.search_empty_subtitle, query)
+            binding.tvSearchEmptySubtitle.text = getString(R.string.search_empty_subtitle)
         } else {
             binding.rvRecordList.visibility = View.VISIBLE
             binding.layoutSearchEmpty.visibility = View.GONE

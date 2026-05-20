@@ -39,4 +39,10 @@
         <item name="android:windowEnterAnimation">@anim/open</item>
         <item name="android:windowExitAnimation">@anim/close</item>
     </style>
+
+    <!-- Drawer 선택 항목 굵은 글씨 제거 (material 1.9.0부터 active item에 bold 자동 적용됨) -->
+    <style name="NavMenuTextAppearance" parent="@style/TextAppearance.MaterialComponents.Body2">
+        <item name="android:textStyle">normal</item>
+        <item name="android:fontFamily">sans-serif</item>
+    </style>
 </resources>

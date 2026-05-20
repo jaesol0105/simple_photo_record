@@ -107,12 +107,6 @@
                             android:orientation="vertical"
                             android:visibility="gone">
 
-                            <ImageView
-                                android:layout_width="64dp"
-                                android:layout_height="64dp"
-                                android:alpha="0.3"
-                                android:src="@drawable/ic_baseline_search_24" />
-
                             <TextView
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"

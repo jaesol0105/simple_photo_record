@@ -100,7 +100,9 @@ object BackupManager {
                         label = rj.label,
                         memo = rj.memo,
                         date = Date(rj.date),
-                        isNew = rj.isNew,
+                        // 복원된 레코드는 isNew=false 처리 — true로 복원 시
+                        // RecordDetailFragment에서 저장 없이 나가면 삭제되는 문제 방지
+                        isNew = false,
                         isChecked = false
                     )
                 }
