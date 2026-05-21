@@ -12,3 +12,5 @@ plan_*.md
 .claude/
 longclick.md
 docs.md
+app/release/
+feature_graphic.svg

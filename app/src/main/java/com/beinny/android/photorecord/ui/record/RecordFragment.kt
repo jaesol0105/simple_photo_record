@@ -142,7 +142,10 @@ class RecordFragment : Fragment() {
         // 체크 상태는 DB 갱신 없이 관리 > 깜빡임 원인 제거
         viewModel.checkedIds.observe(viewLifecycleOwner) { ids ->
             countOfCheckedRecord = ids.size
-            val total = viewModel.recordListLiveData.value?.size ?: 0
+            val total = if (isSearchMode && viewModel.searchResults.value != null)
+                viewModel.searchResults.value!!.size
+            else
+                viewModel.recordListLiveData.value?.size ?: 0
             recordAdapter.updateCheckedIds(ids)
             if (longClick) {
                 callbacks?.onLongClick(true, countOfCheckedRecord, total)
@@ -369,6 +372,7 @@ class RecordFragment : Fragment() {
                 isCheckable = false
                 isCloseIconVisible = true
                 chipBackgroundColor = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.search_background))
+                setTextColor(ContextCompat.getColor(requireContext(), R.color.font))
                 // 동그라미 없는 단순 X 아이콘
                 closeIcon = ContextCompat.getDrawable(requireContext(), R.drawable.ic_baseline_close_30)
                 closeIconTint = ColorStateList.valueOf(ContextCompat.getColor(requireContext(), R.color.font))
@@ -505,7 +509,10 @@ class RecordFragment : Fragment() {
             requireActivity().invalidateOptionsMenu()
             // 검색 모드 중에는 FAB이 이미 GONE — 일반 모드에서만 INVISIBLE 처리
             if (!isSearchMode) binding.fabRecordAdd.visibility = View.INVISIBLE
-            val total = viewModel.recordListLiveData.value?.size ?: 0
+            val total = if (isSearchMode && viewModel.searchResults.value != null)
+                viewModel.searchResults.value!!.size
+            else
+                viewModel.recordListLiveData.value?.size ?: 0
             callbacks?.onLongClick(true, 1, total)
             recordAdapter.setLongClickMode(true)
             if (isSearchMode) enterLongClickFromSearch()
@@ -518,7 +525,10 @@ class RecordFragment : Fragment() {
         }
 
         fun selectAll() {
-            val allIds = viewModel.recordListLiveData.value?.map { it.id } ?: return
+            val allIds = if (isSearchMode && viewModel.searchResults.value != null)
+                viewModel.searchResults.value!!.map { it.id }
+            else
+                viewModel.recordListLiveData.value?.map { it.id } ?: return
             viewModel.selectAll(allIds)
         }
 

@@ -82,7 +82,7 @@
 
     <string name="datamgnt_export_gallery_title">갤러리 내보내기</string>
     <string name="datamgnt_export_gallery">갤러리로 내보내기</string>
-    <string name="datamgnt_export_gallery_hint">앱의 사진을 기기 갤러리 앱에서 볼 수 있도록 내보냅니다</string>
+    <string name="datamgnt_export_gallery_hint">모든 사진을 기기 갤러리 앱에서 볼 수 있도록 내보냅니다</string>
     <string name="datamgnt_export_success">%1$d개 사진을 갤러리에 저장했습니다</string>
     <string name="datamgnt_export_fail">내보내기에 실패했습니다</string>
     <string name="datamgnt_export_no_photos">내보낼 사진이 없습니다</string>

@@ -1,8 +1,11 @@
 package com.beinny.android.photorecord.ui.datamgnt
 
 import android.app.DownloadManager
+import android.content.ContentUris
 import android.content.Context
 import android.net.Uri
+import android.os.Build
+import android.provider.MediaStore
 import android.provider.OpenableColumns
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -185,15 +188,37 @@ class DataMgntViewModel(
                     "/storage/emulated/0/${docId.removePrefix("primary:")}"
                 docId.startsWith("raw:") ->
                     docId.removePrefix("raw:")
+                // Downloads 폴더 (Android 10+): msf:<MediaStore ID>
+                docId.startsWith("msf:") -> {
+                    val id = docId.removePrefix("msf:").toLongOrNull()
+                    mediaStoreDownloadPath(id) ?: "/storage/emulated/0/Download/${displayName(uri)}"
+                }
                 docId.contains(":") -> {
                     val (volume, path) = docId.split(":", limit = 2)
                     "/storage/$volume/$path"
                 }
-                else -> downloadManagerPath(docId) ?: displayName(uri)
+                // Downloads 폴더 (older): numeric DownloadManager ID
+                else -> downloadManagerPath(docId)
+                    ?: if (uri.authority == "com.android.providers.downloads.documents")
+                        "/storage/emulated/0/Download/${displayName(uri)}"
+                    else displayName(uri)
             }
         } catch (e: Exception) {
             displayName(uri)
         }
+    }
+
+    private fun mediaStoreDownloadPath(id: Long?): String? {
+        if (id == null || Build.VERSION.SDK_INT < Build.VERSION_CODES.Q) return null
+        return try {
+            appContext.contentResolver.query(
+                ContentUris.withAppendedId(MediaStore.Downloads.EXTERNAL_CONTENT_URI, id),
+                arrayOf(MediaStore.MediaColumns.DATA),
+                null, null, null
+            )?.use { cursor ->
+                if (cursor.moveToFirst()) cursor.getString(0) else null
+            }
+        } catch (e: Exception) { null }
     }
 
     private fun downloadManagerPath(docId: String): String? {

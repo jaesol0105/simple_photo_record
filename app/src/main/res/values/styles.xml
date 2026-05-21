@@ -35,6 +35,11 @@
         <item name="colorControlNormal">@color/font</item>
     </style>
 
+    <style name="PopupMenuTheme" parent="ThemeOverlay.AppCompat">
+        <item name="android:textColorPrimary">@color/font</item>
+        <item name="android:colorBackground">@color/dialog</item>
+    </style>
+
     <style name="AnimationPopupStyle">
         <item name="android:windowEnterAnimation">@anim/open</item>
         <item name="android:windowExitAnimation">@anim/close</item>

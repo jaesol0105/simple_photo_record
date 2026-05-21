@@ -4,4 +4,8 @@
     <color name="font">#FFFCFCFC</color>
     <color name="dialog">#FF222222</color>
     <color name="background_transparent">#40FFFFFF</color>
+    <color name="search_background">#FF3A3A3A</color>
+    <color name="divider">#FF606060</color>
+    <color name="list_container_bg">#FF010101</color>
+    <color name="text_secondary">#FFABABAB</color>
 </resources>
