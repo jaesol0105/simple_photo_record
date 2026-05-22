@@ -8,8 +8,11 @@
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      font-family: -apple-system, 'Apple SD Gothic Neo', 'Noto Sans KR',
-                   BlinkMacSystemFont, 'Segoe UI', sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI',
+                   'Noto Sans', 'Noto Sans KR', 'Noto Sans JP', 'Noto Sans TC',
+                   'Apple SD Gothic Neo', 'Hiragino Sans', 'Yu Gothic',
+                   'PingFang TC', 'Microsoft JhengHei',
+                   sans-serif;
       background: #FAFAFA;
       color: #1A1A1A;
       line-height: 1.75;
@@ -61,13 +64,9 @@
       color: #2A4A46;
       line-height: 1.7;
     }
-    .summary-box strong {
-      color: #1A3632;
-    }
+    .summary-box strong { color: #1A3632; }
 
-    section {
-      margin-bottom: 44px;
-    }
+    section { margin-bottom: 44px; }
     section h2 {
       font-size: 18px;
       font-weight: 700;
@@ -122,10 +121,7 @@
       margin-bottom: 6px;
       font-size: 15px;
     }
-    .contact-box a {
-      color: #3A7A70;
-      text-decoration: none;
-    }
+    .contact-box a { color: #3A7A70; text-decoration: none; }
     .contact-box a:hover { text-decoration: underline; }
 
     footer {
@@ -140,132 +136,357 @@
 <body>
 
 <header>
-  <div class="chip">간단한 사진 기록</div>
-  <h1>개인정보처리방침</h1>
-  <p>Privacy Policy &nbsp;·&nbsp; 2026.05</p>
+  <div class="chip" id="header-chip"></div>
+  <h1 id="header-h1"></h1>
 </header>
 
 <main>
-
   <div class="summary-box">
-    <p>
-      <strong>간단한 사진 기록</strong>은 사용자의 개인정보를 외부 서버로 전송하거나
-      수집하지 않습니다. 앱에서 생성되는 모든 데이터(사진, 기록 내용)는
-      <strong>사용자 기기 내부에만 저장</strong>됩니다.
-    </p>
+    <p id="summary"></p>
   </div>
 
-  <!-- 1 -->
   <section>
-    <h2>1. 수집하는 정보</h2>
-    <p>본 앱은 다음 정보를 수집하지 않습니다.</p>
-    <ul>
-      <li>이름, 이메일, 전화번호 등 식별 가능한 개인정보</li>
-      <li>위치 정보</li>
-      <li>기기 고유 식별자(IMEI, 광고 ID 등)</li>
-      <li>사용 분석 데이터 또는 충돌 보고서</li>
-    </ul>
-    <p>
-      앱 사용 중 생성되는 사진 및 기록(제목, 메모, 날짜)은
-      사용자의 기기 내부 저장소에만 저장되며, 개발자 또는 제3자에게 전달되지 않습니다.
-    </p>
+    <h2 id="s1-h2"></h2>
+    <p id="s1-intro"></p>
+    <ul id="s1-list"></ul>
+    <p id="s1-note"></p>
   </section>
 
-  <!-- 2 -->
   <section>
-    <h2>2. 앱 권한 및 사용 목적</h2>
+    <h2 id="s2-h2"></h2>
     <table class="permission-table">
       <thead>
         <tr>
-          <th style="width:44%">권한</th>
-          <th>사용 목적</th>
+          <th id="s2-th1" style="width:44%"></th>
+          <th id="s2-th2"></th>
         </tr>
       </thead>
-      <tbody>
-        <tr>
-          <td><code>READ_MEDIA_IMAGES</code><br><small>(Android 13+)</small></td>
-          <td>레코드에 기기 갤러리 사진을 첨부하기 위해 사용됩니다.</td>
-        </tr>
-        <tr>
-          <td><code>READ_EXTERNAL_STORAGE</code><br><small>(Android 12 이하)</small></td>
-          <td>Android 12 이하 기기에서 갤러리 사진 첨부를 위해 사용됩니다.</td>
-        </tr>
-        <tr>
-          <td><code>WRITE_EXTERNAL_STORAGE</code><br><small>(Android 9 이하)</small></td>
-          <td>Android 9 이하 기기에서 사진을 갤러리로 내보내기 위해 사용됩니다.</td>
-        </tr>
-      </tbody>
+      <tbody id="s2-tbody"></tbody>
     </table>
-    <p style="margin-top:12px;">
-      위 권한은 해당 기능 사용 시에만 요청되며, 목적 외의 용도로 사용되지 않습니다.
-    </p>
+    <p id="s2-note" style="margin-top:12px;"></p>
   </section>
 
-  <!-- 3 -->
   <section>
-    <h2>3. 데이터 저장 및 보안</h2>
-    <p>
-      앱의 모든 데이터(레코드 정보, 사진 파일)는 사용자 기기의
-      앱 전용 내부 저장소에 저장됩니다. 인터넷 연결이 필요하지 않으며,
-      어떠한 서버나 클라우드로도 데이터가 전송되지 않습니다.
-    </p>
-    <p>
-      앱을 삭제하면 기기에 저장된 모든 앱 데이터가 함께 삭제됩니다.
-    </p>
+    <h2 id="s3-h2"></h2>
+    <p id="s3-p1"></p>
+    <p id="s3-p2"></p>
   </section>
 
-  <!-- 4 -->
   <section>
-    <h2>4. 백업 및 복원</h2>
-    <p>
-      앱 내 백업 기능을 통해 생성된 파일(.zip)은 사용자가 직접
-      저장 위치를 선택하며, 해당 파일의 관리는 전적으로 사용자 책임입니다.
-      개발자는 백업 파일에 접근하거나 이를 수집하지 않습니다.
-    </p>
+    <h2 id="s4-h2"></h2>
+    <p id="s4-p"></p>
   </section>
 
-  <!-- 5 -->
   <section>
-    <h2>5. 제3자 공유</h2>
-    <p>
-      본 앱은 어떠한 사용자 데이터도 제3자(광고 플랫폼, 분석 서비스,
-      기타 외부 업체)와 공유하지 않습니다.
-    </p>
+    <h2 id="s5-h2"></h2>
+    <p id="s5-p"></p>
   </section>
 
-  <!-- 6 -->
   <section>
-    <h2>6. 아동 개인정보 보호</h2>
-    <p>
-      본 앱은 만 14세 미만 아동을 대상으로 하지 않으며,
-      아동의 개인정보를 의도적으로 수집하지 않습니다.
-    </p>
+    <h2 id="s6-h2"></h2>
+    <p id="s6-p"></p>
   </section>
 
-  <!-- 7 -->
   <section>
-    <h2>7. 개인정보처리방침 변경</h2>
-    <p>
-      본 방침은 앱 업데이트 또는 관련 법률 변경에 따라 수정될 수 있습니다.
-      변경 시 이 페이지의 수정일이 업데이트됩니다.
-      중요한 변경 사항은 앱 업데이트 노트를 통해 안내드립니다.
-    </p>
-  </section>
-
-  <!-- 8 -->
-  <section>
-    <h2>8. 문의</h2>
-    <p>개인정보처리방침 관련 문의사항이 있으시면 아래로 연락해 주세요.</p>
+    <h2 id="s7-h2"></h2>
+    <p id="s7-intro"></p>
     <div class="contact-box">
-      <p><strong>이메일</strong>: <a href="mailto:beinny9801@gmail.com">beinny9801@gmail.com</a></p>
+      <p id="s7-contact"></p>
     </div>
   </section>
-
 </main>
 
-<footer>
-  &copy; 2026 간단한 사진 기록. All rights reserved.
-</footer>
+<footer id="footer"></footer>
+
+<script>
+const T = {
+  ko: {
+    title: '개인정보처리방침 — 간단한 사진 기록',
+    chip: '간단한 사진 기록',
+    h1: '개인정보처리방침',
+    sub: 'Privacy Policy',
+    summary: '<strong>간단한 사진 기록</strong>은 사용자의 개인정보를 외부 서버로 전송하거나 수집하지 않습니다. 앱에서 생성되는 모든 데이터(사진, 기록 내용)는 <strong>사용자 기기 내부에만 저장</strong>됩니다.',
+    s1: {
+      h2: '1. 수집하는 정보',
+      intro: '본 앱은 다음 정보를 수집하지 않습니다.',
+      list: ['이름, 이메일, 전화번호 등 식별 가능한 개인정보', '위치 정보', '기기 고유 식별자(IMEI, 광고 ID 등)', '사용 분석 데이터 또는 충돌 보고서'],
+      note: '앱 사용 중 생성되는 사진 및 기록(제목, 메모, 날짜)은 사용자의 기기 내부 저장소에만 저장되며, 개발자 또는 제3자에게 전달되지 않습니다.'
+    },
+    s2: {
+      h2: '2. 앱 권한 및 사용 목적',
+      th1: '권한', th2: '사용 목적',
+      perms: [
+        { name: 'READ_MEDIA_IMAGES',      ver: 'Android 13+',    desc: '레코드에 기기 갤러리 사진을 첨부하기 위해 사용됩니다.' },
+        { name: 'READ_EXTERNAL_STORAGE',  ver: 'Android 12 이하', desc: 'Android 12 이하 기기에서 갤러리 사진 첨부를 위해 사용됩니다.' },
+        { name: 'WRITE_EXTERNAL_STORAGE', ver: 'Android 9 이하',  desc: 'Android 9 이하 기기에서 사진을 갤러리로 내보내기 위해 사용됩니다.' }
+      ],
+      note: '위 권한은 해당 기능 사용 시에만 요청되며, 목적 외의 용도로 사용되지 않습니다.'
+    },
+    s3: {
+      h2: '3. 데이터 저장 및 보안',
+      p1: '앱의 모든 데이터(레코드 정보, 사진 파일)는 사용자 기기의 앱 전용 내부 저장소에 저장됩니다. 인터넷 연결이 필요하지 않으며, 어떠한 서버나 클라우드로도 데이터가 전송되지 않습니다.',
+      p2: '앱을 삭제하면 기기에 저장된 모든 앱 데이터가 함께 삭제됩니다.'
+    },
+    s4: { h2: '4. 백업 및 복원', p: '앱 내 백업 기능을 통해 생성된 파일(.zip)은 사용자가 직접 저장 위치를 선택하며, 해당 파일의 관리는 전적으로 사용자 책임입니다. 개발자는 백업 파일에 접근하거나 이를 수집하지 않습니다.' },
+    s5: { h2: '5. 제3자 공유', p: '본 앱은 어떠한 사용자 데이터도 제3자(광고 플랫폼, 분석 서비스, 기타 외부 업체)와 공유하지 않습니다.' },
+    s6: { h2: '6. 개인정보처리방침 변경', p: '본 방침은 앱 업데이트 또는 관련 법률 변경에 따라 수정될 수 있습니다. 변경 시 이 페이지의 수정일이 업데이트됩니다. 중요한 변경 사항은 앱 업데이트 노트를 통해 안내드립니다.' },
+    s7: {
+      h2: '7. 문의',
+      intro: '개인정보처리방침 관련 문의사항이 있으시면 아래로 연락해 주세요.',
+      contact: '<strong>이메일</strong>: <a href="mailto:beinny9801@gmail.com">beinny9801@gmail.com</a>'
+    },
+    footer: '© 2026 간단한 사진 기록. All rights reserved.'
+  },
+
+  en: {
+    title: 'Privacy Policy — Photo Record',
+    chip: 'Photo Record',
+    h1: 'Privacy Policy',
+    sub: 'Privacy Policy',
+    summary: '<strong>Photo Record</strong> does not transmit or collect your personal information to any external server. All data generated within the app (photos and record content) is stored <strong>exclusively on your device</strong>.',
+    s1: {
+      h2: '1. Information We Collect',
+      intro: 'This app does not collect the following information:',
+      list: ['Personally identifiable information such as name, email address, or phone number', 'Location data', 'Device identifiers (IMEI, advertising ID, etc.)', 'Usage analytics data or crash reports'],
+      note: 'Photos and records (titles, notes, and dates) created while using the app are stored only on your device\'s local storage and are never shared with the developer or any third party.'
+    },
+    s2: {
+      h2: '2. App Permissions',
+      th1: 'Permission', th2: 'Purpose',
+      perms: [
+        { name: 'READ_MEDIA_IMAGES',      ver: 'Android 13+',           desc: 'Used to attach photos from your device gallery to records.' },
+        { name: 'READ_EXTERNAL_STORAGE',  ver: 'Android 12 and below',  desc: 'Used to attach gallery photos on devices running Android 12 or earlier.' },
+        { name: 'WRITE_EXTERNAL_STORAGE', ver: 'Android 9 and below',   desc: 'Used to export photos to the gallery on devices running Android 9 or earlier.' }
+      ],
+      note: 'These permissions are requested only when the relevant feature is used and are not used for any other purpose.'
+    },
+    s3: {
+      h2: '3. Data Storage and Security',
+      p1: 'All app data (record information and photo files) is stored in the app\'s private internal storage on your device. No internet connection is required, and no data is transmitted to any server or cloud service.',
+      p2: 'Uninstalling the app will permanently delete all app data stored on the device.'
+    },
+    s4: { h2: '4. Backup and Restore', p: 'Backup files (.zip) created through the app\'s backup feature are saved to a location chosen by the user. The management of these files is entirely the user\'s responsibility. The developer has no access to your backup files and does not collect them.' },
+    s5: { h2: '5. Third-Party Sharing', p: 'This app does not share any user data with third parties, including advertising platforms, analytics services, or any other external parties.' },
+    s6: { h2: '6. Changes to This Policy', p: 'This policy may be updated in response to app updates or changes in applicable laws. When changes are made, the revision date on this page will be updated. Significant changes will be communicated through the app\'s update notes.' },
+    s7: {
+      h2: '7. Contact',
+      intro: 'If you have any questions regarding this Privacy Policy, please contact us at:',
+      contact: '<strong>Email</strong>: <a href="mailto:beinny9801@gmail.com">beinny9801@gmail.com</a>'
+    },
+    footer: '© 2026 Photo Record. All rights reserved.'
+  },
+
+  ja: {
+    title: 'プライバシーポリシー — かんたん写真メモ',
+    chip: 'かんたん写真メモ',
+    h1: 'プライバシーポリシー',
+    sub: 'Privacy Policy',
+    summary: '「<strong>かんたん写真メモ</strong>」は、ユーザーの個人情報を外部サーバーへ送信したり、収集したりすることはありません。アプリ内で生成されるすべてのデータ（写真、記録内容）は、<strong>ユーザーのデバイス内にのみ保存</strong>されます。',
+    s1: {
+      h2: '1. 収集する情報',
+      intro: '本アプリは、以下の情報を収集しません。',
+      list: ['氏名、メールアドレス、電話番号などの個人を特定できる情報', '位置情報', 'デバイス固有の識別子（IMEI、広告IDなど）', '利用状況の分析データやクラッシュレポート'],
+      note: 'アプリ使用中に作成された写真および記録（タイトル、メモ、日付）は、ユーザーのデバイス内ストレージにのみ保存され、開発者または第三者に送信されることはありません。'
+    },
+    s2: {
+      h2: '2. アプリの権限と使用目的',
+      th1: '権限', th2: '使用目的',
+      perms: [
+        { name: 'READ_MEDIA_IMAGES',      ver: 'Android 13以降', desc: 'レコードにデバイスのギャラリー写真を添付するために使用されます。' },
+        { name: 'READ_EXTERNAL_STORAGE',  ver: 'Android 12以前', desc: 'Android 12以前のデバイスでギャラリー写真を添付するために使用されます。' },
+        { name: 'WRITE_EXTERNAL_STORAGE', ver: 'Android 9以前',  desc: 'Android 9以前のデバイスで写真をギャラリーに書き出すために使用されます。' }
+      ],
+      note: '上記の権限は、該当機能の使用時にのみ要求され、目的外に使用されることはありません。'
+    },
+    s3: {
+      h2: '3. データの保存とセキュリティ',
+      p1: 'アプリのすべてのデータ（レコード情報および写真ファイル）は、ユーザーのデバイス内のアプリ専用ストレージに保存されます。インターネット接続は不要であり、いかなるサーバーやクラウドサービスにもデータは送信されません。',
+      p2: 'アプリをアンインストールすると、デバイスに保存されたすべてのアプリデータは削除されます。'
+    },
+    s4: { h2: '4. バックアップと復元', p: 'アプリのバックアップ機能で作成されたファイル（.zip）は、ユーザーが選択した場所に保存されます。バックアップファイルの管理はユーザーの責任において行われます。開発者はバックアップファイルにアクセスしたり、収集したりすることはありません。' },
+    s5: { h2: '5. 第三者への提供', p: '本アプリは、広告プラットフォーム、分析サービス、その他の外部事業者を含む第三者に対して、いかなるユーザーデータも提供しません。' },
+    s6: { h2: '6. プライバシーポリシーの変更', p: '本ポリシーは、アプリのアップデートまたは関連法律の変更に伴い改定される場合があります。変更があった場合は、このページの改定日が更新されます。重要な変更については、アプリのアップデートノートにてお知らせします。' },
+    s7: {
+      h2: '7. お問い合わせ',
+      intro: 'プライバシーポリシーに関するお問い合わせは、以下までご連絡ください。',
+      contact: '<strong>メール</strong>: <a href="mailto:beinny9801@gmail.com">beinny9801@gmail.com</a>'
+    },
+    footer: '© 2026 かんたん写真メモ. All rights reserved.'
+  },
+
+  'zh-TW': {
+    title: '隱私權政策 — 簡單相片記錄',
+    chip: '簡單相片記錄',
+    h1: '隱私權政策',
+    sub: 'Privacy Policy',
+    summary: '「<strong>簡單相片記錄</strong>」不會收集您的個人資料，也不會將其傳送至外部伺服器。應用程式中產生的所有資料（相片、記錄內容）<strong>僅儲存於您的裝置本機</strong>。',
+    s1: {
+      h2: '1. 我們收集的資訊',
+      intro: '本應用程式不會收集以下資訊：',
+      list: ['姓名、電子郵件地址、電話號碼等可識別個人身分的資訊', '位置資訊', '裝置唯一識別碼（IMEI、廣告識別碼等）', '使用分析資料或當機報告'],
+      note: '使用應用程式時所建立的相片及記錄（標題、備註、日期）僅儲存於您裝置的本機儲存空間，不會傳送給開發者或任何第三方。'
+    },
+    s2: {
+      h2: '2. 應用程式權限與用途',
+      th1: '權限', th2: '用途',
+      perms: [
+        { name: 'READ_MEDIA_IMAGES',      ver: 'Android 13 以上', desc: '用於將裝置相簿中的相片附加至記錄。' },
+        { name: 'READ_EXTERNAL_STORAGE',  ver: 'Android 12 以下', desc: '用於在 Android 12 以下裝置上附加相簿相片。' },
+        { name: 'WRITE_EXTERNAL_STORAGE', ver: 'Android 9 以下',  desc: '用於在 Android 9 以下裝置上將相片匯出至相簿。' }
+      ],
+      note: '上述權限僅於使用相關功能時提出要求，不會用於其他目的。'
+    },
+    s3: {
+      h2: '3. 資料儲存與安全性',
+      p1: '應用程式的所有資料（記錄資訊及相片檔案）儲存於您裝置上的應用程式專屬內部儲存空間。本應用程式無需網路連線，且不會將任何資料傳送至伺服器或雲端服務。',
+      p2: '解除安裝應用程式後，儲存於裝置上的所有應用程式資料將一併刪除。'
+    },
+    s4: { h2: '4. 備份與還原', p: '透過應用程式備份功能建立的備份檔案（.zip）將儲存至使用者選擇的位置，備份檔案的管理完全由使用者自行負責。開發者不會存取或收集備份檔案。' },
+    s5: { h2: '5. 與第三方共用', p: '本應用程式不會將任何使用者資料與第三方（包括廣告平台、分析服務或其他外部業者）共用。' },
+    s6: { h2: '6. 隱私權政策變更', p: '本政策可能因應用程式更新或相關法規變更而修訂。修訂時，本頁面的修訂日期將隨之更新。重要變更將透過應用程式的更新說明通知您。' },
+    s7: {
+      h2: '7. 聯絡方式',
+      intro: '如您對本隱私權政策有任何疑問，請透過以下方式與我們聯繫：',
+      contact: '<strong>電子郵件</strong>：<a href="mailto:beinny9801@gmail.com">beinny9801@gmail.com</a>'
+    },
+    footer: '© 2026 簡單相片記錄. All rights reserved.'
+  },
+
+  'pt-BR': {
+    title: 'Política de Privacidade — Registro de Fotos',
+    chip: 'Registro de Fotos',
+    h1: 'Política de Privacidade',
+    sub: 'Privacy Policy',
+    summary: 'O <strong>Registro de Fotos</strong> não transmite nem coleta suas informações pessoais para servidores externos. Todos os dados gerados no aplicativo (fotos e conteúdo dos registros) são <strong>armazenados exclusivamente no seu dispositivo</strong>.',
+    s1: {
+      h2: '1. Informações que Coletamos',
+      intro: 'Este aplicativo não coleta as seguintes informações:',
+      list: ['Informações de identificação pessoal, como nome, endereço de e-mail ou número de telefone', 'Dados de localização', 'Identificadores de dispositivo (IMEI, ID de publicidade, etc.)', 'Dados de análise de uso ou relatórios de falha'],
+      note: 'As fotos e registros (títulos, anotações e datas) criados durante o uso do aplicativo são armazenados apenas no armazenamento local do seu dispositivo e nunca são compartilhados com o desenvolvedor ou terceiros.'
+    },
+    s2: {
+      h2: '2. Permissões do Aplicativo e Finalidades',
+      th1: 'Permissão', th2: 'Finalidade',
+      perms: [
+        { name: 'READ_MEDIA_IMAGES',      ver: 'Android 13 ou superior', desc: 'Usada para anexar fotos da galeria do dispositivo aos registros.' },
+        { name: 'READ_EXTERNAL_STORAGE',  ver: 'Android 12 ou inferior',  desc: 'Usada para anexar fotos da galeria em dispositivos com Android 12 ou inferior.' },
+        { name: 'WRITE_EXTERNAL_STORAGE', ver: 'Android 9 ou inferior',   desc: 'Usada para exportar fotos para a galeria em dispositivos com Android 9 ou inferior.' }
+      ],
+      note: 'Essas permissões são solicitadas apenas quando o recurso correspondente é utilizado e não são usadas para nenhuma outra finalidade.'
+    },
+    s3: {
+      h2: '3. Armazenamento de Dados e Segurança',
+      p1: 'Todos os dados do aplicativo (informações de registros e arquivos de fotos) são armazenados no armazenamento interno privado do aplicativo no seu dispositivo. Nenhuma conexão com a internet é necessária e nenhum dado é transmitido para qualquer servidor ou serviço de nuvem.',
+      p2: 'Desinstalar o aplicativo excluirá permanentemente todos os dados do aplicativo armazenados no dispositivo.'
+    },
+    s4: { h2: '4. Backup e Restauração', p: 'Os arquivos de backup (.zip) criados pelo recurso de backup do aplicativo são salvos no local escolhido pelo usuário. O gerenciamento desses arquivos é de responsabilidade exclusiva do usuário. O desenvolvedor não tem acesso aos arquivos de backup e não os coleta.' },
+    s5: { h2: '5. Compartilhamento com Terceiros', p: 'Este aplicativo não compartilha nenhum dado do usuário com terceiros, incluindo plataformas de publicidade, serviços de análise ou qualquer outra parte externa.' },
+    s6: { h2: '6. Alterações nesta Política', p: 'Esta política pode ser atualizada em resposta a atualizações do aplicativo ou alterações nas leis aplicáveis. Quando alterações forem feitas, a data de revisão nesta página será atualizada. Alterações significativas serão comunicadas por meio das notas de atualização do aplicativo.' },
+    s7: {
+      h2: '7. Contato',
+      intro: 'Se você tiver alguma dúvida sobre esta Política de Privacidade, entre em contato conosco:',
+      contact: '<strong>E-mail</strong>: <a href="mailto:beinny9801@gmail.com">beinny9801@gmail.com</a>'
+    },
+    footer: '© 2026 Registro de Fotos. All rights reserved.'
+  },
+
+  es: {
+    title: 'Política de Privacidad — Registro de Fotos',
+    chip: 'Registro de Fotos',
+    h1: 'Política de Privacidad',
+    sub: 'Privacy Policy',
+    summary: '<strong>Registro de Fotos</strong> no transmite ni recopila tu información personal a servidores externos. Todos los datos generados en la aplicación (fotos y contenido de registros) se <strong>almacenan exclusivamente en tu dispositivo</strong>.',
+    s1: {
+      h2: '1. Información que Recopilamos',
+      intro: 'Esta aplicación no recopila la siguiente información:',
+      list: ['Información de identificación personal, como nombre, dirección de correo electrónico o número de teléfono', 'Datos de ubicación', 'Identificadores del dispositivo (IMEI, ID de publicidad, etc.)', 'Datos de análisis de uso o informes de errores'],
+      note: 'Las fotos y registros (títulos, notas y fechas) creados durante el uso de la aplicación se almacenan únicamente en el almacenamiento local del dispositivo y nunca se comparten con el desarrollador ni con terceros.'
+    },
+    s2: {
+      h2: '2. Permisos de la Aplicación y Finalidades',
+      th1: 'Permiso', th2: 'Finalidad',
+      perms: [
+        { name: 'READ_MEDIA_IMAGES',      ver: 'Android 13 o superior', desc: 'Se usa para adjuntar fotos de la galería del dispositivo a los registros.' },
+        { name: 'READ_EXTERNAL_STORAGE',  ver: 'Android 12 o inferior',  desc: 'Se usa para adjuntar fotos de la galería en dispositivos con Android 12 o inferior.' },
+        { name: 'WRITE_EXTERNAL_STORAGE', ver: 'Android 9 o inferior',   desc: 'Se usa para exportar fotos a la galería en dispositivos con Android 9 o inferior.' }
+      ],
+      note: 'Estos permisos se solicitan únicamente cuando se utiliza la función correspondiente y no se usan para ningún otro propósito.'
+    },
+    s3: {
+      h2: '3. Almacenamiento de Datos y Seguridad',
+      p1: 'Todos los datos de la aplicación (información de registros y archivos de fotos) se almacenan en el almacenamiento interno privado de la aplicación en tu dispositivo. No se requiere conexión a internet y ningún dato se transmite a ningún servidor o servicio en la nube.',
+      p2: 'Desinstalar la aplicación eliminará permanentemente todos los datos de la aplicación almacenados en el dispositivo.'
+    },
+    s4: { h2: '4. Copia de Seguridad y Restauración', p: 'Los archivos de copia de seguridad (.zip) creados mediante la función de copia de seguridad de la aplicación se guardan en la ubicación elegida por el usuario. La gestión de estos archivos es responsabilidad exclusiva del usuario. El desarrollador no tiene acceso a los archivos de copia de seguridad ni los recopila.' },
+    s5: { h2: '5. Compartir con Terceros', p: 'Esta aplicación no comparte ningún dato de usuario con terceros, incluidas plataformas publicitarias, servicios de análisis ni ninguna otra parte externa.' },
+    s6: { h2: '6. Cambios en esta Política', p: 'Esta política puede revisarse con motivo de actualizaciones de la aplicación o cambios en las leyes aplicables. Cuando se realicen cambios, se actualizará la fecha de revisión en esta página. Los cambios importantes se comunicarán a través de las notas de actualización de la aplicación.' },
+    s7: {
+      h2: '7. Contacto',
+      intro: 'Si tienes alguna pregunta sobre esta Política de Privacidad, contáctanos en:',
+      contact: '<strong>Correo electrónico</strong>: <a href="mailto:beinny9801@gmail.com">beinny9801@gmail.com</a>'
+    },
+    footer: '© 2026 Registro de Fotos. All rights reserved.'
+  }
+};
+
+function detectLang() {
+  const l = (navigator.language || navigator.userLanguage || 'en').toLowerCase();
+  if (l.startsWith('ko')) return 'ko';
+  if (l.startsWith('ja')) return 'ja';
+  if (l === 'zh-tw' || l === 'zh-hk' || l.includes('hant')) return 'zh-TW';
+  if (l.startsWith('zh')) return 'zh-TW';
+  if (l.startsWith('pt')) return 'pt-BR';
+  if (l.startsWith('es')) return 'es';
+  return 'en';
+}
+
+function setText(id, text) { document.getElementById(id).textContent = text; }
+function setHTML(id, html) { document.getElementById(id).innerHTML = html; }
+
+function apply(lang) {
+  const t = T[lang];
+  document.documentElement.lang = lang;
+  document.title = t.title;
+
+  setText('header-chip', t.chip);
+  setText('header-h1', t.h1);
+  setHTML('summary', t.summary);
+
+  setText('s1-h2', t.s1.h2);
+  setText('s1-intro', t.s1.intro);
+  document.getElementById('s1-list').innerHTML = t.s1.list.map(i => `<li>${i}</li>`).join('');
+  setText('s1-note', t.s1.note);
+
+  setText('s2-h2', t.s2.h2);
+  setText('s2-th1', t.s2.th1);
+  setText('s2-th2', t.s2.th2);
+  document.getElementById('s2-tbody').innerHTML = t.s2.perms.map(p =>
+    `<tr><td><code>${p.name}</code><br><small>${p.ver}</small></td><td>${p.desc}</td></tr>`
+  ).join('');
+  setText('s2-note', t.s2.note);
+
+  setText('s3-h2', t.s3.h2);
+  setText('s3-p1', t.s3.p1);
+  setText('s3-p2', t.s3.p2);
+
+  setText('s4-h2', t.s4.h2);
+  setText('s4-p',  t.s4.p);
+
+  setText('s5-h2', t.s5.h2);
+  setText('s5-p',  t.s5.p);
+
+  setText('s6-h2', t.s6.h2);
+  setText('s6-p',  t.s6.p);
+
+  setText('s7-h2',    t.s7.h2);
+  setText('s7-intro', t.s7.intro);
+  setHTML('s7-contact', t.s7.contact);
+
+  setText('footer', t.footer);
+}
+
+apply(detectLang());
+</script>
 
 </body>
 </html>
