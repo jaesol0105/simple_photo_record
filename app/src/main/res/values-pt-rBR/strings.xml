@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Registro de Fotos</string>
+
+    <string name="menu_home">Início</string>
+    <string name="menu_data_management">Dados</string>
+    <string name="menu_sort">Classificar</string>
+    <string name="menu_delete">Excluir</string>
+    <string name="menu_new_look">Novo registro</string>
+
+    <string name="all_delete">Excluir</string>
+    <string name="all_save">Salvar</string>
+    <string name="all_cancel">Cancelar</string>
+    <string name="all_complete">Concluído</string>
+    <string name="all_done">OK</string>
+
+    <string name="record_selected_count"> selecionado(s)</string>
+    <string name="record_select_all">Todos</string>
+    <string name="record_app_close_warning">Pressione Voltar novamente para sair</string>
+    <string name="record_selected_delete_warning_1">Excluir permanentemente </string>
+    <string name="record_selected_delete_warning_2"> registro(s)?</string>
+
+    <string name="recorddetail_edit">Editar</string>
+    <string name="recorddetail_title_hint">Título</string>
+    <string name="recorddetail_memo_hint">Adicionar anotação</string>
+    <string name="recorddetail_back_press_warning">As alterações não salvas serão perdidas</string>
+    <string name="recorddetail_delete_warning">Este registro não pode ser recuperado</string>
+    <string name="recorddetail_cannot_find_gallery_app">App de galeria não encontrado</string>
+    <string name="recorddetail_permission_denied">Permissão de acesso às fotos necessária</string>
+    <string name="recorddetail_storage_error">Não foi possível salvar a imagem no armazenamento interno</string>
+    <string name="recorddetail_non_text"></string>
+    <string name="recorddetail_memo_length"> / 8000</string>
+
+    <string name="datamgnt_delete_all">Excluir todos os dados</string>
+    <string name="datamgnt_delete_warning">Excluir todos os dados?\nEssa ação não pode ser desfeita</string>
+    <string name="datamgnt_delete_complete">Dados excluídos</string>
+
+    <string name="datamgnt_backup_title">Backup</string>
+    <string name="datamgnt_backup">Fazer backup</string>
+    <string name="datamgnt_backup_hint">Ex.: photorecord_backup_20260515.zip</string>
+    <string name="datamgnt_backup_success">Backup concluído</string>
+    <string name="datamgnt_backup_fail">Falha no backup</string>
+
+    <string name="datamgnt_restore_title">Restaurar</string>
+    <string name="datamgnt_restore">Restaurar de arquivo</string>
+    <string name="datamgnt_restore_last">Restaurar último backup</string>
+    <string name="datamgnt_restore_confirm">Todos os dados existentes serão substituídos.\nContinuar?</string>
+    <string name="datamgnt_restore_success">%1$d registro(s) restaurado(s)</string>
+    <string name="datamgnt_restore_fail">Falha na restauração</string>
+
+    <string name="datamgnt_last_backup_date">Último backup: %1$s</string>
+    <string name="datamgnt_last_backup_name">Local: %1$s</string>
+
+    <string name="datetimepicker_date_label">Data</string>
+    <string name="datetimepicker_time_label">Hora</string>
+
+    <string name="alertdlg_delete_button">Excluir permanentemente</string>
+    <string name="alertdlg_not_save_button">Não salvar</string>
+    <string name="alertdlg_save_warning">Salvar alterações?</string>
+
+    <string name="sortdlg_sortby_label_1">  Nome (A a Z)</string>
+    <string name="sortdlg_sortby_label_2">  Nome (Z a A)</string>
+    <string name="sortdlg_sortby_label_3">  Data (mais antigos primeiro)</string>
+    <string name="sortdlg_sortby_label_4">  Data (mais recentes primeiro)</string>
+
+    <string name="cropphoto_title_label"> </string>
+    <string name="photoviewer_save_done">Download concluído</string>
+
+    <string name="nav_record_label">Registro de Fotos</string>
+    <string name="nav_record_detail_label">Detalhes</string>
+    <string name="nav_data_management_label">Dados</string>
+
+    <string name="menu_search">Pesquisar</string>
+    <string name="search_hint">Pesquisar registros</string>
+    <string name="search_result_count">%d resultado(s)</string>
+    <string name="search_empty_title">Nenhum resultado encontrado</string>
+    <string name="search_empty_subtitle">Nenhum registro correspondente</string>
+    <string name="search_initial_hint">Digite uma palavra-chave e\ntoque em Pesquisar</string>
+    <string name="search_recent">Pesquisas recentes</string>
+
+    <string name="datamgnt_export_gallery_title">Exportar para galeria</string>
+    <string name="datamgnt_export_gallery">Exportar para galeria</string>
+    <string name="datamgnt_export_gallery_hint">Exporta todas as fotos para o app de galeria do dispositivo</string>
+    <string name="datamgnt_export_success">%1$d foto(s) salva(s) na galeria</string>
+    <string name="datamgnt_export_fail">Falha na exportação</string>
+    <string name="datamgnt_export_no_photos">Nenhuma foto para exportar</string>
+    <string name="datamgnt_export_permission_denied">Permissão de armazenamento necessária</string>
+
+    <string name="datamgnt_restore_mode_title">Escolha o modo de restauração</string>
+    <string name="datamgnt_restore_current_count">%1$d registro(s) salvo(s)</string>
+    <string name="datamgnt_restore_mode_replace">Substituir</string>
+    <string name="datamgnt_restore_mode_replace_desc">Exclui os dados existentes e substitui pelo backup</string>
+    <string name="datamgnt_restore_mode_merge">Mesclar</string>
+    <string name="datamgnt_restore_mode_merge_desc">Mantém os dados existentes e adiciona os registros do backup</string>
+    <string name="datamgnt_restore_uri_expired">Não é possível acessar o arquivo de backup anterior. Selecione o arquivo novamente</string>
+    <string name="datamgnt_progress_backup">Fazendo backup %1$d / %2$d</string>
+    <string name="datamgnt_progress_export">Exportando %1$d / %2$d</string>
+    <string name="datamgnt_progress_restore">Restaurando…</string>
+</resources>

@@ -26,5 +26,6 @@
     <color name="search_background">#FFE5E5E5</color>
     <color name="divider">#FFD8D8D8</color>
     <color name="list_container_bg">#FFF6F6F6</color>
+    <color name="settings_card_bg">#FFFCFCFC</color>
     <color name="text_secondary">#FF888888</color>
 </resources>

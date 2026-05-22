@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">簡單相片記錄</string>
+
+    <string name="menu_home">首頁</string>
+    <string name="menu_data_management">資料管理</string>
+    <string name="menu_sort">排序</string>
+    <string name="menu_delete">刪除</string>
+    <string name="menu_new_look">新增記錄</string>
+
+    <string name="all_delete">刪除</string>
+    <string name="all_save">儲存</string>
+    <string name="all_cancel">取消</string>
+    <string name="all_complete">完成</string>
+    <string name="all_done">確認</string>
+
+    <string name="record_selected_count"> 個已選取</string>
+    <string name="record_select_all">全部</string>
+    <string name="record_app_close_warning">再按一次「返回」即可結束</string>
+    <string name="record_selected_delete_warning_1"></string>
+    <string name="record_selected_delete_warning_2"> 個記錄將永久刪除，確定嗎？</string>
+
+    <string name="recorddetail_edit">編輯</string>
+    <string name="recorddetail_title_hint">輸入標題</string>
+    <string name="recorddetail_memo_hint">輸入內容</string>
+    <string name="recorddetail_back_press_warning">按下「返回」將不儲存變更</string>
+    <string name="recorddetail_delete_warning">刪除後無法復原</string>
+    <string name="recorddetail_cannot_find_gallery_app">找不到相簿應用程式</string>
+    <string name="recorddetail_permission_denied">需要存取相片的權限</string>
+    <string name="recorddetail_storage_error">無法將圖片儲存至內部儲存空間</string>
+    <string name="recorddetail_non_text"></string>
+    <string name="recorddetail_memo_length"> / 8000</string>
+
+    <string name="datamgnt_delete_all">刪除所有資料</string>
+    <string name="datamgnt_delete_warning">確定要刪除所有資料嗎？\n刪除後將無法復原</string>
+    <string name="datamgnt_delete_complete">刪除完成</string>
+
+    <string name="datamgnt_backup_title">備份</string>
+    <string name="datamgnt_backup">開始備份</string>
+    <string name="datamgnt_backup_hint">例如: photorecord_backup_20260515.zip</string>
+    <string name="datamgnt_backup_success">備份完成</string>
+    <string name="datamgnt_backup_fail">備份失敗</string>
+
+    <string name="datamgnt_restore_title">還原</string>
+    <string name="datamgnt_restore">從檔案還原</string>
+    <string name="datamgnt_restore_last">從上次備份還原</string>
+    <string name="datamgnt_restore_confirm">現有資料將全部被取代\n要繼續嗎？</string>
+    <string name="datamgnt_restore_success">已還原 %1$d 個記錄</string>
+    <string name="datamgnt_restore_fail">還原失敗</string>
+
+    <string name="datamgnt_last_backup_date">上次備份: %1$s</string>
+    <string name="datamgnt_last_backup_name">儲存位置: %1$s</string>
+
+    <string name="datetimepicker_date_label">日期</string>
+    <string name="datetimepicker_time_label">時間</string>
+
+    <string name="alertdlg_delete_button">永久刪除</string>
+    <string name="alertdlg_not_save_button">不儲存</string>
+    <string name="alertdlg_save_warning">要儲存變更嗎？</string>
+
+    <string name="sortdlg_sortby_label_1">  名稱（A 到 Z）</string>
+    <string name="sortdlg_sortby_label_2">  名稱（Z 到 A）</string>
+    <string name="sortdlg_sortby_label_3">  日期（由舊到新）</string>
+    <string name="sortdlg_sortby_label_4">  日期（由新到舊）</string>
+
+    <string name="cropphoto_title_label"> </string>
+    <string name="photoviewer_save_done">下載完成</string>
+
+    <string name="nav_record_label">簡單相片記錄</string>
+    <string name="nav_record_detail_label">詳細資訊</string>
+    <string name="nav_data_management_label">資料管理</string>
+
+    <string name="menu_search">搜尋</string>
+    <string name="search_hint">搜尋記錄</string>
+    <string name="search_result_count">%d 個結果</string>
+    <string name="search_empty_title">找不到結果</string>
+    <string name="search_empty_subtitle">找不到符合的記錄</string>
+    <string name="search_initial_hint">輸入關鍵字後\n點選搜尋按鈕</string>
+    <string name="search_recent">最近搜尋</string>
+
+    <string name="datamgnt_export_gallery_title">匯出至相簿</string>
+    <string name="datamgnt_export_gallery">匯出至相簿</string>
+    <string name="datamgnt_export_gallery_hint">將所有相片匯出至裝置的相簿應用程式</string>
+    <string name="datamgnt_export_success">已將 %1$d 張相片儲存至相簿</string>
+    <string name="datamgnt_export_fail">匯出失敗</string>
+    <string name="datamgnt_export_no_photos">沒有可匯出的相片</string>
+    <string name="datamgnt_export_permission_denied">需要存取儲存空間的權限</string>
+
+    <string name="datamgnt_restore_mode_title">選擇還原方式</string>
+    <string name="datamgnt_restore_current_count">目前有 %1$d 個記錄</string>
+    <string name="datamgnt_restore_mode_replace">取代</string>
+    <string name="datamgnt_restore_mode_replace_desc">刪除所有現有資料並以備份取代</string>
+    <string name="datamgnt_restore_mode_merge">合併</string>
+    <string name="datamgnt_restore_mode_merge_desc">保留現有資料並新增備份記錄</string>
+    <string name="datamgnt_restore_uri_expired">無法存取先前的備份檔案，請重新選取檔案</string>
+    <string name="datamgnt_progress_backup">備份中 %1$d / %2$d</string>
+    <string name="datamgnt_progress_export">匯出中 %1$d / %2$d</string>
+    <string name="datamgnt_progress_restore">還原中…</string>
+</resources>

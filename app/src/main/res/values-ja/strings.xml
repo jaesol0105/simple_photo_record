@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">かんたん写真メモ</string>
+
+    <string name="menu_home">ホーム</string>
+    <string name="menu_data_management">データ管理</string>
+    <string name="menu_sort">並べ替え</string>
+    <string name="menu_delete">削除</string>
+    <string name="menu_new_look">記録する</string>
+
+    <string name="all_delete">削除</string>
+    <string name="all_save">保存</string>
+    <string name="all_cancel">キャンセル</string>
+    <string name="all_complete">完了</string>
+    <string name="all_done">OK</string>
+
+    <string name="record_selected_count">件選択中</string>
+    <string name="record_select_all">すべて</string>
+    <string name="record_app_close_warning">もう一度「戻る」を押すと終了します</string>
+    <string name="record_selected_delete_warning_1"></string>
+    <string name="record_selected_delete_warning_2">件のレコードを完全に削除しますか？</string>
+
+    <string name="recorddetail_edit">編集</string>
+    <string name="recorddetail_title_hint">タイトルを入力</string>
+    <string name="recorddetail_memo_hint">内容を入力</string>
+    <string name="recorddetail_back_press_warning">変更内容は保存されません</string>
+    <string name="recorddetail_delete_warning">削除したレコードは復元できません</string>
+    <string name="recorddetail_cannot_find_gallery_app">ギャラリーアプリが見つかりません</string>
+    <string name="recorddetail_permission_denied">写真へのアクセス権限が必要です</string>
+    <string name="recorddetail_storage_error">内部ストレージに画像を保存できません</string>
+    <string name="recorddetail_non_text"></string>
+    <string name="recorddetail_memo_length"> / 8000</string>
+
+    <string name="datamgnt_delete_all">すべてのデータを削除</string>
+    <string name="datamgnt_delete_warning">すべてのデータを削除しますか？\n削除したデータは復元できません</string>
+    <string name="datamgnt_delete_complete">削除が完了しました</string>
+
+    <string name="datamgnt_backup_title">バックアップ</string>
+    <string name="datamgnt_backup">バックアップする</string>
+    <string name="datamgnt_backup_hint">例: photorecord_backup_20260515.zip</string>
+    <string name="datamgnt_backup_success">バックアップが完了しました</string>
+    <string name="datamgnt_backup_fail">バックアップに失敗しました</string>
+
+    <string name="datamgnt_restore_title">復元</string>
+    <string name="datamgnt_restore">ファイルから復元</string>
+    <string name="datamgnt_restore_last">前回のバックアップから復元</string>
+    <string name="datamgnt_restore_confirm">既存データがすべて置き換えられます\n続けますか？</string>
+    <string name="datamgnt_restore_success">%1$d件のレコードを復元しました</string>
+    <string name="datamgnt_restore_fail">復元に失敗しました</string>
+
+    <string name="datamgnt_last_backup_date">最終バックアップ: %1$s</string>
+    <string name="datamgnt_last_backup_name">保存先: %1$s</string>
+
+    <string name="datetimepicker_date_label">日付</string>
+    <string name="datetimepicker_time_label">時刻</string>
+
+    <string name="alertdlg_delete_button">完全に削除</string>
+    <string name="alertdlg_not_save_button">保存しない</string>
+    <string name="alertdlg_save_warning">変更を保存しますか？</string>
+
+    <string name="sortdlg_sortby_label_1">  名前（昇順）</string>
+    <string name="sortdlg_sortby_label_2">  名前（降順）</string>
+    <string name="sortdlg_sortby_label_3">  日付（古い順）</string>
+    <string name="sortdlg_sortby_label_4">  日付（新しい順）</string>
+
+    <string name="cropphoto_title_label"> </string>
+    <string name="photoviewer_save_done">ダウンロード完了</string>
+
+    <string name="nav_record_label">かんたん写真メモ</string>
+    <string name="nav_record_detail_label">詳細情報</string>
+    <string name="nav_data_management_label">データ管理</string>
+
+    <string name="menu_search">検索</string>
+    <string name="search_hint">レコードを検索</string>
+    <string name="search_result_count">%d件</string>
+    <string name="search_empty_title">検索結果がありません</string>
+    <string name="search_empty_subtitle">一致するレコードが見つかりません</string>
+    <string name="search_initial_hint">キーワードを入力して\n検索ボタンを押してください</string>
+    <string name="search_recent">最近の検索</string>
+
+    <string name="datamgnt_export_gallery_title">ギャラリーに書き出す</string>
+    <string name="datamgnt_export_gallery">ギャラリーに書き出す</string>
+    <string name="datamgnt_export_gallery_hint">すべての写真をデバイスのギャラリーアプリに書き出します</string>
+    <string name="datamgnt_export_success">%1$d枚の写真をギャラリーに保存しました</string>
+    <string name="datamgnt_export_fail">書き出しに失敗しました</string>
+    <string name="datamgnt_export_no_photos">書き出す写真がありません</string>
+    <string name="datamgnt_export_permission_denied">ストレージへのアクセス権限が必要です</string>
+
+    <string name="datamgnt_restore_mode_title">復元方法を選択</string>
+    <string name="datamgnt_restore_current_count">現在 %1$d件のレコード</string>
+    <string name="datamgnt_restore_mode_replace">置き換え</string>
+    <string name="datamgnt_restore_mode_replace_desc">既存データをすべて削除し、バックアップに置き換えます</string>
+    <string name="datamgnt_restore_mode_merge">追加</string>
+    <string name="datamgnt_restore_mode_merge_desc">既存データを保持したまま、バックアップを追加します</string>
+    <string name="datamgnt_restore_uri_expired">以前のバックアップファイルにアクセスできません。ファイルを再選択してください</string>
+    <string name="datamgnt_progress_backup">バックアップ中 %1$d / %2$d</string>
+    <string name="datamgnt_progress_export">書き出し中 %1$d / %2$d</string>
+    <string name="datamgnt_progress_restore">復元中…</string>
+</resources>
