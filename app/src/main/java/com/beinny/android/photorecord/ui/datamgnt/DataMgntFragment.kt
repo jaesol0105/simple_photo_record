@@ -53,6 +53,7 @@ class DataMgntFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val color = ContextCompat.getColor(requireContext(), R.color.list_container_bg)
         requireActivity().findViewById<Toolbar>(R.id.toolbar)?.setBackgroundColor(color)
+        @Suppress("DEPRECATION")
         requireActivity().window.statusBarColor = color
     }
 
@@ -60,6 +61,7 @@ class DataMgntFragment : Fragment() {
         super.onDestroyView()
         val color = ContextCompat.getColor(requireContext(), R.color.background)
         requireActivity().findViewById<Toolbar>(R.id.toolbar)?.setBackgroundColor(color)
+        @Suppress("DEPRECATION")
         requireActivity().window.statusBarColor = color
     }
 

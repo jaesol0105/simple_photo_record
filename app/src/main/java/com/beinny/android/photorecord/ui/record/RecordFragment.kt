@@ -7,6 +7,7 @@ import android.view.inputmethod.EditorInfo
 import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
+import androidx.core.view.MenuProvider
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
@@ -54,6 +55,44 @@ class RecordFragment : Fragment() {
     private var isDragChecking = false
     private var isSearchMode = false
 
+    private val menuProvider = object : MenuProvider {
+        override fun onCreateMenu(menu: Menu, menuInflater: MenuInflater) {
+            menuInflater.inflate(R.menu.menu_record_sort_or_delete, menu)
+            val searchMenu = menu.findItem(R.id.search_record)
+            val sortMenu = menu.findItem(R.id.sort_record)
+            val deleteMenu = menu.findItem(R.id.delete_record)
+            deleteMenu.icon?.mutate()?.setTint(
+                ContextCompat.getColor(requireContext(), R.color.font)
+            )
+            when {
+                longClick -> {
+                    searchMenu.isVisible = false
+                    sortMenu.isVisible = false
+                    deleteMenu.isVisible = countOfCheckedRecord > 0
+                }
+                isSearchMode -> {
+                    searchMenu.isVisible = false
+                    sortMenu.isVisible = false
+                    deleteMenu.isVisible = false
+                }
+                else -> {
+                    searchMenu.isVisible = true
+                    sortMenu.isVisible = true
+                    deleteMenu.isVisible = false
+                }
+            }
+        }
+
+        override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
+            return when (menuItem.itemId) {
+                R.id.sort_record -> { showSortDialog(); true }
+                R.id.delete_record -> { deleteCheckedRecords(); true }
+                R.id.search_record -> { activateSearchMode(); true }
+                else -> false
+            }
+        }
+    }
+
     override fun onAttach(context: Context) {
         super.onAttach(context)
         callbacks = context as Callbacks?
@@ -83,7 +122,6 @@ class RecordFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setHasOptionsMenu(true)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -158,6 +196,7 @@ class RecordFragment : Fragment() {
         }
 
         setupSearchInput()
+        requireActivity().addMenuProvider(menuProvider, viewLifecycleOwner)
 
         // RecordDetailFragment 등에서 돌아올 때 검색 모드 UI 복원 (isSearchMode는 Fragment 인스턴스에 유지됨)
         if (isSearchMode) restoreSearchModeUi()
@@ -188,46 +227,6 @@ class RecordFragment : Fragment() {
         super.onDetach()
         callbacks = null
         callbacksBp.remove()
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        super.onCreateOptionsMenu(menu, inflater)
-        inflater.inflate(R.menu.menu_record_sort_or_delete, menu)
-
-        val searchMenu = menu.findItem(R.id.search_record)
-        val sortMenu = menu.findItem(R.id.sort_record)
-        val deleteMenu = menu.findItem(R.id.delete_record)
-
-        deleteMenu.icon?.mutate()?.setTint(
-            androidx.core.content.ContextCompat.getColor(requireContext(), R.color.font)
-        )
-
-        when {
-            longClick -> {
-                searchMenu.isVisible = false
-                sortMenu.isVisible = false
-                deleteMenu.isVisible = countOfCheckedRecord > 0
-            }
-            isSearchMode -> {
-                searchMenu.isVisible = false
-                sortMenu.isVisible = false
-                deleteMenu.isVisible = false
-            }
-            else -> {
-                searchMenu.isVisible = true
-                sortMenu.isVisible = true
-                deleteMenu.isVisible = false
-            }
-        }
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.sort_record -> { showSortDialog(); true }
-            R.id.delete_record -> { deleteCheckedRecords(); true }
-            R.id.search_record -> { activateSearchMode(); true }
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     // 검색 입력 바 이벤트 설정 (커스텀 pill EditText)

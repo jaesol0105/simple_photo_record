@@ -2,6 +2,7 @@ package com.beinny.android.photorecord
 
 import android.app.Activity
 import android.graphics.Bitmap
+import android.os.Build
 import android.graphics.BitmapFactory
 import android.graphics.Matrix
 import android.graphics.Point
@@ -10,10 +11,15 @@ import com.beinny.android.photorecord.common.GET_BITMAP_ORIGIN
 
 /** 화면 크기에 맞춰 스케일된 Bitmap 반환 */
 fun getScaledBitmap(path: String, activity: Activity, option: Int): Bitmap {
-    val size = Point() // x,y 좌표
+    val size = Point()
 
-    @Suppress("DEPRECATION")
-    activity.windowManager.defaultDisplay.getSize(size)
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+        val bounds = activity.windowManager.currentWindowMetrics.bounds
+        size.set(bounds.width(), bounds.height())
+    } else {
+        @Suppress("DEPRECATION")
+        activity.windowManager.defaultDisplay.getSize(size)
+    }
 
     return if (option == GET_BITMAP_ORIGIN) {
         getScaledBitmap(path, size.x, size.y)

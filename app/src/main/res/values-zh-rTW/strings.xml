@@ -37,7 +37,7 @@
 
     <string name="datamgnt_backup_title">備份</string>
     <string name="datamgnt_backup">開始備份</string>
-    <string name="datamgnt_backup_hint">例如: photorecord_backup_20260515.zip</string>
+    <string name="datamgnt_backup_hint">例如: photorecord_backup_20230101.zip</string>
     <string name="datamgnt_backup_success">備份完成</string>
     <string name="datamgnt_backup_fail">備份失敗</string>
 

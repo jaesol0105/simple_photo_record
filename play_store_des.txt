@@ -1,0 +1,184 @@
+================================================================================
+ 한국어 (ko)
+================================================================================
+
+간단한 사진기록, 메모와 날짜를 함께 기록하세요
+
+갤러리와 독립적인 공간을 찾으셨나요?
+순간을 사진과 함께 간단하게 기록하고 쌓아가세요
+
+[간단한 사진기록 앱이 좋은 이유]
+
+- 갤러리와 독립적인 공간에서 사진들을 모아갈 수 있어요.
+- 제목과 메모, 날짜를 사진과 함께 레코딩 할 수 있어요.
+- 백업, 불러오기를 통해 소중한 기록들을 갤러리 혹은 다른 기기로 손쉽게 이동할 수 있어요.
+
+[주요기능]
+
+- 사진과 함께 메모와 타임스탬프 기록하기
+- 사진 자르기 및 회전 기능
+- 기록 정렬 기능
+- 기록 검색 기능
+- 데이터 백업 및 복원 기능
+- 갤러리로 내보내기 기능
+- 다크모드 지원
+- One-UI 친화적 인터페이스
+
+[문의]
+
+beinny9801@gmail.com
+
+
+================================================================================
+ English (en-US)
+================================================================================
+
+Photo Record — Capture moments with a photo, note, and date.
+
+Looking for a private space, separate from your gallery?
+Simply record each moment with a photo and build your own collection, one memory at a time.
+
+[Why Photo Record?]
+
+- Keep your photos in a dedicated space, completely separate from your gallery.
+- Attach a title, note, and date to every photo you save.
+- Back up, restore, and move your records to another device or your gallery with ease.
+
+[Key Features]
+
+- Add notes and timestamps to your photos
+- Crop and rotate photos
+- Sort your records your way
+- Search through your records
+- Backup and restore your data
+- Export to gallery
+- Dark mode support
+- One UI–friendly interface
+
+[Contact]
+
+beinny9801@gmail.com
+
+
+================================================================================
+ 日本語 (ja)
+================================================================================
+
+かんたん写真メモ — 写真・メモ・日付を一緒に残そう
+
+ギャラリーとは別の、自分だけのスペースを探していませんか？
+瞬間を写真とともにかんたんに記録して、少しずつ積み重ねていきましょう。
+
+【かんたん写真メモが選ばれる理由】
+
+- ギャラリーとは独立したスペースで、写真をまとめて管理できます。
+- タイトル・メモ・日付を写真と一緒に記録できます。
+- バックアップ・復元機能で、大切な記録をギャラリーや他のデバイスへ簡単に移行できます。
+
+【主な機能】
+
+- 写真にメモと日時を記録
+- 写真のトリミング・回転
+- 記録の並べ替え
+- 記録の検索
+- データのバックアップと復元
+- ギャラリーへの書き出し
+- ダークモード対応
+- One UI に最適化されたインターフェース
+
+【お問い合わせ】
+
+beinny9801@gmail.com
+
+
+================================================================================
+ 中文 繁體 (zh-TW)
+================================================================================
+
+簡單相片記錄 — 用相片、備註和日期，記錄每一個瞬間
+
+正在尋找一個獨立於相簿的私人空間嗎？
+用相片簡單記錄下每一刻，慢慢累積屬於自己的回憶。
+
+【為什麼選擇簡單相片記錄？】
+
+- 相片儲存在專屬空間，與手機相簿完全獨立。
+- 為每張相片新增標題、備註和日期。
+- 透過備份與還原功能，輕鬆將記錄移至相簿或其他裝置。
+
+【主要功能】
+
+- 為相片新增備註和日期時間
+- 裁剪和旋轉相片
+- 彈性排序記錄
+- 搜尋記錄
+- 資料備份與還原
+- 匯出至相簿
+- 支援深色模式
+- One UI 友善介面
+
+【聯絡我們】
+
+beinny9801@gmail.com
+
+
+================================================================================
+ Português Brasil (pt-BR)
+================================================================================
+
+Registro de Fotos — Registre momentos com foto, anotação e data
+
+Procurando um espaço privado, separado da sua galeria?
+Registre cada momento com uma foto de forma simples e vá construindo a sua própria coleção.
+
+[Por que o Registro de Fotos?]
+
+- Guarde suas fotos em um espaço dedicado, completamente separado da galeria.
+- Adicione título, anotação e data a cada foto salva.
+- Faça backup, restaure e transfira seus registros para outro dispositivo ou para a galeria com facilidade.
+
+[Principais recursos]
+
+- Adicione anotações e data e hora às fotos
+- Recorte e gire fotos
+- Organize seus registros do seu jeito
+- Pesquise seus registros
+- Backup e restauração de dados
+- Exportar para a galeria
+- Suporte ao modo escuro
+- Interface otimizada para One UI
+
+[Contato]
+
+beinny9801@gmail.com
+
+
+================================================================================
+ Español (es)
+================================================================================
+
+Registro de Fotos — Captura momentos con foto, nota y fecha
+
+¿Buscas un espacio privado, separado de tu galería?
+Registra cada momento con una foto de forma sencilla y ve construyendo tu propia colección.
+
+[¿Por qué Registro de Fotos?]
+
+- Guarda tus fotos en un espacio dedicado, completamente separado de la galería.
+- Añade título, nota y fecha a cada foto que guardes.
+- Haz copias de seguridad, restaura y mueve tus registros a otro dispositivo o a la galería fácilmente.
+
+[Funciones principales]
+
+- Añade notas y fecha y hora a tus fotos
+- Recorta y rota imágenes
+- Ordena tus registros a tu manera
+- Busca entre tus registros
+- Copia de seguridad y restauración de datos
+- Exporta a la galería
+- Compatible con modo oscuro
+- Interfaz optimizada para One UI
+
+[Contacto]
+
+beinny9801@gmail.com

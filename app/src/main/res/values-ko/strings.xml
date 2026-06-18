@@ -37,7 +37,7 @@
 
     <string name="datamgnt_backup_title">백업</string>
     <string name="datamgnt_backup">백업하기</string>
-    <string name="datamgnt_backup_hint">파일명 예: photorecord_backup_20260515.zip</string>
+    <string name="datamgnt_backup_hint">파일명 예: photorecord_backup_20230101.zip</string>
     <string name="datamgnt_backup_success">백업이 완료되었습니다</string>
     <string name="datamgnt_backup_fail">백업에 실패했습니다</string>
 

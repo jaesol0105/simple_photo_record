@@ -136,8 +136,13 @@ class RecordDetailFragment : Fragment(), DateTimePickerFragment.CallBacks, CropP
         super.onStart()
         initDlgClose()
 
-        @Suppress("DEPRECATION")
-        requireActivity().windowManager.defaultDisplay.getSize(deviceXY)
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            val bounds = requireActivity().windowManager.currentWindowMetrics.bounds
+            deviceXY.set(bounds.width(), bounds.height())
+        } else {
+            @Suppress("DEPRECATION")
+            requireActivity().windowManager.defaultDisplay.getSize(deviceXY)
+        }
 
         binding.etRecordDetailLabel.addTextChangedListener(labelWatcher())
         binding.etRecordDetailLabel.paintFlags = Paint.UNDERLINE_TEXT_FLAG

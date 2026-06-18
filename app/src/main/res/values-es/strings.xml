@@ -37,7 +37,7 @@
 
     <string name="datamgnt_backup_title">Copia de seguridad</string>
     <string name="datamgnt_backup">Crear copia de seguridad</string>
-    <string name="datamgnt_backup_hint">Ej.: photorecord_backup_20260515.zip</string>
+    <string name="datamgnt_backup_hint">Ej.: photorecord_backup_20230101.zip</string>
     <string name="datamgnt_backup_success">Copia de seguridad completada</string>
     <string name="datamgnt_backup_fail">Error al crear la copia de seguridad</string>
 

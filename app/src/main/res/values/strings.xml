@@ -37,7 +37,7 @@
 
     <string name="datamgnt_backup_title">Backup</string>
     <string name="datamgnt_backup">Back up</string>
-    <string name="datamgnt_backup_hint">e.g. photorecord_backup_20260515.zip</string>
+    <string name="datamgnt_backup_hint">e.g. photorecord_backup_20230101.zip</string>
     <string name="datamgnt_backup_success">Backup complete</string>
     <string name="datamgnt_backup_fail">Backup failed</string>
 

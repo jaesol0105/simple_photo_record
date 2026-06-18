@@ -37,7 +37,7 @@
 
     <string name="datamgnt_backup_title">バックアップ</string>
     <string name="datamgnt_backup">バックアップする</string>
-    <string name="datamgnt_backup_hint">例: photorecord_backup_20260515.zip</string>
+    <string name="datamgnt_backup_hint">例: photorecord_backup_20230101.zip</string>
     <string name="datamgnt_backup_success">バックアップが完了しました</string>
     <string name="datamgnt_backup_fail">バックアップに失敗しました</string>
 
